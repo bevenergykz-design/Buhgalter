@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const msg = `Здравствуйте! Я рассчитал на сайте предварительный тариф для ${entityName} (${taxName}): сотрудников: ${empCount}, документов в месяц: ${docsText}${optStr}. Ориентир: ${basePrice.toLocaleString('ru-RU')} ₸/мес. Хочу зафиксировать эти условия и проконсультироваться.`;
 
-      calcWhatsAppBtn.href = `https://wa.me/77070601980?text=${encodeURIComponent(msg)}`;
+      calcWhatsAppBtn.href = `https://wa.me/77072675557?text=${encodeURIComponent(msg)}`;
     }
   }
 
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (quizWaBtn) {
-        quizWaBtn.href = `https://wa.me/77070601980?text=${encodeURIComponent(waMessage)}`;
+        quizWaBtn.href = `https://wa.me/77072675557?text=${encodeURIComponent(waMessage)}`;
       }
     }
   }
