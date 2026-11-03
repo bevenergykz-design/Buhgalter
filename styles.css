@@ -304,6 +304,33 @@ body {
   font-weight: 500;
 }
 
+.top-bar-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition);
+}
+
+.top-bar-link:hover {
+  background: var(--color-amber-bright);
+  color: #ffffff;
+}
+
+.btn-outline-corp {
+  background: #ffffff;
+  border: 1px solid var(--color-indigo);
+  color: var(--color-indigo-dark);
+}
+
+.btn-outline-corp:hover {
+  background: var(--color-indigo-soft);
+  color: var(--color-indigo-dark);
+}
+
 /* ==========================================================================
    HEADER & NAVIGATION (1-buh.ru clean white bar + #5f58ac hover menu pills)
    ========================================================================== */

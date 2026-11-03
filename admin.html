@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель управления — ТОО «Образцовая бухгалтерия "Диалог Учёт"»</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23544cab'/><path d='M30 25h24c15 0 26 10 26 25s-11 25-26 25H30V25zm16 14v22h8c7 0 12-4 12-11s-5-11-12-11h-8z' fill='%23ffffff'/><circle cx='72' cy='32' r='7' fill='%23fda004'/></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="admin.css?v=20261104">
+</head>
+<body class="admin-body">
+
+  <!-- AUTH SCREEN (Shown if not logged in) -->
+  <div id="authScreen" class="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">
+          <svg viewBox="0 0 40 40" width="40" height="40" fill="none">
+            <rect width="40" height="40" rx="8" fill="#544cab"/>
+            <path d="M12 11h11c6.5 0 11.5 4.3 11.5 10.5S29.5 32 23 32H12V11zm7 6v9h4c3.3 0 5.8-2 5.8-4.5S26.3 17 23 17h-4z" fill="#ffffff"/>
+            <circle cx="31" cy="14" r="3.5" fill="#fda004"/>
+          </svg>
+        </div>
+        <h2>Панель сотрудников «Диалог Учет»</h2>
+        <p>ТОО «Образцовая бухгалтерия "Диалог Учёт"» (БИН 181040019474)</p>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label>Выберите роль входа:</label>
+          <div class="role-selector">
+            <label class="role-chip active">
+              <input type="radio" name="authRole" value="admin" checked>
+              <span>Директор / Руководитель</span>
+            </label>
+            <label class="role-chip">
+              <input type="radio" name="authRole" value="accountant">
+              <span>Ведущий бухгалтер</span>
+            </label>
+            <label class="role-chip">
+              <input type="radio" name="authRole" value="manager">
+              <span>Менеджер по клиентам</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="authLogin">Логин или Email:</label>
+          <input type="text" id="authLogin" class="form-control" value="kuzmenko@dialog-uchet.kz" required>
+        </div>
+
+        <div class="form-group">
+          <label for="authPassword">Пароль:</label>
+          <input type="password" id="authPassword" class="form-control" value="admin2026" required>
+          <small class="hint-text">Демо-доступ: логин и пароль предзаполнены для входа</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Войти в систему →</button>
+
+        <div class="auth-footer-links">
+          <a href="index.html" class="back-link">← Вернуться на главный сайт</a>
+          <a href="cabinet.html" class="client-portal-link">Вход для клиентов (ИП/ТОО)</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN APP INTERFACE -->
+  <div id="adminApp" class="admin-app" style="display: none;">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="sidebar-logo">
+          <svg viewBox="0 0 40 40" width="32" height="32" fill="none">
+            <rect width="40" height="40" rx="6" fill="#544cab"/>
+            <path d="M12 11h11c6.5 0 11.5 4.3 11.5 10.5S29.5 32 23 32H12V11zm7 6v9h4c3.3 0 5.8-2 5.8-4.5S26.3 17 23 17h-4z" fill="#ffffff"/>
+            <circle cx="31" cy="14" r="3.5" fill="#fda004"/>
+          </svg>
+          <div class="sidebar-logo-text">
+            <strong>Диалог Учет</strong>
+            <span>CRM & Панель управления</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="sidebar-user-card">
+        <div class="user-avatar" id="sidebarAvatar">НК</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarUserName">Кузьменко Н. В.</div>
+          <div class="user-role" id="sidebarUserRole">Руководитель (Полный доступ)</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="leads">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Лиды & Заявки</span>
+          <span class="nav-badge" id="badgeLeadsCount">0</span>
+        </button>
+
+        <button class="nav-item" data-tab="tariffs">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Управление ценами</span>
+          <span class="nav-tag">Сайт</span>
+        </button>
+
+        <button class="nav-item" data-tab="clients">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-label">Клиенты (ИП / ТОО)</span>
+          <span class="nav-badge secondary" id="badgeClientsCount">6</span>
+        </button>
+
+        <button class="nav-item" data-tab="documents">
+          <span class="nav-icon">📄</span>
+          <span class="nav-label">Первичка клиентов</span>
+          <span class="nav-badge warning" id="badgeDocsCount">4</span>
+        </button>
+
+        <button class="nav-item" data-tab="telegram">
+          <span class="nav-icon">✈️</span>
+          <span class="nav-label">Telegram-бот</span>
+        </button>
+
+        <button class="nav-item" data-tab="employees">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Сотрудники</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank" class="sidebar-ext-btn">
+          <span>🌐 Открыть сайт</span>
+        </a>
+        <button id="logoutBtn" class="sidebar-logout-btn">
+          <span>Выйти</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT VIEW AREA -->
+    <main class="admin-main">
+      
+      <!-- TOP CONTROL BAR -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button id="toggleSidebarBtn" class="btn-icon" aria-label="Свернуть меню">☰</button>
+          <h1 class="topbar-page-title" id="pageTitle">Лиды и входящие заявки</h1>
+        </div>
+
+        <div class="topbar-right">
+          <div class="system-status-indicator">
+            <span class="live-dot"></span>
+            <span>Сайт: buhgalterservices.netlify.app</span>
+          </div>
+
+          <a href="cabinet.html" target="_blank" class="btn btn-sm btn-outline">
+            Перейти в Кабинет Клиента →
+          </a>
+        </div>
+      </header>
+
+      <!-- CONTENT PANELS -->
+      <div class="admin-content-container">
+
+        <!-- ========================================================
+             TAB 1: LEADS & REQUESTS
+             ======================================================== -->
+        <section id="tabLeads" class="tab-panel active">
+          
+          <!-- Summary Counters -->
+          <div class="metrics-row">
+            <div class="metric-card">
+              <div class="mc-icon mc-blue">📥</div>
+              <div class="mc-data">
+                <span class="mc-val" id="leadsTotal">0</span>
+                <span class="mc-label">Всего заявок</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="mc-icon mc-amber">⚡</div>
+              <div class="mc-data">
+                <span class="mc-val" id="leadsNew">0</span>
+                <span class="mc-label">Новые (требуют звонка)</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="mc-icon mc-indigo">🔄</div>
+              <div class="mc-data">
+                <span class="mc-val" id="leadsInProgress">0</span>
+                <span class="mc-label">В работе у бухгалтера</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="mc-icon mc-green">✓</div>
+              <div class="mc-data">
+                <span class="mc-val" id="leadsClosed">0</span>
+                <span class="mc-label">Заключен договор</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls & Filters -->
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div class="header-left-tools">
+                <input type="text" id="leadSearchInput" class="form-control form-control-sm" placeholder="Поиск по имени, телефону, ИП/ТОО...">
+                
+                <select id="leadStatusFilter" class="form-control form-control-sm">
+                  <option value="all">Все статусы</option>
+                  <option value="new">Новые</option>
+                  <option value="in_progress">В работе</option>
+                  <option value="contract">Договор подписан</option>
+                  <option value="archive">Архив</option>
+                </select>
+
+                <select id="leadSourceFilter" class="form-control form-control-sm">
+                  <option value="all">Все источники</option>
+                  <option value="calc">Калькулятор тарифа</option>
+                  <option value="quiz">Квиз аудита рисков</option>
+                  <option value="direct">WhatsApp / Звонок</option>
+                </select>
+              </div>
+
+              <div class="header-right-tools">
+                <button id="addManualLeadBtn" class="btn btn-sm btn-primary">+ Добавить заявку</button>
+                <button id="exportLeadsBtn" class="btn btn-sm btn-secondary">📥 Экспорт в CSV</button>
+              </div>
+            </div>
+
+            <!-- Leads Table -->
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Дата / Время</th>
+                    <th>Клиент / Контакт</th>
+                    <th>Источник</th>
+                    <th>Параметры расчета</th>
+                    <th>Сумма тарифа</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             TAB 2: TARIFFS & PRICE MANAGEMENT (FOR EMPLOYEES)
+             ======================================================== -->
+        <section id="tabTariffs" class="tab-panel">
+          <div class="panel-alert info">
+            <strong>Управление тарифами калькулятора на сайте:</strong> Здесь сотрудники и руководство могут оперативно корректировать базовые цены и коэффициенты. Изменения автоматически отражаются в онлайн-калькуляторе на главной странице сайта без необходимости привлекать программиста.
+          </div>
+
+          <div class="tariffs-grid">
+            
+            <!-- Left Form: Base Prices -->
+            <div class="panel-card">
+              <div class="panel-card-title">
+                <h3>Базовые ставки обслуживания (₸ / месяц)</h3>
+              </div>
+
+              <div class="form-group-grid">
+                <div class="form-group">
+                  <label for="priceIpBase">Базовый тариф для ИП (Упрощенка, без работников):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceIpBase" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="priceTooBase">Доплата за ТОО (к базовой ставке):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceTooBase" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="pricePerEmployee">Стоимость за каждого сотрудника (расчет налогов, Enbek, зарплата):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="pricePerEmployee" class="form-control" step="500">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-card-title mt-4">
+                <h3>Надбавки за налоговые режимы в РК</h3>
+              </div>
+
+              <div class="form-group-grid">
+                <div class="form-group">
+                  <label for="priceTaxOur">Общеустановленный режим (ОУР):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceTaxOur" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="priceTaxRetail">Специальный режим розничного налога (4–8%):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceTaxRetail" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-card-title mt-4">
+                <h3>Дополнительные участки учета</h3>
+              </div>
+
+              <div class="form-group-grid">
+                <div class="form-group">
+                  <label for="priceOptVat">Ведение НДС (ф. 300.00, сопоставление ЭСФ):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceOptVat" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="priceOptVed">ВЭД (Импорт/Экспорт, валютный контроль, ф. 328):</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceOptVed" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="priceOptBank">Банк-клиент и подготовка платежных поручений:</label>
+                  <div class="input-addon-group">
+                    <input type="number" id="priceOptBank" class="form-control" step="1000">
+                    <span class="input-addon">₸</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-actions-bar">
+                <button id="saveTariffsBtn" class="btn btn-primary">💾 Сохранить и применить на сайте</button>
+                <button id="resetTariffsBtn" class="btn btn-secondary">Сбросить к заводским</button>
+                <span id="tariffSaveStatus" class="save-indicator"></span>
+              </div>
+            </div>
+
+            <!-- Right Preview Card: Live Preview Calculator -->
+            <div class="panel-card tariff-preview-panel">
+              <div class="panel-card-title">
+                <h3>Тестирование расчета тарифа</h3>
+                <small>Проверьте, как расчет выглядит для клиента на сайте прямо сейчас</small>
+              </div>
+
+              <div class="preview-calc-box">
+                <div class="preview-row">
+                  <span>ИП на упрощенке (0 сотр., до 10 док):</span>
+                  <strong id="prevIpSimple">25 000 ₸</strong>
+                </div>
+                <div class="preview-row">
+                  <span>ТОО на упрощенке + 5 сотр. + Банкинг:</span>
+                  <strong id="prevTooStaff">62 500 ₸</strong>
+                </div>
+                <div class="preview-row">
+                  <span>ТОО на ОУР с НДС + ВЭД + 10 сотр.:</span>
+                  <strong id="prevTooBig">130 000 ₸</strong>
+                </div>
+              </div>
+
+              <div class="admin-tip-box">
+                <strong>💡 Подсказка для менеджеров:</strong>
+                <p>При разговоре с клиентом можно фиксировать тариф с индивидуальной скидкой до 10% при оплате за квартал или полгода вперед.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ========================================================
+             TAB 3: CLIENTS DIRECTORY (ИП / ТОО НА ОБСЛУЖИВАНИИ)
+             ======================================================== -->
+        <section id="tabClients" class="tab-panel">
+          
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div class="header-left-tools">
+                <input type="text" id="clientSearchInput" class="form-control form-control-sm" placeholder="Поиск по названию, БИН, контактному лицу...">
+                <select id="clientTaxFilter" class="form-control form-control-sm">
+                  <option value="all">Все режимы</option>
+                  <option value="Упрощенка">Упрощенка</option>
+                  <option value="ОУР">ОУР с НДС</option>
+                  <option value="Розничный">Розничный налог</option>
+                </select>
+              </div>
+
+              <div class="header-right-tools">
+                <button id="addNewClientBtn" class="btn btn-sm btn-primary">+ Добавить клиента</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Компания / ИП</th>
+                    <th>БИН / ИИН</th>
+                    <th>Режим налогообложения</th>
+                    <th>Ведущий бухгалтер</th>
+                    <th>Сдача отчетов (2026)</th>
+                    <th>Абонплата</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             TAB 4: CLIENT PRIMARY DOCUMENTS
+             ======================================================== -->
+        <section id="tabDocuments" class="tab-panel">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div class="header-left-tools">
+                <input type="text" id="docSearchInput" class="form-control form-control-sm" placeholder="Поиск документа, компании...">
+                <select id="docStatusFilter" class="form-control form-control-sm">
+                  <option value="all">Все статусы первички</option>
+                  <option value="pending">Ожидает обработки</option>
+                  <option value="processed">Проведено в 1С</option>
+                  <option value="rejected">Требует доработки/акта</option>
+                </select>
+              </div>
+
+              <div class="header-right-tools">
+                <button id="refreshDocsBtn" class="btn btn-sm btn-secondary">🔄 Обновить</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Дата загрузки</th>
+                    <th>Клиент / БИН</th>
+                    <th>Название файла / Тип документа</th>
+                    <th>Период</th>
+                    <th>Сумма (если есть)</th>
+                    <th>Статус в 1С</th>
+                    <th>Действие бухгалтера</th>
+                  </tr>
+                </thead>
+                <tbody id="docsTableBody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             TAB 5: TELEGRAM NOTIFICATIONS BOT
+             ======================================================== -->
+        <section id="tabTelegram" class="tab-panel">
+          <div class="panel-card max-w-700">
+            <div class="panel-card-title">
+              <h3>Настройка мгновенных уведомлений в Telegram</h3>
+              <p>Каждая новая заявка с калькулятора, квиза или формы сразу отправляется в ваш Telegram-чат</p>
+            </div>
+
+            <div class="tg-setup-box">
+              <div class="form-group">
+                <label for="tgBotToken">Токен Telegram-бота (Bot Token):</label>
+                <input type="text" id="tgBotToken" class="form-control font-mono" placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz">
+                <small class="hint-text">Создается в @BotFather за 1 минуту</small>
+              </div>
+
+              <div class="form-group">
+                <label for="tgChatId">ID вашего чата или группы (Chat ID):</label>
+                <input type="text" id="tgChatId" class="form-control font-mono" placeholder="Например: 987654321 или -100123456789">
+                <small class="hint-text">Узнать свой Chat ID можно у бота @userinfobot или @getmyid_bot</small>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tgSendCalculations" checked>
+                  <span>Отправлять расчеты с онлайн-калькулятора сайта</span>
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tgSendQuiz" checked>
+                  <span>Отправлять результаты квиза налоговых рисков</span>
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tgSendDocUploads" checked>
+                  <span>Уведомлять, когда клиент загрузил новые акты/накладные</span>
+                </label>
+              </div>
+
+              <div class="tg-buttons-row">
+                <button id="saveTelegramSettingsBtn" class="btn btn-primary">Сохранить настройки</button>
+                <button id="testTelegramBtn" class="btn btn-secondary">Отправить тест в Telegram</button>
+                <span id="tgTestResult" class="save-indicator"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             TAB 6: EMPLOYEES & ACCESS ROLES
+             ======================================================== -->
+        <section id="tabEmployees" class="tab-panel">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <h3>Сотрудники компании и права доступа</h3>
+              <button id="addEmployeeBtn" class="btn btn-sm btn-primary">+ Добавить сотрудника</button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ФИО Сотрудника</th>
+                    <th>Должность</th>
+                    <th>Email / Логин</th>
+                    <th>Роль</th>
+                    <th>Закреплено клиентов</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody id="employeesTableBody">
+                  <!-- Injected via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- MODAL: ADD / EDIT LEAD -->
+  <div id="leadModal" class="admin-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="leadModalTitle">Новая заявка на бухучет</h3>
+        <button class="modal-close-btn" data-close="leadModal">×</button>
+      </div>
+      <form id="leadForm" class="modal-body">
+        <input type="hidden" id="editLeadId">
+        
+        <div class="form-group">
+          <label>Имя клиента / Контактное лицо:</label>
+          <input type="text" id="mLeadName" class="form-control" required placeholder="Например: Асхат Баймуханов">
+        </div>
+
+        <div class="form-group">
+          <label>Телефон / WhatsApp:</label>
+          <input type="text" id="mLeadPhone" class="form-control" required placeholder="+7 (707) ...">
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-group">
+            <label>Форма:</label>
+            <select id="mLeadEntity" class="form-control">
+              <option value="ТОО">ТОО</option>
+              <option value="ИП">ИП</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Режим налогообложения:</label>
+            <select id="mLeadTax" class="form-control">
+              <option value="Упрощенка">Упрощенная декларация (3%)</option>
+              <option value="ОУР с НДС">ОУР (Общеустановленный)</option>
+              <option value="Розничный налог">Розничный налог</option>
+              <option value="Патент">Патент</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Сумма тарифа (₸/мес):</label>
+          <input type="number" id="mLeadPrice" class="form-control" value="35000">
+        </div>
+
+        <div class="form-group">
+          <label>Статус заявки:</label>
+          <select id="mLeadStatus" class="form-control">
+            <option value="new">Новая</option>
+            <option value="in_progress">В работе</option>
+            <option value="contract">Договор подписан</option>
+            <option value="archive">Архив</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий бухгалтера:</label>
+          <textarea id="mLeadNotes" class="form-control" rows="3" placeholder="Особенности учета, первичные документы, дата встречи..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Сохранить</button>
+          <button type="button" class="btn btn-secondary" data-close="leadModal">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="admin.js?v=20261104"></script>
+</body>
+</html>

@@ -106,27 +106,79 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Helper to load dynamic tariffs from Admin Panel
+  function getDynamicTariffs() {
+    const defaults = {
+      ipBase: 25000,
+      tooBase: 15000,
+      perEmployee: 2500,
+      taxOur: 20000,
+      taxRetail: 10000,
+      optVat: 20000,
+      optVed: 25000,
+      optBank: 10000
+    };
+    try {
+      const saved = localStorage.getItem('dialog_uchet_tariffs');
+      return saved ? Object.assign(defaults, JSON.parse(saved)) : defaults;
+    } catch (e) {
+      return defaults;
+    }
+  }
+
+  // Record Lead to Admin Panel and Telegram
+  function recordLead(leadData) {
+    try {
+      let leads = [];
+      const savedLeads = localStorage.getItem('dialog_uchet_leads');
+      if (savedLeads) leads = JSON.parse(savedLeads);
+      leads.unshift(leadData);
+      localStorage.setItem('dialog_uchet_leads', JSON.stringify(leads));
+
+      // Attempt Telegram Notification if bot is configured
+      const tgSettings = JSON.parse(localStorage.getItem('dialog_uchet_telegram') || '{}');
+      if (tgSettings.botToken && tgSettings.chatId) {
+        const text = `🔔 *Новая заявка с сайта «Диалог Учет»!*\n` +
+          `👤 *Клиент:* ${leadData.name}\n` +
+          `📞 *Телефон:* ${leadData.phone}\n` +
+          `🏢 *Форма:* ${leadData.entity} (${leadData.tax})\n` +
+          `💰 *Тариф:* ${leadData.price ? leadData.price.toLocaleString('ru-RU') + ' ₸' : '—'}\n` +
+          `📝 *Детали:* ${leadData.details}\n` +
+          `📍 *Источник:* ${leadData.source}`;
+
+        fetch(`https://api.telegram.org/bot${tgSettings.botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: tgSettings.chatId, text: text, parse_mode: 'Markdown' })
+        }).catch(() => {});
+      }
+    } catch (e) {
+      console.warn('Lead record error', e);
+    }
+  }
+
   function recalculatePrice() {
-    let basePrice = 25000;
+    const tariffs = getDynamicTariffs();
+    let basePrice = tariffs.ipBase;
 
     // Entity adjustment
     if (currentEntity === 'too') {
-      basePrice += 15000;
+      basePrice += tariffs.tooBase;
     }
 
     // Tax regime adjustment
     if (currentTax === 'our') {
-      basePrice += 20000;
+      basePrice += tariffs.taxOur;
     } else if (currentTax === 'retail') {
-      basePrice += 10000;
+      basePrice += tariffs.taxRetail;
     } else if (currentTax === 'patent') {
       basePrice -= 10000;
       if (basePrice < 15000) basePrice = 15000;
     }
 
-    // Employees adjustment (approx 2,500 ₸ per staff member for payroll & Enbek reporting)
+    // Employees adjustment (dynamic per employee set by staff)
     const empCount = parseInt(employeesRange.value, 10);
-    basePrice += empCount * 2500;
+    basePrice += empCount * tariffs.perEmployee;
 
     // Documents volume adjustment
     const docStep = parseInt(docsRange.value, 10);
@@ -134,10 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (docStep === 3) basePrice += 25000; // до 150
     if (docStep === 4) basePrice += 50000; // 150+
 
-    // Options
-    if (optVat && optVat.checked) basePrice += 20000;
-    if (optVed && optVed.checked) basePrice += 25000;
-    if (optBank && optBank.checked) basePrice += 10000;
+    // Options (dynamic from staff settings)
+    if (optVat && optVat.checked) basePrice += tariffs.optVat;
+    if (optVed && optVed.checked) basePrice += tariffs.optVed;
+    if (optBank && optBank.checked) basePrice += tariffs.optBank;
 
     // Format output
     if (calculatedPrice) {
@@ -165,8 +217,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const msg = `Здравствуйте! Я рассчитал на сайте предварительный тариф для ${entityName} (${taxName}): сотрудников: ${empCount}, документов в месяц: ${docsText}${optStr}. Ориентир: ${basePrice.toLocaleString('ru-RU')} ₸/мес. Хочу зафиксировать эти условия и проконсультироваться.`;
 
       calcWhatsAppBtn.href = `https://wa.me/77072675557?text=${encodeURIComponent(msg)}`;
+
+      // Attach click to record lead
+      calcWhatsAppBtn.onclick = () => {
+        recordLead({
+          id: 'L-' + (Math.floor(Math.random() * 900) + 100),
+          date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          name: 'Посетитель с калькулятора',
+          phone: '+7 (707) ...',
+          entity: entityName,
+          tax: taxName,
+          details: `Сотрудников: ${empCount}, Документов: ${docsText}${optStr}`,
+          source: 'Калькулятор тарифа',
+          price: basePrice,
+          status: 'new',
+          notes: 'Клиент перешел в WhatsApp для фиксации расчета'
+        });
+      };
     }
   }
+
+  // Listen for tariff updates from Admin panel in other tabs
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'dialog_uchet_tariffs') {
+      recalculatePrice();
+    }
+  });
 
   // Initial calculation
   recalculatePrice();
@@ -232,6 +308,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (quizWaBtn) {
         quizWaBtn.href = `https://wa.me/77072675557?text=${encodeURIComponent(waMessage)}`;
+        quizWaBtn.onclick = () => {
+          recordLead({
+            id: 'L-' + (Math.floor(Math.random() * 900) + 100),
+            date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            name: 'Участник квиза аудита',
+            phone: '+7 (707) ...',
+            entity: 'ТОО / ИП',
+            tax: 'СУР КГД РК',
+            details: `Результат теста: ${resultTitle.textContent} (Баллы: ${totalRiskScore})`,
+            source: 'Квиз аудита рисков',
+            price: 50000,
+            status: 'new',
+            notes: 'Запрос на экспресс-разбор налоговых рисков'
+          });
+        };
       }
     }
   }
