@@ -76,8 +76,14 @@
     </div>
   </div>
 </div>
+<% if (staticPreview) { %>
+<!-- описание формы для Netlify Forms (только в статическом предпросмотре) -->
+<form name="lead" data-netlify="true" netlify-honeypot="website" hidden>
+  <% ['type', 'name', 'phone', 'email', 'company', 'message', 'service', 'page', 'ts', 'consent', 'website', 'entity', 'regime', 'employees', 'docs', 'vat', 'ved', 'bank', 'price'].forEach(function(n){ %><input type="text" name="<%= n %>"><% }) %>
+</form>
+<% } %>
 <script>window.SITE = <%- JSON.stringify({
-  lang: lang,
+  lang: lang, static: staticPreview,
   forms: { consult: [s.form_consult_title, s.form_consult_text], request: [s.form_request_title, s.form_request_text], callback: [s.form_callback_title, s.form_callback_text] },
   sending: s.f_sending, send: s.f_send, err: s.f_err, okTitle: s.f_ok_title, okText: s.f_ok_text,
 }).replace(/</g, '\\u003c') %>;</script>

@@ -591,3 +591,6 @@ body.no-scroll { overflow: hidden; }
   .page-head { padding: 30px 0 34px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* полоса «предварительный просмотр» (только статическая сборка для Netlify) */
+.preview-bar { background: var(--amber-50); color: #8a5300; border-bottom: 1px solid #f8dba6; font-size: 13.5px; text-align: center; padding: 8px 16px; }

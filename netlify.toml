@@ -1,0 +1,15 @@
+# Netlify показывает статический предпросмотр публичной части сайта (без кабинета и панели).
+# Рабочий сайт с базой, кабинетом и панелью — на Node-сервере (VPS), см. docs/ЗАЛИВКА-PS-KZ.md
+[build]
+  command = "node scripts/build-static.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

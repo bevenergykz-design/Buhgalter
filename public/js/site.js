@@ -110,8 +110,18 @@
     var btn = $('button[type=submit]', scope), label = btn.textContent;
     btn.disabled = true; btn.textContent = S.sending;
     var body = new URLSearchParams(new FormData(form));
-    fetch(form.getAttribute('action'), { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok && j.ok, j: j }; }); })
+    var req;
+    if (S.static) {
+      // предпросмотр на Netlify: заявки уходят в Netlify Forms
+      body.set('form-name', 'lead');
+      var pr = $('[data-price]', form); if (pr) body.set('price', pr.textContent.trim());
+      req = fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+        .then(function (r) { return { ok: r.ok, j: {} }; });
+    } else {
+      req = fetch(form.getAttribute('action'), { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok && j.ok, j: j }; }); });
+    }
+    req
       .then(function (res) {
         if (!res.ok) throw new Error(res.j.error || S.err);
         var wrap = scope.querySelector('.lead-form-wrap, .calc__lead'), ok = scope.querySelector('.form-success');
@@ -174,4 +184,7 @@
       history.replaceState(null, '', t.getAttribute('href'));
     });
   });
+  // открыть вкладку из адреса ?cat=… (нужно для статического предпросмотра)
+  var catMatch = location.search.match(/[?&]cat=([a-z0-9-]+)/);
+  if (catMatch) { var ct = $('.tab[data-tab="' + catMatch[1] + '"]'); if (ct && !ct.classList.contains('is-active')) ct.click(); }
 })();

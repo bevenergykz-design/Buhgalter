@@ -73,7 +73,7 @@ app.use((req, res, next) => {
     absUrl: (l, p = pathOnly) => base + (l === 'ru' ? '' : `/${l}`) + (p === '/' && l !== 'ru' ? '' : p),
     menuPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_menu = 1 ORDER BY sort, id'),
     footerPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_footer = 1 ORDER BY sort, id'),
-    meta: {}, noindex: false,
+    meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1',
   });
   next();
 });
