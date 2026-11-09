@@ -1,0 +1,19 @@
+<%- include('_top') %>
+<div class="grid-2 grid-2--wide">
+  <section class="panel form-stack">
+    <h2>Полная резервная копия</h2>
+    <p>Архив со всем содержимым сайта: база данных (тексты, новости, заявки, клиенты, отчёты, переписка), документы клиентов и загруженные изображения. Подходит для переноса сайта на другой хостинг.</p>
+    <div><a class="btn btn--primary" href="/admin/backup/full"><%- icon('download') %>Скачать архив .tar.gz</a></div>
+    <p class="muted">Храните архив в надёжном месте: в нём персональные данные клиентов.</p>
+  </section>
+  <section class="panel">
+    <h2>Автоматические копии базы</h2>
+    <p class="muted">Создаются раз в сутки, хранятся последние 14 копий.</p>
+    <% if (!list.length) { %><p class="empty-sm">Копий пока нет.</p><% } else { %>
+    <ul class="flist">
+      <% list.forEach(function(b){ %><li><a href="/admin/backup/file/<%= b.name %>"><%- icon('database') %><span class="flist__name"><%= b.name %></span></a><small><%= fmtSize(b.size) %></small></li><% }) %>
+    </ul>
+    <% } %>
+  </section>
+</div>
+<%- include('_bottom') %>

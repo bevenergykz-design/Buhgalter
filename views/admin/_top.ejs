@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title><%= title %> — Панель управления «Диалог Учёт»</title>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="adm">
+<%- include('../partials/icons') %>
+<%
+  const isAdmin = me.role === 'admin';
+  const p = adminPath;
+  const act = (pre, exact) => (exact ? p === pre : p === pre || p.startsWith(pre + '/') || p.startsWith(pre + '?')) ? 'is-active' : '';
+  const menu = [
+    ['Работа', [
+      ['/', 'Обзор', 'home', 0, true],
+      ['/leads', 'Заявки с сайта', 'inbox', counters.newLeads],
+      ['/clients', 'Клиенты', 'briefcase', counters.pendingClients + counters.clientAttention],
+    ]],
+  ];
+  if (isAdmin) {
+    menu.push(['Сайт', [
+      ['/texts', 'Тексты страниц', 'text'],
+      ['/images', 'Изображения', 'image'],
+      ['/content/categories', 'Разделы услуг', 'layers'],
+      ['/content/services', 'Услуги', 'ledger'],
+      ['/content/posts', 'Новости и статьи', 'doc'],
+      ['/content/pages', 'Страницы', 'globe'],
+      ['/content/reviews', 'Отзывы', 'star'],
+      ['/content/faq', 'Вопросы и ответы', 'help'],
+      ['/tariffs', 'Калькулятор', 'calc'],
+      ['/contacts', 'Контакты и реквизиты', 'map'],
+    ]]);
+    menu.push(['Система', [
+      ['/settings', 'Уведомления и интеграции', 'settings'],
+      ['/staff', 'Сотрудники', 'people'],
+      ['/backup', 'Резервные копии', 'database'],
+    ]]);
+  }
+%>
+<div class="adm-shell">
+  <aside class="adm-side">
+    <a class="adm-brand" href="/admin">
+      <span class="adm-brand__name">Диалог Учёт</span>
+      <span class="adm-brand__sub">Панель управления</span>
+    </a>
+    <nav class="adm-nav">
+      <% menu.forEach(function(g){ %>
+        <div class="adm-nav__group"><%= g[0] %></div>
+        <% g[1].forEach(function(i){ %>
+          <a class="adm-nav__link <%= act(i[0], i[4]) %>" href="/admin<%= i[0] === '/' ? '' : i[0] %>"><%- icon(i[2]) %><span><%= i[1] %></span><% if (i[3]) { %><b class="pill"><%= i[3] %></b><% } %></a>
+        <% }) %>
+      <% }) %>
+    </nav>
+    <div class="adm-side__foot">
+      <a href="/" target="_blank" rel="noopener"><%- icon('external') %>Открыть сайт</a>
+    </div>
+  </aside>
+  <div class="side-backdrop"></div>
+  <div class="adm-main">
+    <header class="adm-top">
+      <button class="icon-btn adm-burger" type="button" data-side-toggle aria-label="Меню"><%- icon('menu') %></button>
+      <h1 class="adm-top__title"><%= title %></h1>
+      <div class="adm-top__right">
+        <a class="adm-user" href="/admin/profile" title="Мой профиль">
+          <span class="app-user__avatar"><%= me.name.charAt(0) %></span>
+          <span class="adm-user__text"><strong><%= me.name %></strong><small><%= isAdmin ? 'Администратор' : 'Бухгалтер' %></small></span>
+        </a>
+        <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn" type="submit" title="Выйти" aria-label="Выйти"><%- icon('logout') %></button></form>
+      </div>
+    </header>
+    <main class="adm-content">
+      <% if (ok) { %><p class="alert alert--ok" role="status"><%= ok %></p><% } %>
+      <% if (err) { %><p class="alert alert--err" role="alert"><%= err %></p><% } %>

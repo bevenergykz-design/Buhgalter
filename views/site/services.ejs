@@ -1,0 +1,42 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: t('services.title'), lead: t('services.text') }) %>
+<section class="section section--first">
+  <div class="container">
+    <div class="tabs" role="tablist" aria-label="<%= t('services.title') %>">
+      <% categories.forEach(function(c){ %>
+      <a role="tab" class="tab <%= c.id === active.id ? 'is-active' : '' %>" href="<%= L('/uslugi?cat=' + c.slug) %>" data-tab="<%= c.slug %>" aria-selected="<%= c.id === active.id %>" aria-controls="cat-<%= c.slug %>">
+        <%- icon(c.icon) %><span><%= f(c, 'title') %></span>
+      </a>
+      <% }) %>
+    </div>
+    <% categories.forEach(function(c){ %>
+    <div class="tab-panel" id="cat-<%= c.slug %>" role="tabpanel" <%= c.id === active.id ? '' : 'hidden' %>>
+      <div class="tab-panel__head">
+        <h2 class="tab-panel__title"><%= f(c, 'title') %></h2>
+        <% if (f(c, 'intro')) { %><p class="tab-panel__intro"><%= f(c, 'intro') %></p><% } %>
+      </div>
+      <div class="svc-list">
+        <% c.services.forEach(function(x, i){ %>
+        <details class="svc" <%= i === 0 ? 'open' : '' %>>
+          <summary class="svc__head">
+            <span class="svc__title"><%= f(x, 'title') %></span>
+            <% if (f(x, 'price')) { %><span class="svc__price"><%= f(x, 'price') %></span><% } %>
+            <span class="svc__chev"><%- icon('chevron') %></span>
+          </summary>
+          <div class="svc__body">
+            <div class="svc__desc"><%- nl2br(f(x, 'desc')) %></div>
+            <div class="svc__actions">
+              <button class="btn btn--accent btn--sm" type="button" data-lead="request" data-service="<%= f(x, 'title') %>"><%= s.services_request %></button>
+              <button class="btn btn--outline btn--sm" type="button" data-lead="consult" data-service="<%= f(x, 'title') %>"><%= s.services_consult %></button>
+            </div>
+          </div>
+        </details>
+        <% }) %>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</section>
+<%- include('_cta') %>
+<%- include('../partials/footer') %>

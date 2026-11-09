@@ -1,0 +1,13 @@
+<%- include('_auth-top') %>
+<h1 class="auth__title"><%= s.c_login_title %></h1>
+<p class="auth__lead"><%= s.c_login_text %></p>
+<% if (info) { %><p class="alert alert--ok"><%= info %></p><% } %>
+<% if (error) { %><p class="alert alert--err" role="alert"><%= error %></p><% } %>
+<form method="post" action="<%= L('/cabinet/login') %>" class="auth__form">
+  <label class="field"><span class="field__label"><%= s.c_email %></span><input class="input" type="email" name="email" value="<%= email %>" required autocomplete="email" autofocus></label>
+  <label class="field"><span class="field__label"><%= s.c_password %></span><input class="input" type="password" name="password" required autocomplete="current-password"></label>
+  <div class="auth__row"><a href="<%= L('/cabinet/forgot') %>"><%= s.c_forgot %></a></div>
+  <button class="btn btn--primary btn--block btn--lg" type="submit"><%= s.c_login_btn %></button>
+</form>
+<div class="auth__switch"><%= s.c_no_account %> <a href="<%= L('/cabinet/register') %>"><%= s.c_create %></a></div>
+<%- include('_auth-bottom') %>

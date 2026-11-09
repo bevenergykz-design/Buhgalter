@@ -1,0 +1,10 @@
+<%- include('_top') %>
+<form class="panel form-stack form-narrow" method="post" action="/admin/profile">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <h2>Смена пароля</h2>
+  <p class="muted"><%= me.name %> · <%= me.email %></p>
+  <label class="field"><span class="field__label">Текущий пароль</span><input class="input" type="password" name="current" required autocomplete="current-password"></label>
+  <label class="field"><span class="field__label">Новый пароль (не менее 8 символов)</span><input class="input" type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+  <div><button class="btn btn--primary" type="submit">Сменить пароль</button></div>
+</form>
+<%- include('_bottom') %>

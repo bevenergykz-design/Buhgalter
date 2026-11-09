@@ -1,0 +1,24 @@
+<%- include('_top') %>
+<div class="app-title"><h1><%= s.c_profile %></h1></div>
+<% if (error) { %><p class="alert alert--err" role="alert"><%= error %></p><% } %>
+<div class="grid-2">
+  <form class="panel form-stack" method="post" action="<%= L('/cabinet/profile') %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <h2><%= s.c_company %></h2>
+    <label class="field"><span class="field__label"><%= s.c_company %></span><input class="input" type="text" value="<%= cu.company %>" disabled></label>
+    <label class="field"><span class="field__label"><%= s.c_bin %></span><input class="input mono" type="text" name="bin" value="<%= cu.bin %>" inputmode="numeric" maxlength="12"></label>
+    <label class="field"><span class="field__label"><%= s.c_contact %></span><input class="input" type="text" name="contact_name" value="<%= cu.contact_name %>" required maxlength="120"></label>
+    <label class="field"><span class="field__label"><%= s.c_phone %></span><input class="input" type="tel" name="phone" value="<%= cu.phone %>" required maxlength="40" data-phone></label>
+    <label class="field"><span class="field__label"><%= s.c_email %></span><input class="input" type="email" value="<%= cu.email %>" disabled></label>
+    <button class="btn btn--primary" type="submit"><%= s.c_save %></button>
+  </form>
+  <form class="panel form-stack" method="post" action="<%= L('/cabinet/password') %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <h2><%= s.c_change_password %></h2>
+    <label class="field"><span class="field__label"><%= s.c_current_password %></span><input class="input" type="password" name="current" required autocomplete="current-password"></label>
+    <label class="field"><span class="field__label"><%= s.c_new_password %></span><input class="input" type="password" name="password" required minlength="8" autocomplete="new-password"><span class="field__hint"><%= s.c_password_hint %></span></label>
+    <label class="field"><span class="field__label"><%= s.c_password2 %></span><input class="input" type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
+    <button class="btn btn--outline" type="submit"><%= s.c_change_password %></button>
+  </form>
+</div>
+<%- include('_bottom') %>

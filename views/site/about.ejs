@@ -1,0 +1,56 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: t('about.title') }) %>
+<section class="section section--first">
+  <div class="container about">
+    <div class="about__text prose">
+      <% paragraphs(t('about.lead')).forEach(function(p, i){ %><p class="<%= i === 0 ? 'lead' : '' %>"><%= p %></p><% }) %>
+    </div>
+    <aside class="about__aside">
+      <% if (st.images && st.images.about) { %><img class="about__img" src="<%= st.images.about %>" alt="<%= sv('brand') %>" loading="lazy"><% } %>
+      <div class="req-card">
+        <h2 class="req-card__title"><%= s.about_requisites %></h2>
+        <p class="req-card__name"><%= sv('company_name') %></p>
+        <dl>
+          <dt><%= s.verify_bin %></dt><dd class="mono"><%= st.bin %></dd>
+          <dt><%= s.verify_director %></dt><dd><%= sv('director') %></dd>
+          <dt><%= s.verify_reg %></dt><dd><%= fmtDate(st.reg_date, lang) %></dd>
+          <dt><%= s.contacts_legal %></dt><dd><%= sv('legal_address') %></dd>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>
+<section class="section section--alt">
+  <div class="container mv">
+    <div class="mv__card mv__card--accent">
+      <span class="mv__icon"><%- icon('target') %></span>
+      <h2 class="mv__title"><%= t('about.mission.title') %></h2>
+      <p><%= t('about.mission.text') %></p>
+    </div>
+    <div class="mv__card">
+      <span class="mv__icon"><%- icon('chart') %></span>
+      <h2 class="mv__title"><%= t('about.vision.title') %></h2>
+      <% paragraphs(t('about.vision.text')).forEach(function(p){ %><p><%= p %></p><% }) %>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <h2 class="section__title"><%= t('about.values.title') %></h2>
+      <p class="section__lead"><%= t('about.values.text') %></p>
+    </div>
+    <div class="values">
+      <% const vIcons = ['shield', 'handshake', 'grad', 'check-circle']; [1,2,3,4].forEach(function(i){ %>
+      <div class="value">
+        <span class="value__icon"><%- icon(vIcons[i-1]) %></span>
+        <h3 class="value__title"><%= t('about.value' + i + '.title') %></h3>
+        <ul class="value__list"><% lines(t('about.value' + i + '.items')).forEach(function(x){ %><li><%= x %></li><% }) %></ul>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('_cta') %>
+<%- include('../partials/footer') %>

@@ -1,0 +1,49 @@
+<%- include('_top') %>
+<form class="form-stack" method="post" action="/admin/contacts">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <section class="panel form-stack">
+    <div class="panel__head"><h2>Компания</h2><div class="lang-heads"><span>Русский</span><span>Қазақша</span></div></div>
+    <% [['company_name', 'Полное наименование'], ['brand', 'Короткое название (в шапке)'], ['brand_sub', 'Подпись под названием'], ['director', 'Руководитель'], ['legal_address', 'Юридический адрес'], ['hours', 'График работы']].forEach(function(x){ %>
+    <div class="bi-field"><div class="bi-field__label"><%= x[1] %></div>
+      <div class="bi-field__inputs"><input class="input" name="<%= x[0] %>_ru" value="<%= st[x[0] + '_ru'] || '' %>"><input class="input" name="<%= x[0] %>_kk" value="<%= st[x[0] + '_kk'] || '' %>"></div>
+    </div>
+    <% }) %>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">БИН</span><input class="input mono" name="bin" value="<%= st.bin %>" maxlength="12"></label>
+      <label class="field"><span class="field__label">Дата регистрации</span><input class="input" type="date" name="reg_date" value="<%= st.reg_date %>"></label>
+    </div>
+  </section>
+  <section class="panel form-stack">
+    <h2>Связь</h2>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Телефоны (каждый с новой строки; первый — главный, в шапке)</span><textarea class="input" name="phones" rows="3"><%= (st.phones || []).join('\n') %></textarea></label>
+      <div class="form-stack">
+        <label class="field"><span class="field__label">Номер WhatsApp</span><input class="input" name="whatsapp" value="<%= st.whatsapp %>" placeholder="+7 7XX XXX XX XX"></label>
+        <label class="field"><span class="field__label">E-mail компании (показывается на сайте)</span><input class="input" type="email" name="email" value="<%= st.email %>"></label>
+      </div>
+    </div>
+  </section>
+  <section class="panel form-stack">
+    <h2>Офисы</h2>
+    <p class="muted">Чтобы убрать офис, очистите его поля. Пустые строки ниже — для новых офисов.</p>
+    <% const offices = (st.offices || []).concat([{}, {}]).slice(0, 6); offices.forEach(function(o, i){ %>
+    <div class="office-row">
+      <input class="input" name="o<%= i %>_city_ru" value="<%= o.city_ru || '' %>" placeholder="Город (рус)">
+      <input class="input" name="o<%= i %>_address_ru" value="<%= o.address_ru || '' %>" placeholder="Адрес (рус)">
+      <input class="input" name="o<%= i %>_city_kk" value="<%= o.city_kk || '' %>" placeholder="Қала (қаз)">
+      <input class="input" name="o<%= i %>_address_kk" value="<%= o.address_kk || '' %>" placeholder="Мекенжай (қаз)">
+    </div>
+    <% }) %>
+  </section>
+  <section class="panel form-stack">
+    <h2>Социальные сети</h2>
+    <p class="muted">Полные ссылки, начиная с https://. Пустые не показываются на сайте.</p>
+    <div class="form-grid">
+      <% Object.keys(st.socials || {}).forEach(function(k){ %>
+      <label class="field"><span class="field__label"><%= { instagram: 'Instagram', facebook: 'Facebook', telegram: 'Telegram', youtube: 'YouTube', linkedin: 'LinkedIn' }[k] || k %></span><input class="input" name="soc_<%= k %>" value="<%= st.socials[k] %>" placeholder="https://"></label>
+      <% }) %>
+    </div>
+  </section>
+  <div class="sticky-save"><button class="btn btn--primary" type="submit">Сохранить</button></div>
+</form>
+<%- include('_bottom') %>

@@ -1,0 +1,59 @@
+<%- include('_top') %>
+<div class="toolbar">
+  <div class="seg-links">
+    <a href="/admin" class="<%= !mine ? 'is-active' : '' %>">Все клиенты</a>
+    <a href="/admin?mine=1" class="<%= mine ? 'is-active' : '' %>">Мои клиенты</a>
+  </div>
+</div>
+<div class="kpis">
+  <a class="kpi" href="/admin/leads?status=new"><span class="kpi__icon kpi__icon--amber"><%- icon('inbox') %></span><span><strong><%= stats.leadsNew %></strong><small>Новых заявок</small></span></a>
+  <a class="kpi" href="/admin/clients?status=active"><span class="kpi__icon"><%- icon('briefcase') %></span><span><strong><%= stats.clientsActive %></strong><small>Клиентов на обслуживании</small></span></a>
+  <a class="kpi" href="/admin/clients?status=pending"><span class="kpi__icon kpi__icon--blue"><%- icon('user') %></span><span><strong><%= stats.clientsPending %></strong><small>Ждут подключения</small></span></a>
+  <div class="kpi <%= stats.overdue ? 'kpi--alert' : '' %>"><span class="kpi__icon kpi__icon--red"><%- icon('alert') %></span><span><strong><%= stats.overdue %></strong><small>Просроченных отчётов</small></span></div>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <div class="panel__head"><h2>Сроки отчётности на 14 дней</h2><a href="/admin/clients">Все клиенты</a></div>
+    <% if (!deadlines.length) { %><p class="empty-sm">Ближайших сроков нет. Отчёты добавляются в карточке клиента на вкладке «Отчётность».</p><% } else { %>
+    <div class="table-wrap"><table class="table table--compact">
+      <thead><tr><th>Срок</th><th>Клиент</th><th>Отчёт</th><th>Статус</th></tr></thead>
+      <tbody>
+      <% deadlines.forEach(function(r){ const od = r.deadline < today; %>
+        <tr class="<%= od ? 'row--overdue' : '' %>">
+          <td class="nowrap"><%= fmtDateShort(r.deadline) %><% if (od) { %><br><span class="st st--overdue">просрочен</span><% } %></td>
+          <td><a href="/admin/clients/<%= r.cid %>?tab=reports"><%= r.company %></a></td>
+          <td><%= r.title %><% if (r.period) { %><br><small class="muted"><%= r.period %></small><% } %></td>
+          <td><span class="st st--<%= r.status %>"><%= opt(E.REPORT_STATUS, r.status) %></span></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table></div>
+    <% } %>
+  </section>
+  <div>
+    <section class="panel">
+      <div class="panel__head"><h2>Требуют внимания</h2></div>
+      <% if (!activity.length && !pending.length) { %><p class="empty-sm">Новых сообщений и документов от клиентов нет.</p><% } %>
+      <ul class="att">
+        <% pending.forEach(function(c){ %>
+        <li><a href="/admin/clients/<%= c.id %>"><%= c.company %></a><span class="st st--pending">ждёт подключения</span></li>
+        <% }) %>
+        <% activity.forEach(function(a){ %>
+        <li><a href="/admin/clients/<%= a.id %>?tab=<%= a.msgs ? 'messages' : 'files' %>"><%= a.company %></a>
+          <span><% if (a.msgs) { %><span class="st st--in_progress"><%= a.msgs %> сообщ.</span><% } %> <% if (a.files) { %><span class="st st--waiting"><%= a.files %> док.</span><% } %></span></li>
+        <% }) %>
+      </ul>
+    </section>
+    <section class="panel">
+      <div class="panel__head"><h2>Последние заявки</h2><a href="/admin/leads">Все заявки</a></div>
+      <% if (!leads.length) { %><p class="empty-sm">Заявок пока нет.</p><% } %>
+      <ul class="att">
+        <% leads.forEach(function(l){ %>
+        <li><a href="/admin/leads/<%= l.id %>"><%= l.name %> <small class="muted"><%= l.phone %></small></a><span><small class="muted"><%= fmtDateTime(l.created_at) %></small> <span class="st st--<%= l.status %>"><%= opt(E.LEAD_STATUS, l.status) %></span></span></li>
+        <% }) %>
+      </ul>
+    </section>
+  </div>
+</div>
+<%- include('_bottom') %>

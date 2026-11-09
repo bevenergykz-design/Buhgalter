@@ -1,0 +1,25 @@
+<%- include('../partials/head') %>
+<body class="auth-page">
+<%- include('../partials/icons') %>
+<div class="auth">
+  <aside class="auth__brand">
+    <a class="brand brand--light" href="<%= L('/') %>">
+      <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= sv('brand_sub') %></span></span>
+    </a>
+    <div class="auth__pitch">
+      <h2><%= s.cabinet %></h2>
+      <ul>
+        <li><%- icon('upload') %><span><%= lang === 'kk' ? 'Құжаттарды телефоннан не компьютерден жүктеңіз' : 'Загружайте документы с телефона или компьютера' %></span></li>
+        <li><%- icon('calendar') %><span><%= lang === 'kk' ? 'Есептілік мәртебесі мен мерзімдерін бақылаңыз' : 'Следите за статусом и сроками отчётности' %></span></li>
+        <li><%- icon('chat') %><span><%= lang === 'kk' ? 'Бухгалтеріңізге тікелей жазыңыз' : 'Пишите своему бухгалтеру напрямую' %></span></li>
+        <li><%- icon('lock') %><span><%= lang === 'kk' ? 'Деректер қорғалған байланыс арқылы беріледі' : 'Данные передаются по защищённому соединению' %></span></li>
+      </ul>
+    </div>
+    <p class="auth__foot"><%= sv('company_name') %> · <%= s.bin %> <%= st.bin %></p>
+  </aside>
+  <main class="auth__main" id="main">
+    <div class="auth__top">
+      <a class="auth__back" href="<%= L('/') %>"><%- icon('arrow') %><%= lang === 'kk' ? 'Сайтқа оралу' : 'Вернуться на сайт' %></a>
+      <div class="lang-switch lang-switch--dark"><% LANGS.forEach(function(l){ %><a href="<%= langUrl(l) %>" class="<%= l === lang ? 'is-active' : '' %>"><%= LANG_LABELS[l] %></a><% }) %></div>
+    </div>
+    <div class="auth__box">

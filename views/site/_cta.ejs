@@ -1,0 +1,12 @@
+<section class="cta">
+  <div class="container cta__in">
+    <div>
+      <h2 class="cta__title"><%= t('home.cta.title') %></h2>
+      <p class="cta__text"><%= t('home.cta.text') %></p>
+    </div>
+    <div class="cta__actions">
+      <button class="btn btn--accent btn--lg" type="button" data-lead="request"><%= s.btn_request %></button>
+      <% if (st.whatsapp) { %><a class="btn btn--white btn--lg" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
+    </div>
+  </div>
+</section>

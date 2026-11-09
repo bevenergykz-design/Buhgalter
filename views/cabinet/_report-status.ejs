@@ -1,0 +1,2 @@
+<% const overdue = r.deadline && r.deadline < today() && !['submitted', 'accepted'].includes(r.status); %>
+<span class="st st--<%= r.status %>"><%= s['r_' + r.status] || r.status %></span><% if (overdue) { %> <span class="st st--overdue"><%= s.c_overdue %></span><% } %>

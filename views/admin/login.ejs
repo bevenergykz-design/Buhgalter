@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Вход для сотрудников — «Диалог Учёт»</title>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="adm-login">
+<%- include('../partials/icons') %>
+<main class="adm-login__box">
+  <div class="adm-login__head">
+    <span class="adm-login__icon"><%- icon('lock') %></span>
+    <div><strong>Диалог Учёт</strong><small>Панель управления для сотрудников</small></div>
+  </div>
+  <% if (error) { %><p class="alert alert--err" role="alert"><%= error %></p><% } %>
+  <form method="post" action="/admin/login" class="form-stack">
+    <label class="field"><span class="field__label">E-mail</span><input class="input" type="email" name="email" value="<%= email %>" required autocomplete="username" autofocus></label>
+    <label class="field"><span class="field__label">Пароль</span><input class="input" type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn btn--primary btn--block btn--lg" type="submit">Войти</button>
+  </form>
+  <p class="adm-login__foot">Клиенты входят через <a href="/cabinet/login">личный кабинет</a>. · <a href="/">На сайт</a></p>
+</main>
+</body>
+</html>

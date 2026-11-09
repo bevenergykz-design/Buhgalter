@@ -1,0 +1,14 @@
+<%- include('_auth-top') %>
+<h1 class="auth__title"><%= s.c_reset_title %></h1>
+<% if (!ok) { %>
+  <p class="alert alert--err"><%= s.c_reset_bad %></p>
+  <a class="btn btn--primary btn--block" href="<%= L('/cabinet/forgot') %>"><%= s.c_forgot_btn %></a>
+<% } else { %>
+  <% if (error) { %><p class="alert alert--err" role="alert"><%= error %></p><% } %>
+  <form method="post" action="<%= L('/cabinet/reset/' + token) %>" class="auth__form">
+    <label class="field"><span class="field__label"><%= s.c_new_password %></span><input class="input" type="password" name="password" required minlength="8" autocomplete="new-password"><span class="field__hint"><%= s.c_password_hint %></span></label>
+    <label class="field"><span class="field__label"><%= s.c_password2 %></span><input class="input" type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
+    <button class="btn btn--primary btn--block btn--lg" type="submit"><%= s.c_reset_btn %></button>
+  </form>
+<% } %>
+<%- include('_auth-bottom') %>

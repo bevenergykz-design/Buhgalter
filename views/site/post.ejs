@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: f(post, 'title'), crumbs: [[L('/novosti'), s.nav_news]] }) %>
+<section class="section section--first">
+  <div class="container article-wrap">
+    <article class="article">
+      <div class="article__meta"><span class="tag"><%= s.news_cats[post.category] || '' %></span><time datetime="<%= post.published_at %>"><%= fmtDate(post.published_at, lang) %></time></div>
+      <% if (post.image) { %><img class="article__img" src="<%= post.image %>" alt=""><% } %>
+      <div class="prose"><%- f(post, 'body') %></div>
+      <div class="article__cta">
+        <p><%= t('home.cta.text') %></p>
+        <button class="btn btn--accent" type="button" data-lead="consult"><%= s.btn_consult %></button>
+      </div>
+    </article>
+    <% if (related.length) { %>
+    <aside class="article-side">
+      <h2 class="article-side__title"><%= s.btn_back_news %></h2>
+      <% related.forEach(function(p){ %>
+      <a class="side-post" href="<%= L('/novosti/' + p.slug) %>"><time><%= fmtDate(p.published_at, lang) %></time><span><%= f(p, 'title') %></span></a>
+      <% }) %>
+      <a class="btn btn--ghost" href="<%= L('/novosti') %>"><%= s.btn_back_news %><%- icon('arrow') %></a>
+    </aside>
+    <% } %>
+  </div>
+</section>
+<%- include('../partials/footer') %>

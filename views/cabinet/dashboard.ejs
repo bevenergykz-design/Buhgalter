@@ -1,0 +1,51 @@
+<%- include('_top') %>
+<div class="app-title">
+  <h1><%= s.c_hello %>, <%= cu.contact_name.split(' ')[0] %>!</h1>
+  <p class="muted"><%= cu.company %><% if (cu.bin) { %> · <%= s.c_bin %> <span class="mono"><%= cu.bin %></span><% } %></p>
+</div>
+
+<div class="status-card status-card--<%= cu.status %>">
+  <div class="status-card__main">
+    <span class="status-card__label"><%= s.c_status %></span>
+    <strong class="status-card__value"><%= s['c_status_' + cu.status] %></strong>
+    <% if (cu.status === 'pending') { %><p class="status-card__note"><%= s.c_pending_note %></p><% } %>
+  </div>
+  <dl class="status-card__facts">
+    <div><dt><%= s.c_accountant %></dt><dd><%= accountant ? accountant.name : s.c_not_assigned %></dd></div>
+    <% if (cu.tariff) { %><div><dt><%= s.c_tariff %></dt><dd><%= fmtMoney(cu.tariff) %> <%= s.c_per_month %></dd></div><% } %>
+    <% if (cu.contract_no) { %><div><dt><%= s.c_contract %></dt><dd>№ <%= cu.contract_no %><% if (cu.contract_date) { %> · <%= fmtDateShort(cu.contract_date) %><% } %></dd></div><% } %>
+  </dl>
+</div>
+
+<div class="quick">
+  <a class="quick__item" href="<%= L('/cabinet/documents') %>"><span class="quick__icon"><%- icon('upload') %></span><span><strong><%= s.c_upload_title %></strong><small><%= lang === 'kk' ? 'Скандар, фотолар, үзінділер' : 'Сканы, фото, выписки' %></small></span></a>
+  <a class="quick__item" href="<%= L('/cabinet/messages') %>"><span class="quick__icon"><%- icon('chat') %></span><span><strong><%= s.c_messages %></strong><small><%= unread ? unread + ' ' + s.c_unread : (lang === 'kk' ? 'Бухгалтерге жазу' : 'Написать бухгалтеру') %></small></span></a>
+  <a class="quick__item" href="<%= L('/cabinet/reports') %>"><span class="quick__icon"><%- icon('calendar') %></span><span><strong><%= s.c_reports %></strong><small><%= lang === 'kk' ? 'Мерзімдер мен мәртебелер' : 'Сроки и статусы' %></small></span></a>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <div class="panel__head"><h2><%= s.c_upcoming %></h2><a href="<%= L('/cabinet/reports') %>"><%= s.c_all_reports %></a></div>
+    <% if (!upcoming.length) { %><p class="empty-sm"><%= s.c_no_reports %></p><% } else { %>
+    <ul class="rlist">
+      <% upcoming.forEach(function(r){ %>
+      <li class="rlist__item">
+        <div><strong><%= r.title %></strong><small><%= r.period %></small></div>
+        <div class="rlist__right"><% if (r.deadline) { %><span class="rlist__date"><%- icon('calendar') %><%= fmtDateShort(r.deadline) %></span><% } %><%- include('_report-status', { r: r }) %></div>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </section>
+  <section class="panel">
+    <div class="panel__head"><h2><%= s.c_documents %></h2><a href="<%= L('/cabinet/documents') %>"><%= lang === 'kk' ? 'Барлығы' : 'Все' %></a></div>
+    <% if (!lastFiles.length) { %><p class="empty-sm"><%= s.c_no_files %></p><% } else { %>
+    <ul class="flist">
+      <% lastFiles.forEach(function(f){ %>
+      <li><a href="<%= L('/cabinet/files/' + f.id) %>"><%- icon(f.direction === 'out' ? 'download' : 'upload') %><span class="flist__name"><%= f.orig_name %></span></a><small><%= f.direction === 'out' ? s.c_staff : s.c_you %> · <%= fmtDateShort(f.created_at) %></small><% if (f.direction === 'out' && !f.seen) { %><b class="pill pill--accent"><%= s.c_new %></b><% } %></li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </section>
+</div>
+<%- include('_bottom') %>

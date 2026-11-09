@@ -1,0 +1,42 @@
+<%- include('_top') %>
+<p class="backlink"><a href="/admin/leads"><%- icon('arrow') %>Все заявки</a></p>
+<div class="grid-2 grid-2--wide">
+  <section class="panel">
+    <div class="panel__head"><h2><%= TYPE_NAMES[lead.type] || lead.type %></h2><span class="st st--<%= lead.status %>"><%= opt(E.LEAD_STATUS, lead.status) %></span></div>
+    <dl class="dl">
+      <dt>Дата</dt><dd><%= fmtDateTime(lead.created_at) %></dd>
+      <dt>Имя</dt><dd><strong><%= lead.name %></strong></dd>
+      <dt>Телефон</dt><dd><a href="<%= phoneHref(lead.phone) %>"><%= lead.phone %></a> · <a href="<%= waHref(lead.phone) %>" target="_blank" rel="noopener">WhatsApp</a></dd>
+      <% if (lead.email) { %><dt>E-mail</dt><dd><a href="mailto:<%= lead.email %>"><%= lead.email %></a></dd><% } %>
+      <% if (lead.company) { %><dt>Компания</dt><dd><%= lead.company %></dd><% } %>
+      <% if (lead.message) { %><dt>Сообщение</dt><dd><%- nl2br(lead.message) %></dd><% } %>
+      <% if (lead.details) { %><dt>Детали</dt><dd><%= lead.details %></dd><% } %>
+      <dt>Страница</dt><dd><%= lead.page || '—' %> · язык: <%= lead.lang === 'kk' ? 'казахский' : 'русский' %></dd>
+    </dl>
+    <div class="actions-row">
+      <% if (cl) { %>
+        <a class="btn btn--ghost btn--sm" href="/admin/clients/<%= cl.id %>"><%- icon('briefcase') %>Карточка клиента: <%= cl.company %></a>
+      <% } else { %>
+        <a class="btn btn--primary btn--sm" href="/admin/clients/new?lead=<%= lead.id %>"><%- icon('plus') %>Создать клиента из заявки</a>
+      <% } %>
+    </div>
+  </section>
+  <form class="panel form-stack" method="post" action="/admin/leads/<%= lead.id %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <h2>Обработка</h2>
+    <label class="field"><span class="field__label">Статус</span>
+      <select class="input" name="status"><% E.LEAD_STATUS.forEach(function(s){ %><option value="<%= s[0] %>" <%= lead.status === s[0] ? 'selected' : '' %>><%= s[1] %></option><% }) %></select>
+    </label>
+    <label class="field"><span class="field__label">Ответственный</span>
+      <select class="input" name="assigned_id"><option value="">— не назначен —</option><% staffList.forEach(function(s){ %><option value="<%= s.id %>" <%= lead.assigned_id === s.id ? 'selected' : '' %>><%= s.name %></option><% }) %></select>
+    </label>
+    <label class="field"><span class="field__label">Заметки менеджера</span><textarea class="input" name="notes" rows="6"><%= lead.notes %></textarea></label>
+    <button class="btn btn--primary" type="submit">Сохранить</button>
+  </form>
+</div>
+<% if (me.role === 'admin') { %>
+<form method="post" action="/admin/leads/<%= lead.id %>/delete" data-confirm="Удалить заявку безвозвратно?" class="danger-zone">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить заявку</button>
+</form>
+<% } %>
+<%- include('_bottom') %>

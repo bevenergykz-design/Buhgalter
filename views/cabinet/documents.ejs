@@ -1,0 +1,52 @@
+<%- include('_top') %>
+<div class="app-title"><h1><%= s.c_documents %></h1></div>
+
+<form class="panel upload" method="post" action="<%= L('/cabinet/documents') %>" enctype="multipart/form-data" data-upload>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <h2 class="upload__title"><%= s.c_upload_title %></h2>
+  <p class="muted"><%= s.c_upload_text.replace('{mb}', maxMb) %></p>
+  <label class="dropzone">
+    <input type="file" name="files" multiple required accept=".pdf,.jpg,.jpeg,.png,.webp,.heic,.heif,.gif,.doc,.docx,.xls,.xlsx,.csv,.txt,.rtf,.odt,.ods,.xml,.zip,.rar,.7z">
+    <span class="dropzone__icon"><%- icon('upload') %></span>
+    <span class="dropzone__text" data-dz-text data-default="<%= s.c_upload_choose %>"><%= s.c_upload_choose %></span>
+  </label>
+  <label class="field"><span class="field__label"><%= s.c_upload_comment %></span><input class="input" type="text" name="comment" maxlength="500"></label>
+  <button class="btn btn--accent" type="submit"><%- icon('upload') %><%= s.c_upload_btn %></button>
+</form>
+
+<div class="grid-2">
+  <section class="panel">
+    <div class="panel__head"><h2><%= s.c_files_to_me %></h2></div>
+    <% if (!inbox.length) { %><p class="empty-sm"><%= s.c_no_files %></p><% } else { %>
+    <ul class="flist flist--big">
+      <% inbox.forEach(function(f){ %>
+      <li>
+        <a href="<%= L('/cabinet/files/' + f.id) %>"><%- icon('download') %><span class="flist__name"><%= f.orig_name %></span></a>
+        <small><%= fmtDateTime(f.created_at) %> · <%= fmtSize(f.size) %><% if (f.comment) { %> · <%= f.comment %><% } %></small>
+        <% if (!f.seen) { %><b class="pill pill--accent"><%= s.c_new %></b><% } %>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </section>
+  <section class="panel">
+    <div class="panel__head"><h2><%= s.c_files_from_me %></h2></div>
+    <% if (!sent.length) { %><p class="empty-sm"><%= s.c_no_files %></p><% } else { %>
+    <ul class="flist flist--big">
+      <% sent.forEach(function(f){ %>
+      <li>
+        <a href="<%= L('/cabinet/files/' + f.id) %>"><%- icon('doc') %><span class="flist__name"><%= f.orig_name %></span></a>
+        <small><%= fmtDateTime(f.created_at) %> · <%= fmtSize(f.size) %><% if (f.comment) { %> · <%= f.comment %><% } %></small>
+        <% if (!f.seen) { %>
+        <form method="post" action="<%= L('/cabinet/files/' + f.id + '/delete') %>" data-confirm="<%= lang === 'kk' ? 'Файлды жою керек пе?' : 'Удалить файл?' %>">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button class="icon-btn icon-btn--sm" type="submit" title="<%= s.c_delete %>" aria-label="<%= s.c_delete %>"><%- icon('trash') %></button>
+        </form>
+        <% } %>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </section>
+</div>
+<%- include('_bottom') %>

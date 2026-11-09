@@ -1,0 +1,43 @@
+<%- include('_top') %>
+<% if (created) { %>
+<section class="panel form-narrow">
+  <h2><%= created.reset ? 'Новый пароль' : 'Сотрудник добавлен' %>: <%= created.name %></h2>
+  <p>Передайте данные для входа. <strong>Пароль показывается один раз.</strong></p>
+  <div class="secret">
+    <div><span>Адрес</span><code><%= baseUrl %>/admin</code></div>
+    <div><span>E-mail</span><code><%= created.email %></code></div>
+    <div><span>Пароль</span><code><%= created.pass %></code></div>
+  </div>
+  <div class="actions-row"><button class="btn btn--ghost btn--sm" type="button" data-copy-all>Скопировать данные</button></div>
+</section>
+<% } %>
+<section class="panel panel--flush">
+  <div class="rep-table">
+    <div class="staff-grid rep-grid--head"><span>Сотрудник</span><span>Роль</span><span>Клиентов</span><span>Последний вход</span><span>Доступ</span><span></span><span></span></div>
+    <% list.forEach(function(u){ %>
+    <form method="post" action="/admin/staff/<%= u.id %>" class="staff-grid rep-row <%= u.active ? '' : 'row--muted' %>">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <span class="staff-form__who"><input class="input input--sm" name="name" value="<%= u.name %>" aria-label="Имя"><small class="muted"><%= u.email %></small></span>
+      <select class="input input--sm" name="role" aria-label="Роль"><option value="accountant" <%= u.role === 'accountant' ? 'selected' : '' %>>Бухгалтер</option><option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Администратор</option></select>
+      <span class="muted"><%= u.clients %></span>
+      <span class="muted"><%= u.last_login ? fmtDateTime(u.last_login) : 'не входил' %></span>
+      <label class="check"><input type="checkbox" name="active" value="1" <%= u.active ? 'checked' : '' %>><span class="check__box"></span><span class="check__text">активен</span></label>
+      <button class="icon-btn icon-btn--sm" type="submit" title="Сохранить" aria-label="Сохранить"><%- icon('check') %></button>
+      <button class="icon-btn icon-btn--sm" type="submit" form="pw-s<%= u.id %>" title="Сгенерировать новый пароль" aria-label="Новый пароль"><%- icon('lock') %></button>
+    </form>
+    <form id="pw-s<%= u.id %>" method="post" action="/admin/staff/<%= u.id %>/password" data-confirm="Сгенерировать новый пароль для <%= u.name %>?" hidden><input type="hidden" name="_csrf" value="<%= csrf %>"></form>
+    <% }) %>
+  </div>
+</section>
+<form class="panel form-stack form-narrow" method="post" action="/admin/staff">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <h2>Добавить сотрудника</h2>
+  <p class="muted"><strong>Бухгалтер</strong> видит заявки и клиентов. <strong>Администратор</strong> дополнительно управляет содержимым сайта, настройками и сотрудниками.</p>
+  <div class="form-grid">
+    <label class="field"><span class="field__label">Имя и фамилия</span><input class="input" name="name" required></label>
+    <label class="field"><span class="field__label">E-mail (логин)</span><input class="input" type="email" name="email" required></label>
+    <label class="field"><span class="field__label">Роль</span><select class="input" name="role"><option value="accountant">Бухгалтер</option><option value="admin">Администратор</option></select></label>
+  </div>
+  <div><button class="btn btn--primary" type="submit"><%- icon('plus') %>Добавить</button></div>
+</form>
+<%- include('_bottom') %>

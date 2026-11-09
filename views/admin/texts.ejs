@@ -1,0 +1,28 @@
+<%- include('_top') %>
+<div class="split">
+  <nav class="side-list">
+    <% groups.forEach(function(g){ %><a href="/admin/texts?grp=<%= encodeURIComponent(g) %>" class="<%= g === grp ? 'is-active' : '' %>"><%= g %></a><% }) %>
+  </nav>
+  <form class="panel form-stack" method="post" action="/admin/texts">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="grp" value="<%= grp %>">
+    <div class="panel__head"><h2><%= grp %></h2><div class="lang-heads"><span>Русский</span><span>Қазақша</span></div></div>
+    <% items.forEach(function(it){ %>
+    <div class="bi-field">
+      <input type="hidden" name="key" value="<%= it.key %>">
+      <div class="bi-field__label"><%= it.label %></div>
+      <div class="bi-field__inputs">
+        <% if (it.multiline) { %>
+          <textarea class="input" name="ru__<%= it.key %>" rows="<%= Math.min(14, Math.max(3, Math.ceil(it.ru.length / 70) + it.ru.split('\n').length)) %>"><%= it.ru %></textarea>
+          <textarea class="input" name="kk__<%= it.key %>" rows="<%= Math.min(14, Math.max(3, Math.ceil(it.kk.length / 70) + it.kk.split('\n').length)) %>"><%= it.kk %></textarea>
+        <% } else { %>
+          <input class="input" name="ru__<%= it.key %>" value="<%= it.ru %>">
+          <input class="input" name="kk__<%= it.key %>" value="<%= it.kk %>">
+        <% } %>
+      </div>
+    </div>
+    <% }) %>
+    <div class="sticky-save"><button class="btn btn--primary" type="submit">Сохранить раздел</button><span class="muted">Изменения сразу появятся на сайте.</span></div>
+  </form>
+</div>
+<%- include('_bottom') %>

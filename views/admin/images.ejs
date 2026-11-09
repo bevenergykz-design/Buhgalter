@@ -1,0 +1,17 @@
+<%- include('_top') %>
+<form class="panel form-stack" method="post" action="/admin/images" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <p class="muted">Форматы JPG, PNG или WEBP, до 8 МБ. Для быстрой загрузки сайта используйте фото шириной 1200–1600 px.</p>
+  <div class="img-grid">
+    <% [['hero', 'Фото на главной (первый экран)', 'Вертикальное фото, пропорции примерно 4:5'], ['team', 'Фото команды (страница «Новости»)', 'Горизонтальное фото, пропорции примерно 16:9'], ['about', 'Фото для страницы «О компании»', 'Офис или команда, любое']].forEach(function(x){ %>
+    <div class="img-field">
+      <div class="img-field__label"><strong><%= x[1] %></strong><small><%= x[2] %></small></div>
+      <div class="img-field__preview"><% if (images[x[0]]) { %><img src="<%= images[x[0]] %>" alt=""><% } else { %><span><%- icon('image') %>Не загружено</span><% } %></div>
+      <input type="file" name="<%= x[0] %>" accept=".jpg,.jpeg,.png,.webp">
+      <% if (images[x[0]]) { %><label class="check"><input type="checkbox" name="remove_<%= x[0] %>" value="1"><span class="check__box"></span><span class="check__text"><%= x[0] === 'hero' ? 'Вернуть стандартное фото' : 'Убрать фото' %></span></label><% } %>
+    </div>
+    <% }) %>
+  </div>
+  <div><button class="btn btn--primary" type="submit">Сохранить</button></div>
+</form>
+<%- include('_bottom') %>

@@ -1,0 +1,24 @@
+<%- include('_top') %>
+<div class="app-title"><h1><%= s.c_reports %></h1></div>
+<section class="panel">
+  <% if (!reports.length) { %><p class="empty-sm"><%= s.c_no_reports %></p><% } else { %>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th><%= s.c_report %></th><th><%= s.c_period %></th><th><%= s.c_deadline %></th><th><%= s.c_rstatus %></th><th><%= s.c_amount %></th><th><%= s.c_note %></th></tr></thead>
+      <tbody>
+        <% reports.forEach(function(r){ %>
+        <tr>
+          <td data-label="<%= s.c_report %>"><strong><%= r.title %></strong></td>
+          <td data-label="<%= s.c_period %>"><%= r.period %></td>
+          <td data-label="<%= s.c_deadline %>"><%= fmtDateShort(r.deadline) %></td>
+          <td data-label="<%= s.c_rstatus %>"><%- include('_report-status', { r: r }) %></td>
+          <td data-label="<%= s.c_amount %>"><%= r.amount %></td>
+          <td data-label="<%= s.c_note %>" class="muted"><%= r.note %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</section>
+<%- include('_bottom') %>

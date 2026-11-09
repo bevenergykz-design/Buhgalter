@@ -1,0 +1,9 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: f(p, 'title') }) %>
+<section class="section section--first">
+  <div class="container container--narrow">
+    <div class="prose"><%- f(p, 'body') %></div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

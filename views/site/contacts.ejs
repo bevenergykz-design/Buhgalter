@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: t('contacts.title'), lead: t('contacts.text') }) %>
+<section class="section section--first">
+  <div class="container contacts">
+    <div class="contacts__info">
+      <div class="c-block">
+        <h2 class="c-block__title"><%= sv('company_name') %></h2>
+        <p class="muted"><%= s.bin %> <span class="mono"><%= st.bin %></span></p>
+      </div>
+      <div class="c-grid">
+        <div class="c-item">
+          <span class="c-item__icon"><%- icon('phone') %></span>
+          <div><h3><%= s.contacts_phones %></h3><% (st.phones || []).forEach(function(p){ %><a class="c-item__big" href="<%= phoneHref(p) %>"><%= p %></a><% }) %></div>
+        </div>
+        <% if (st.whatsapp) { %>
+        <div class="c-item">
+          <span class="c-item__icon c-item__icon--wa"><%- icon('whatsapp') %></span>
+          <div><h3>WhatsApp</h3><a class="btn btn--wa btn--sm" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %><%= s.write_whatsapp %></a></div>
+        </div>
+        <% } %>
+        <div class="c-item">
+          <span class="c-item__icon"><%- icon('clock') %></span>
+          <div><h3><%= s.contacts_hours %></h3><p><%= sv('hours') %></p></div>
+        </div>
+        <% if (st.email) { %>
+        <div class="c-item">
+          <span class="c-item__icon"><%- icon('mail') %></span>
+          <div><h3><%= s.contacts_email %></h3><a href="mailto:<%= st.email %>"><%= st.email %></a></div>
+        </div>
+        <% } %>
+      </div>
+      <h2 class="c-sub"><%= s.contacts_offices %></h2>
+      <div class="offices">
+        <% (st.offices || []).forEach(function(o){ %>
+        <div class="office">
+          <span class="office__city"><%- icon('building') %><%= o['city_' + lang] || o.city_ru %></span>
+          <p><%= o['address_' + lang] || o.address_ru %></p>
+          <a href="https://2gis.kz/search/<%= encodeURIComponent((o.city_ru || '') + ', ' + (o.address_ru || '')) %>" target="_blank" rel="noopener"><%= s.contacts_map %><%- icon('external') %></a>
+        </div>
+        <% }) %>
+        <div class="office office--legal">
+          <span class="office__city"><%- icon('doc') %><%= s.contacts_legal %></span>
+          <p><%= sv('legal_address') %></p>
+        </div>
+      </div>
+      <% const soc = Object.entries(st.socials || {}).filter(function(e){ return e[1]; }); if (soc.length) { %>
+      <h2 class="c-sub"><%= s.contacts_socials %></h2>
+      <div class="socials socials--dark"><% soc.forEach(function(e){ %><a href="<%= e[1] %>" target="_blank" rel="noopener" aria-label="<%= e[0] %>"><%- icon(e[0]) %></a><% }) %></div>
+      <% } %>
+    </div>
+    <div class="contacts__form card">
+      <h2 class="card__title"><%= s.contacts_form_title %></h2>
+      <div class="lead-form-wrap">
+        <%- include('../partials/lead-form', { type: 'contact', withMessage: true, withEmail: true, withCompany: false }) %>
+      </div>
+      <div class="form-success" hidden>
+        <div class="form-success__icon"><%- icon('check') %></div>
+        <h3><%= s.f_ok_title %></h3><p><%= s.f_ok_text %></p>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

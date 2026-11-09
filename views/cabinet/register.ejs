@@ -1,0 +1,33 @@
+<%- include('_auth-top') %>
+<h1 class="auth__title"><%= s.c_register_title %></h1>
+<p class="auth__lead"><%= s.c_register_text %></p>
+<% if (error) { %><p class="alert alert--err" role="alert"><%= error %></p><% } %>
+<form method="post" action="<%= L('/cabinet/register') %>" class="auth__form" novalidate>
+  <div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+  <div class="form-grid">
+    <label class="field field--full"><span class="field__label"><%= s.c_company %> *</span><input class="input" type="text" name="company" value="<%= v.company || '' %>" required maxlength="200" autocomplete="organization"></label>
+    <label class="field"><span class="field__label"><%= s.c_entity %></span>
+      <select class="input" name="entity_type">
+        <option value="too" <%= v.entity_type === 'too' ? 'selected' : '' %>><%= s.calc_too_short %></option>
+        <option value="ip" <%= v.entity_type === 'ip' ? 'selected' : '' %>><%= s.calc_ip_short %></option>
+      </select>
+    </label>
+    <label class="field"><span class="field__label"><%= s.c_bin %></span><input class="input mono" type="text" name="bin" value="<%= v.bin || '' %>" inputmode="numeric" maxlength="12" pattern="\d{12}" placeholder="000000000000"></label>
+    <label class="field field--full"><span class="field__label"><%= s.c_regime %></span>
+      <select class="input" name="tax_regime">
+        <option value="simplified" <%= v.tax_regime === 'simplified' ? 'selected' : '' %>><%= s.c_regime_simplified %></option>
+        <option value="our" <%= v.tax_regime === 'our' ? 'selected' : '' %>><%= s.c_regime_our %></option>
+        <option value="other" <%= v.tax_regime === 'other' ? 'selected' : '' %>><%= s.c_regime_other %></option>
+      </select>
+    </label>
+    <label class="field field--full"><span class="field__label"><%= s.c_contact %> *</span><input class="input" type="text" name="contact_name" value="<%= v.contact_name || '' %>" required maxlength="120" autocomplete="name"></label>
+    <label class="field"><span class="field__label"><%= s.c_phone %> *</span><input class="input" type="tel" name="phone" value="<%= v.phone || '' %>" required maxlength="40" autocomplete="tel" placeholder="+7 ___ ___ __ __" data-phone></label>
+    <label class="field"><span class="field__label"><%= s.c_email %> *</span><input class="input" type="email" name="email" value="<%= v.email || '' %>" required maxlength="160" autocomplete="email"></label>
+    <label class="field"><span class="field__label"><%= s.c_password %> *</span><input class="input" type="password" name="password" required minlength="8" autocomplete="new-password"><span class="field__hint"><%= s.c_password_hint %></span></label>
+    <label class="field"><span class="field__label"><%= s.c_password2 %> *</span><input class="input" type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
+  </div>
+  <label class="check"><input type="checkbox" name="consent" value="1" required><span class="check__box"></span><span class="check__text"><%- s.f_consent_html.replace('{privacy}', L('/politika-konfidencialnosti')) %></span></label>
+  <button class="btn btn--accent btn--block btn--lg" type="submit"><%= s.c_register_btn %></button>
+</form>
+<div class="auth__switch"><%= s.c_have_account %> <a href="<%= L('/cabinet/login') %>"><%= s.c_login_btn %></a></div>
+<%- include('_auth-bottom') %>

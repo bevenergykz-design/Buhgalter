@@ -1,0 +1,16 @@
+<%- include('_top') %>
+<section class="panel form-narrow">
+  <h2><%= locals.reset ? 'Пароль клиента сброшен' : 'Клиент создан' %>: <%= cl.company %></h2>
+  <p>Передайте клиенту данные для входа. <strong>Пароль показывается один раз</strong> — в системе он хранится только в зашифрованном виде.</p>
+  <div class="secret">
+    <div><span>Адрес</span><code><%= baseUrl %>/cabinet/login</code></div>
+    <div><span>E-mail</span><code><%= cl.email %></code></div>
+    <div><span>Пароль</span><code data-copy><%= pass %></code></div>
+  </div>
+  <% if (invited) { %><p class="alert alert--info">Письмо с данными для входа отправлено на <%= cl.email %> (если почта SMTP настроена).</p><% } %>
+  <div class="actions-row">
+    <button class="btn btn--ghost btn--sm" type="button" data-copy-all>Скопировать данные</button>
+    <a class="btn btn--primary btn--sm" href="/admin/clients/<%= cl.id %>">Открыть карточку клиента</a>
+  </div>
+</section>
+<%- include('_bottom') %>

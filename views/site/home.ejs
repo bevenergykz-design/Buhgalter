@@ -1,0 +1,255 @@
+<%
+  locals.jsonLd = {
+    '@context': 'https://schema.org', '@type': 'AccountingService',
+    name: sv('company_name'), alternateName: sv('brand'), url: baseUrl + L('/'), logo: baseUrl + '/img/logo-full.png', image: baseUrl + '/img/hero.jpg',
+    taxID: st.bin, foundingDate: st.reg_date, telephone: (st.phones || [])[0], email: st.email || undefined,
+    address: (st.offices || []).map(function(o){ return { '@type': 'PostalAddress', addressLocality: o['city_' + lang] || o.city_ru, streetAddress: o['address_' + lang] || o.address_ru, addressCountry: 'KZ' }; }),
+    areaServed: { '@type': 'Country', name: 'Kazakhstan' },
+    openingHours: 'Mo-Fr 09:00-16:00',
+    founder: { '@type': 'Person', name: sv('director') },
+  };
+  const featIcons = ['people', 'layers', 'briefcase', 'clock', 'lock', 'handshake', 'grad'];
+%>
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<!-- 1. Первый экран -->
+<section class="hero">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <span class="badge"><%- icon('shield') %><%= t('home.hero.badge') %></span>
+      <h1 class="hero__title"><%= t('home.hero.title') %></h1>
+      <p class="hero__subtitle"><%= t('home.hero.subtitle') %></p>
+      <p class="hero__text"><%= t('home.hero.text') %></p>
+      <ul class="hero__adv">
+        <% lines(t('home.hero.advantages')).forEach(function(a){ %><li><span class="tick"><%- icon('check') %></span><%= a %></li><% }) %>
+      </ul>
+      <div class="hero__actions">
+        <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
+        <button class="btn btn--outline btn--lg" type="button" data-lead="request"><%= s.btn_request %></button>
+      </div>
+    </div>
+    <div class="hero__media">
+      <div class="hero__photo">
+        <picture>
+          <% if ((st.images && st.images.hero || '').endsWith('.webp') && st.images.hero === '/img/hero.webp') { %><source srcset="/img/hero.webp" type="image/webp"><img src="/img/hero.jpg" alt="<%= sv('brand') %>" width="720" height="964" fetchpriority="high"><% } else { %><img src="<%= st.images.hero %>" alt="<%= sv('brand') %>" fetchpriority="high"><% } %>
+        </picture>
+      </div>
+      <div class="hero__card hero__card--top">
+        <span class="hero__card-icon"><%- icon('check-circle') %></span>
+        <span><strong><%= lang === 'kk' ? '2018 жылдан' : 'С 2018 года' %></strong><small><%= lang === 'kk' ? 'бизнес есебін жүргіземіз' : 'ведём учёт бизнеса' %></small></span>
+      </div>
+      <div class="hero__card hero__card--bottom">
+        <span class="hero__card-icon hero__card-icon--accent"><%- icon('building') %></span>
+        <span><strong><%= s.bin %> <%= st.bin %></strong><small><%= t('home.verify.badge') %></small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Преимущества -->
+<section class="section section--tight">
+  <div class="container">
+    <h2 class="section__title section__title--center"><%= t('home.features.title') %></h2>
+    <div class="features">
+      <% lines(t('home.features.items')).forEach(function(item, i){ %>
+      <div class="feature"><span class="feature__icon"><%- icon(featIcons[i % featIcons.length]) %></span><span class="feature__text"><%= item %></span></div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- Услуги -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <div>
+        <h2 class="section__title"><%= t('home.services.title') %></h2>
+        <p class="section__lead"><%= t('home.services.text') %></p>
+      </div>
+      <a class="btn btn--ghost" href="<%= L('/uslugi') %>"><%= s.btn_all_services %><%- icon('arrow') %></a>
+    </div>
+    <div class="cat-grid">
+      <% categories.forEach(function(c){ %>
+      <a class="cat-card" href="<%= L('/uslugi?cat=' + c.slug) %>">
+        <span class="cat-card__icon"><%- icon(c.icon) %></span>
+        <h3 class="cat-card__title"><%= f(c, 'title') %></h3>
+        <p class="cat-card__text"><%= f(c, 'intro') %></p>
+        <ul class="cat-card__list">
+          <% c.services.forEach(function(sv0){ %><li><%= f(sv0, 'title') %></li><% }) %>
+        </ul>
+        <span class="cat-card__more"><%= s.btn_more %><%- icon('arrow') %></span>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Калькулятор -->
+<section class="section" id="calculator">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <h2 class="section__title"><%= t('home.calc.title') %></h2>
+      <p class="section__lead"><%= t('home.calc.text') %></p>
+    </div>
+    <form class="calc" data-calc data-tariffs='<%= JSON.stringify(tariffs) %>' action="<%= L('/api/lead') %>" method="post">
+      <div class="calc__body">
+        <fieldset class="calc__group">
+          <legend class="calc__label"><%= s.calc_entity %></legend>
+          <div class="seg">
+            <label class="seg__opt"><input type="radio" name="entity" value="ip"><span><strong><%= s.calc_ip_short %></strong><small><%= s.calc_ip %></small></span></label>
+            <label class="seg__opt"><input type="radio" name="entity" value="too" checked><span><strong><%= s.calc_too_short %></strong><small><%= s.calc_too %></small></span></label>
+          </div>
+        </fieldset>
+        <fieldset class="calc__group">
+          <legend class="calc__label"><%= s.calc_regime %></legend>
+          <div class="seg">
+            <label class="seg__opt"><input type="radio" name="regime" value="simplified" checked><span><strong>3%</strong><small><%= s.calc_simplified %></small></span></label>
+            <label class="seg__opt"><input type="radio" name="regime" value="our"><span><strong><%= lang === 'kk' ? 'ЖБР' : 'ОУР' %></strong><small><%= s.calc_our %></small></span></label>
+          </div>
+        </fieldset>
+        <div class="calc__group">
+          <label class="calc__label" for="calc-emp"><%= s.calc_employees %>: <output class="calc__val" data-emp-out>3</output> <%= s.calc_people %></label>
+          <input class="range" id="calc-emp" type="range" name="employees" min="0" max="50" step="1" value="3">
+          <div class="range__scale"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div>
+        </div>
+        <div class="calc__group">
+          <label class="calc__label" for="calc-docs"><%= s.calc_docs %>: <output class="calc__val" data-docs-out><%= s.calc_docs_steps[1] %></output></label>
+          <input class="range" id="calc-docs" type="range" name="docs" min="0" max="3" step="1" value="1" data-steps='<%= JSON.stringify(s.calc_docs_steps) %>'>
+          <div class="range__scale range__scale--4"><% s.calc_docs_steps.forEach(function(x){ %><span><%= x %></span><% }) %></div>
+          <p class="calc__hint"><%= s.calc_docs_hint %></p>
+        </div>
+        <fieldset class="calc__group">
+          <legend class="calc__label"><%= s.calc_options %></legend>
+          <div class="opts">
+            <label class="check check--card"><input type="checkbox" name="vat" value="1"><span class="check__box"></span><span class="check__text"><%= s.calc_opt_vat %></span></label>
+            <label class="check check--card"><input type="checkbox" name="ved" value="1"><span class="check__box"></span><span class="check__text"><%= s.calc_opt_ved %></span></label>
+            <label class="check check--card"><input type="checkbox" name="bank" value="1"><span class="check__box"></span><span class="check__text"><%= s.calc_opt_bank %></span></label>
+          </div>
+        </fieldset>
+      </div>
+      <aside class="calc__result">
+        <span class="calc__result-label"><%= s.calc_result %></span>
+        <div class="calc__price"><span class="calc__from"><%= s.calc_from %></span> <span data-price>—</span> <span class="calc__cur"><%= s.calc_per_month %></span></div>
+        <p class="calc__note"><%= t('home.calc.note') %></p>
+        <div class="calc__lead">
+          <input type="hidden" name="type" value="calc">
+          <input type="hidden" name="page" value="<%= curPath %>">
+          <input type="hidden" name="ts" value="">
+          <div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+          <input class="input input--dark" type="text" name="name" placeholder="<%= s.f_name %>" maxlength="120" required autocomplete="name">
+          <input class="input input--dark" type="tel" name="phone" placeholder="<%= s.f_phone %>" maxlength="40" required autocomplete="tel" data-phone>
+          <label class="check check--light"><input type="checkbox" name="consent" value="1" required><span class="check__box"></span><span class="check__text"><%- s.f_consent_html.replace('{privacy}', L('/politika-konfidencialnosti')) %></span></label>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="btn btn--accent btn--block btn--lg" type="submit"><%= s.calc_send %></button>
+          <% if (st.whatsapp) { %><a class="calc__wa" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener" data-calc-wa><%- icon('whatsapp') %><%= s.write_whatsapp %></a><% } %>
+        </div>
+        <div class="form-success form-success--dark" hidden>
+          <div class="form-success__icon"><%- icon('check') %></div>
+          <strong><%= s.f_ok_title %></strong>
+          <p><%= s.f_ok_text %></p>
+        </div>
+      </aside>
+    </form>
+  </div>
+</section>
+
+<!-- 3. Процесс -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <h2 class="section__title"><%= t('home.process.title') %></h2>
+      <p class="section__lead"><%= t('home.process.text') %></p>
+    </div>
+    <ol class="steps">
+      <% [1,2,3,4].forEach(function(i){ %>
+      <li class="step">
+        <span class="step__num"><%= String(i).padStart(2, '0') %></span>
+        <h3 class="step__title"><%= t('home.process.step' + i + '.title') %></h3>
+        <p class="step__text"><%= t('home.process.step' + i + '.text') %></p>
+      </li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<!-- 4. Реквизиты и проверка -->
+<section class="section" id="company">
+  <div class="container">
+    <div class="verify">
+      <div class="verify__main">
+        <h2 class="verify__title"><%= sv('company_name') %></h2>
+        <p class="verify__text"><%= t('home.verify.text') %></p>
+        <dl class="reqs">
+          <div><dt><%= s.verify_director %></dt><dd><%= sv('director') %></dd></div>
+          <div><dt><%= s.verify_reg %></dt><dd><%= fmtDate(st.reg_date, lang) %></dd></div>
+          <div><dt><%= s.verify_bin %></dt><dd class="mono"><%= st.bin %></dd></div>
+          <div class="reqs__wide"><dt><%= s.verify_activity %></dt><dd><%= t('home.verify.activity') %></dd></div>
+        </dl>
+      </div>
+      <div class="verify__side">
+        <div class="verify__badge"><%- icon('shield') %></div>
+        <h3 class="verify__side-title"><%= t('home.verify.badge') %></h3>
+        <p class="verify__side-text"><%= t('home.verify.badge_text') %></p>
+        <ul class="verify__checks">
+          <% lines(t('home.verify.checks')).forEach(function(c){ %><li><%- icon('check-circle') %><%= c %></li><% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Отзывы (показываются, когда добавлены в панели управления) -->
+<% if (reviews.length) { %>
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="section__title section__title--center"><%= t('home.reviews.title') %></h2>
+    <div class="reviews">
+      <% reviews.forEach(function(r){ %>
+      <figure class="review">
+        <span class="review__quote"><%- icon('quote') %></span>
+        <blockquote class="review__text"><%- nl2br(f(r, 'text')) %></blockquote>
+        <figcaption class="review__author">
+          <% if (r.photo) { %><img src="<%= r.photo %>" alt="" width="48" height="48" loading="lazy"><% } else { %><span class="review__avatar"><%= (r.author || '?').trim().charAt(0) %></span><% } %>
+          <span><strong><%= r.author %></strong><% if (r.company) { %><small><%= r.company %></small><% } %></span>
+        </figcaption>
+      </figure>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- 6. Вопросы и ответы -->
+<% if (faq.length) { %>
+<section class="section <%= reviews.length ? '' : 'section--alt' %>" id="faq">
+  <div class="container container--narrow">
+    <h2 class="section__title section__title--center"><%= t('home.faq.title') %></h2>
+    <div class="faq">
+      <% faq.forEach(function(q, i){ %>
+      <details class="faq__item" <%= i === 0 ? 'open' : '' %>>
+        <summary class="faq__q"><%= f(q, 'q') %><span class="faq__chev"><%- icon('chevron') %></span></summary>
+        <div class="faq__a"><%- nl2br(f(q, 'a')) %></div>
+      </details>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<% if (posts.length) { %>
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <h2 class="section__title"><%= s.nav_news %></h2>
+      <a class="btn btn--ghost" href="<%= L('/novosti') %>"><%= s.btn_back_news %><%- icon('arrow') %></a>
+    </div>
+    <div class="posts">
+      <% posts.forEach(function(p){ %><%- include('_post-card', { p: p }) %><% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<%- include('_cta') %>
+<%- include('../partials/footer') %>

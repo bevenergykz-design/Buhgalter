@@ -1,0 +1,86 @@
+</main>
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__col footer__about">
+      <a class="brand brand--light" href="<%= L('/') %>">
+        <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= sv('brand_sub') %></span></span>
+      </a>
+      <p class="footer__company"><%= sv('company_name') %></p>
+      <p class="footer__bin"><%= s.bin %> <%= st.bin %></p>
+      <p class="footer__desc"><%= t('footer.about') %></p>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title"><%= s.footer_nav %></h3>
+      <ul class="footer__links">
+        <li><a href="<%= L('/') %>"><%= s.nav_home %></a></li>
+        <li><a href="<%= L('/uslugi') %>"><%= s.nav_services %></a></li>
+        <li><a href="<%= L('/novosti') %>"><%= s.nav_news %></a></li>
+        <li><a href="<%= L('/o-kompanii') %>"><%= s.nav_about %></a></li>
+        <li><a href="<%= L('/kontakty') %>"><%= s.nav_contacts %></a></li>
+        <% menuPages.forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title"><%= s.footer_clients %></h3>
+      <ul class="footer__links">
+        <li><a href="<%= L('/cabinet') %>"><%= s.cabinet %></a></li>
+        <li><button type="button" class="link-btn" data-lead="consult"><%= s.btn_consult %></button></li>
+        <li><button type="button" class="link-btn" data-lead="callback"><%= s.btn_callback %></button></li>
+        <% footerPages.forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title"><%= s.footer_contacts %></h3>
+      <ul class="footer__contacts">
+        <% (st.phones || []).forEach(function(p){ %><li><%- icon('phone') %><a href="<%= phoneHref(p) %>"><%= p %></a></li><% }) %>
+        <% if (st.email) { %><li><%- icon('mail') %><a href="mailto:<%= st.email %>"><%= st.email %></a></li><% } %>
+        <% (st.offices || []).forEach(function(o){ %><li><%- icon('map') %><span><%= o['city_' + lang] || o.city_ru %>, <%= o['address_' + lang] || o.address_ru %></span></li><% }) %>
+        <li><%- icon('clock') %><span><%= sv('hours') %></span></li>
+      </ul>
+      <div class="socials">
+        <% if (st.whatsapp) { %><a href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener" aria-label="WhatsApp"><%- icon('whatsapp') %></a><% } %>
+        <% Object.entries(st.socials || {}).forEach(function(e){ if (e[1]) { %><a href="<%= e[1] %>" target="_blank" rel="noopener" aria-label="<%= e[0] %>"><%- icon(e[0]) %></a><% } }) %>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container footer__bottom-in">
+      <span>© <%= new Date().getFullYear() %> <%= sv('company_name') %>. <%= s.footer_rights %></span>
+      <span class="footer__bottom-links">
+        <a href="<%= L('/politika-konfidencialnosti') %>"><%= s.privacy %></a>
+        <a href="/admin" class="footer__staff" rel="nofollow"><%- icon('lock') %><%= s.staff_login %></a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<% if (st.whatsapp) { %>
+<a class="wa-float" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener" aria-label="<%= s.write_whatsapp %>"><%- icon('whatsapp') %></a>
+<% } %>
+
+<!-- Модальное окно заявки (консультация / заявка / обратный звонок) -->
+<div class="modal" id="lead-modal" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lead-title">
+    <button class="modal__close icon-btn" type="button" data-close aria-label="<%= s.close %>"><%- icon('close') %></button>
+    <div class="lead-form-wrap">
+      <h2 class="modal__title" id="lead-title"><%= s.form_request_title %></h2>
+      <p class="modal__text" id="lead-text"><%= s.form_request_text %></p>
+      <%- include('lead-form', { formId: 'modal', type: 'request', withMessage: true, withCompany: true }) %>
+    </div>
+    <div class="form-success" hidden>
+      <div class="form-success__icon"><%- icon('check') %></div>
+      <h2 class="modal__title"><%= s.f_ok_title %></h2>
+      <p class="modal__text"><%= s.f_ok_text %></p>
+      <button class="btn btn--primary" type="button" data-close><%= s.close %></button>
+    </div>
+  </div>
+</div>
+<script>window.SITE = <%- JSON.stringify({
+  lang: lang,
+  forms: { consult: [s.form_consult_title, s.form_consult_text], request: [s.form_request_title, s.form_request_text], callback: [s.form_callback_title, s.form_callback_text] },
+  sending: s.f_sending, send: s.f_send, err: s.f_err, okTitle: s.f_ok_title, okText: s.f_ok_text,
+}).replace(/</g, '\\u003c') %>;</script>
+<script src="/js/site.js?v=<%= locals.assetV || 1 %>" defer></script>
+</body>
+</html>

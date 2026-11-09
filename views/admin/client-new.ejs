@@ -1,0 +1,23 @@
+<%- include('_top') %>
+<p class="backlink"><a href="/admin/clients"><%- icon('arrow') %>Все клиенты</a></p>
+<% if (error) { %><p class="alert alert--err"><%= error %></p><% } %>
+<form class="panel form-stack form-narrow" method="post" action="/admin/clients">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="lead_id" value="<%= v.lead_id || '' %>">
+  <p class="muted">Клиент получит доступ в личный кабинет. Пароль будет сгенерирован автоматически и показан после создания.</p>
+  <div class="form-grid">
+    <label class="field field--full"><span class="field__label">Компания или ИП *</span><input class="input" name="company" value="<%= v.company || '' %>" required></label>
+    <label class="field"><span class="field__label">Форма</span><select class="input" name="entity_type"><% E.ENTITY_TYPES.forEach(function(x){ %><option value="<%= x[0] %>" <%= v.entity_type === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+    <label class="field"><span class="field__label">БИН / ИИН</span><input class="input mono" name="bin" value="<%= v.bin || '' %>" maxlength="12" inputmode="numeric"></label>
+    <label class="field"><span class="field__label">Режим налогообложения</span><select class="input" name="tax_regime"><% E.TAX_REGIMES.forEach(function(x){ %><option value="<%= x[0] %>" <%= v.tax_regime === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+    <label class="field"><span class="field__label">Статус</span><select class="input" name="status"><% E.CLIENT_STATUS.forEach(function(x){ %><option value="<%= x[0] %>" <%= (v.status || 'active') === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+    <label class="field"><span class="field__label">Контактное лицо *</span><input class="input" name="contact_name" value="<%= v.contact_name || '' %>" required></label>
+    <label class="field"><span class="field__label">Телефон</span><input class="input" name="phone" value="<%= v.phone || '' %>" data-phone></label>
+    <label class="field"><span class="field__label">E-mail (логин) *</span><input class="input" type="email" name="email" value="<%= v.email || '' %>" required></label>
+    <label class="field"><span class="field__label">Тариф, ₸ в месяц</span><input class="input" type="number" name="tariff" value="<%= v.tariff || '' %>" min="0" step="500"></label>
+    <label class="field field--full"><span class="field__label">Ответственный бухгалтер</span><select class="input" name="accountant_id"><option value="">— не назначен —</option><% staffList.forEach(function(s){ %><option value="<%= s.id %>" <%= String(v.accountant_id) === String(s.id) ? 'selected' : '' %>><%= s.name %></option><% }) %></select></label>
+  </div>
+  <label class="check"><input type="checkbox" name="send_invite" value="1"><span class="check__box"></span><span class="check__text">Отправить клиенту письмо с логином и паролем (нужна настроенная почта SMTP)</span></label>
+  <button class="btn btn--primary" type="submit">Создать клиента</button>
+</form>
+<%- include('_bottom') %>

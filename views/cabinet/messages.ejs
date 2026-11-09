@@ -1,0 +1,20 @@
+<%- include('_top') %>
+<div class="app-title"><h1><%= s.c_messages %></h1></div>
+<section class="panel chat">
+  <div class="chat__list" data-chat>
+    <% if (!msgs.length) { %><p class="empty-sm"><%= s.c_no_messages %></p><% } %>
+    <% msgs.forEach(function(m){ %>
+    <div class="msg <%= m.sender === 'client' ? 'msg--me' : 'msg--them' %>">
+      <div class="msg__bubble"><%- nl2br(m.body) %></div>
+      <div class="msg__meta"><%= m.sender === 'client' ? s.c_you : (m.staff_name || s.c_staff) %> · <%= fmtDateTime(m.created_at) %></div>
+    </div>
+    <% }) %>
+    <span id="bottom"></span>
+  </div>
+  <form class="chat__form" method="post" action="<%= L('/cabinet/messages') %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <textarea class="input" name="body" rows="2" maxlength="4000" required placeholder="<%= s.c_msg_placeholder %>" data-enter-submit></textarea>
+    <button class="btn btn--primary" type="submit"><%= s.c_msg_send %></button>
+  </form>
+</section>
+<%- include('_bottom') %>

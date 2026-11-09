@@ -1,0 +1,55 @@
+<%- include('_top') %>
+<form class="form-stack" method="post" action="/admin/settings">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <section class="panel form-stack">
+    <h2>Куда приходят заявки</h2>
+    <p class="muted">Все заявки, регистрации и документы клиентов всегда сохраняются в панели. Дополнительно о них можно получать письма и сообщения в Telegram.</p>
+    <label class="field"><span class="field__label">E-mail ответственного сотрудника (можно несколько через запятую)</span><input class="input" name="notify_email" value="<%= st.notify_email %>" placeholder="manager@example.kz"></label>
+  </section>
+  <section class="panel form-stack">
+    <h2>Почта для отправки писем (SMTP)</h2>
+    <p class="muted">Данные выдаёт почтовый сервис (например, почта на хостинге, Яндекс 360 или Google Workspace). Без них письма не отправляются, но заявки видны в панели.</p>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Сервер SMTP</span><input class="input" name="smtp_host" value="<%= st.smtp.host %>" placeholder="smtp.example.kz"></label>
+      <label class="field"><span class="field__label">Порт</span><input class="input" type="number" name="smtp_port" value="<%= st.smtp.port %>"></label>
+      <label class="field"><span class="field__label">Логин</span><input class="input" name="smtp_user" value="<%= st.smtp.user %>" autocomplete="off"></label>
+      <label class="field"><span class="field__label">Пароль <%= st.smtp.pass ? '(сохранён — оставьте пустым, чтобы не менять)' : '' %></span><input class="input" type="password" name="smtp_pass" value="" autocomplete="new-password"></label>
+      <label class="field"><span class="field__label">Отправитель (From)</span><input class="input" name="smtp_from" value="<%= st.smtp.from %>" placeholder="«Диалог Учёт» &lt;info@example.kz&gt;"></label>
+      <label class="check"><input type="checkbox" name="smtp_secure" value="1" <%= st.smtp.secure ? 'checked' : '' %>><span class="check__box"></span><span class="check__text">Защищённое соединение SSL (порт 465)</span></label>
+    </div>
+  </section>
+  <section class="panel form-stack">
+    <h2>Telegram-уведомления</h2>
+    <p class="muted">Создайте бота через @BotFather, добавьте его в чат и укажите токен и ID чата.</p>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Токен бота <%= st.telegram.token ? '(сохранён)' : '' %></span><input class="input" type="password" name="tg_token" value="" autocomplete="off"></label>
+      <label class="field"><span class="field__label">ID чата</span><input class="input" name="tg_chat" value="<%= st.telegram.chat_id %>"></label>
+    </div>
+    <% if (st.telegram.token) { %><label class="check"><input type="checkbox" name="tg_clear" value="1"><span class="check__box"></span><span class="check__text">Отключить Telegram-уведомления</span></label><% } %>
+  </section>
+  <section class="panel form-stack">
+    <h2>Подключение CRM</h2>
+    <p class="muted">При новой заявке, регистрации клиента и смене статуса сайт отправляет POST-запрос с данными в формате JSON на этот адрес (вебхук). Подходит для Bitrix24, amoCRM, Make, Zapier и других систем.</p>
+    <label class="field"><span class="field__label">Адрес вебхука</span><input class="input" name="webhook_url" value="<%= st.webhook_url %>" placeholder="https://"></label>
+  </section>
+  <section class="panel form-stack">
+    <h2>Аналитика и поисковые системы</h2>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Google Analytics 4 (Measurement ID)</span><input class="input mono" name="ga4" value="<%= st.analytics.ga4 %>" placeholder="G-XXXXXXXXXX"></label>
+      <label class="field"><span class="field__label">Google Tag Manager</span><input class="input mono" name="gtm" value="<%= st.analytics.gtm %>" placeholder="GTM-XXXXXXX"></label>
+      <label class="field field--full"><span class="field__label">Google Search Console — код подтверждения (content из мета-тега)</span><input class="input mono" name="gsc" value="<%= st.analytics.gsc %>"></label>
+    </div>
+  </section>
+  <section class="panel form-stack">
+    <h2>Прочее</h2>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Адрес сайта (для ссылок в письмах и sitemap)</span><input class="input" name="site_url" value="<%= st.site_url %>" placeholder="https://dialog-uchet.kz"></label>
+      <label class="field"><span class="field__label">Максимальный размер файла от клиента, МБ</span><input class="input" type="number" name="max_upload_mb" value="<%= st.max_upload_mb %>" min="1" max="100"></label>
+    </div>
+  </section>
+  <div class="sticky-save"><button class="btn btn--primary" type="submit">Сохранить настройки</button></div>
+</form>
+<form method="post" action="/admin/settings/test-mail" class="danger-zone">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--outline btn--sm" type="submit"><%- icon('mail') %>Отправить тестовое письмо</button>
+</form>
+<%- include('_bottom') %>

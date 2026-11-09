@@ -1,0 +1,74 @@
+<body class="<%= locals.bodyClass || '' %>">
+<% if (st.analytics && st.analytics.gtm) { %><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= st.analytics.gtm %>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><% } %>
+<%- include('icons') %>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<%
+  const nav = [
+    ['/', s.nav_home, 'home'], ['/uslugi', s.nav_services, 'services'], ['/novosti', s.nav_news_short, 'news'],
+    ['/o-kompanii', s.nav_about, 'about'], ['/kontakty', s.nav_contacts, 'contacts'],
+  ];
+  const curPage = locals.page || '';
+  const mainPhone = (st.phones || [])[0] || '';
+%>
+<div class="topbar">
+  <div class="container topbar__in">
+    <div class="topbar__left">
+      <span class="topbar__item"><%- icon('map') %><%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></span>
+      <span class="topbar__item hide-sm"><%- icon('clock') %><%= sv('hours') %></span>
+    </div>
+    <div class="topbar__right">
+      <% (st.phones || []).slice(1).forEach(function(p){ %><a class="topbar__item hide-sm" href="<%= phoneHref(p) %>"><%- icon('phone') %><%= p %></a><% }) %>
+      <% if (st.whatsapp) { %><a class="topbar__item topbar__wa" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
+      <div class="lang-switch" role="group" aria-label="Язык / Тіл">
+        <% LANGS.forEach(function(l){ %><a href="<%= langUrl(l) %>" hreflang="<%= l %>" class="<%= l === lang ? 'is-active' : '' %>" <%- l === lang ? 'aria-current="true"' : '' %>><%= LANG_LABELS[l] %></a><% }) %>
+      </div>
+    </div>
+  </div>
+</div>
+<header class="header" id="top">
+  <div class="container header__in">
+    <a class="brand" href="<%= L('/') %>" aria-label="<%= sv('brand') %> — <%= s.nav_home %>">
+      <img class="brand__mark" src="/img/logo-mark.png" alt="" width="92" height="45">
+      <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= sv('brand_sub') %></span></span>
+    </a>
+    <nav class="nav" aria-label="<%= s.menu %>">
+      <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="nav__link <%= curPage === n[2] ? 'is-active' : '' %>"><%= n[1] %></a><% }) %>
+      <% menuPages.forEach(function(p){ %><a href="<%= L('/' + p.slug) %>" class="nav__link <%= curPage === 'p:' + p.slug ? 'is-active' : '' %>"><%= f(p, 'title') %></a><% }) %>
+    </nav>
+    <div class="header__actions">
+      <% if (mainPhone) { %>
+      <div class="header__phone">
+        <a class="header__phone-num" href="<%= phoneHref(mainPhone) %>"><%= mainPhone %></a>
+        <button type="button" class="header__phone-cb" data-lead="callback"><%= s.btn_callback %></button>
+      </div>
+      <% } %>
+      <a class="btn btn--outline btn--sm header__cabinet" href="<%= L('/cabinet') %>"><%- icon('user') %><span><%= s.cabinet %></span></a>
+      <a class="icon-btn header__call-sm" href="<%= phoneHref(mainPhone) %>" aria-label="<%= s.call_us %>"><%- icon('phone') %></a>
+      <button class="icon-btn burger" type="button" aria-label="<%= s.menu %>" aria-expanded="false" aria-controls="drawer"><%- icon('menu') %></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer__backdrop" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="<%= s.menu %>">
+    <div class="drawer__head">
+      <div class="lang-switch">
+        <% LANGS.forEach(function(l){ %><a href="<%= langUrl(l) %>" class="<%= l === lang ? 'is-active' : '' %>"><%= LANG_LABELS[l] %></a><% }) %>
+      </div>
+      <button class="icon-btn" type="button" data-close aria-label="<%= s.close %>"><%- icon('close') %></button>
+    </div>
+    <nav class="drawer__nav">
+      <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="<%= curPage === n[2] ? 'is-active' : '' %>"><%= n[0] === '/novosti' ? s.nav_news : n[1] %></a><% }) %>
+      <% menuPages.forEach(function(p){ %><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a><% }) %>
+    </nav>
+    <a class="btn btn--outline btn--block" href="<%= L('/cabinet') %>"><%- icon('user') %><%= s.cabinet %></a>
+    <button class="btn btn--accent btn--block" type="button" data-lead="request"><%= s.btn_request %></button>
+    <div class="drawer__contacts">
+      <% (st.phones || []).forEach(function(p){ %><a href="<%= phoneHref(p) %>"><%- icon('phone') %><%= p %></a><% }) %>
+      <% if (st.whatsapp) { %><a href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %><%= s.write_whatsapp %></a><% } %>
+      <span><%- icon('clock') %><%= sv('hours') %></span>
+    </div>
+  </div>
+</div>
+<main id="main">

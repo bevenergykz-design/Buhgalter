@@ -1,0 +1,47 @@
+<%- include('../partials/head') %>
+<body class="app-page">
+<%- include('../partials/icons') %>
+<%
+  const tabs = [
+    ['overview', '/cabinet', s.c_overview, 'home', 0],
+    ['documents', '/cabinet/documents', s.c_documents, 'doc', newFiles],
+    ['reports', '/cabinet/reports', s.c_reports, 'calendar', 0],
+    ['messages', '/cabinet/messages', s.c_messages, 'chat', unread],
+    ['profile', '/cabinet/profile', s.c_profile, 'user', 0],
+  ];
+%>
+<header class="app-head">
+  <div class="app-head__in">
+    <a class="brand" href="<%= L('/') %>">
+      <img class="brand__mark" src="/img/logo-mark.png" alt="" width="60" height="29">
+      <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= s.cabinet %></span></span>
+    </a>
+    <div class="app-head__right">
+      <div class="lang-switch lang-switch--dark"><% LANGS.forEach(function(l){ %><a href="<%= langUrl(l) %>" class="<%= l === lang ? 'is-active' : '' %>"><%= LANG_LABELS[l] %></a><% }) %></div>
+      <div class="app-user">
+        <span class="app-user__avatar"><%= (cu.company || '?').replace(/^(ТОО|ИП|ЖШС|ЖК)\s*[«"]?/i, '').charAt(0) %></span>
+        <span class="app-user__text"><strong><%= cu.company %></strong><small><%= cu.contact_name %></small></span>
+      </div>
+      <form method="post" action="<%= L('/cabinet/logout') %>">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="icon-btn" type="submit" title="<%= s.c_logout %>" aria-label="<%= s.c_logout %>"><%- icon('logout') %></button>
+      </form>
+    </div>
+  </div>
+</header>
+<div class="app">
+  <nav class="app-nav" aria-label="<%= s.cabinet %>">
+    <% tabs.forEach(function(t){ %>
+    <a href="<%= L(t[1]) %>" class="app-nav__link <%= tab === t[0] ? 'is-active' : '' %>">
+      <%- icon(t[3]) %><span><%= t[2] %></span><% if (t[4]) { %><b class="pill"><%= t[4] %></b><% } %>
+    </a>
+    <% }) %>
+    <div class="app-nav__help">
+      <p><%= lang === 'kk' ? 'Сұрақтар бар ма?' : 'Есть вопросы?' %></p>
+      <% if ((st.phones || [])[0]) { %><a href="<%= phoneHref(st.phones[0]) %>"><%- icon('phone') %><%= st.phones[0] %></a><% } %>
+      <% if (st.whatsapp) { %><a href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
+    </div>
+  </nav>
+  <main class="app-main" id="main">
+    <% if (flash.ok) { %><p class="alert alert--ok" role="status"><%= flash.ok %></p><% } %>
+    <% if (flash.err) { %><p class="alert alert--err" role="alert"><%= flash.err %></p><% } %>

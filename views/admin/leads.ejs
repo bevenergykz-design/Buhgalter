@@ -1,0 +1,35 @@
+<%- include('_top') %>
+<div class="toolbar">
+  <div class="seg-links">
+    <a href="/admin/leads" class="<%= !status ? 'is-active' : '' %>">Все</a>
+    <% E.LEAD_STATUS.forEach(function(s){ %><a href="/admin/leads?status=<%= s[0] %>" class="<%= status === s[0] ? 'is-active' : '' %>"><%= s[1] %><% if (byStatus[s[0]]) { %> <small><%= byStatus[s[0]] %></small><% } %></a><% }) %>
+  </div>
+  <form class="search" method="get" action="/admin/leads">
+    <% if (status) { %><input type="hidden" name="status" value="<%= status %>"><% } %>
+    <%- icon('search') %><input class="input" type="search" name="q" value="<%= q %>" placeholder="Имя, телефон, компания">
+  </form>
+  <a class="btn btn--ghost btn--sm" href="/admin/leads.csv"><%- icon('download') %>Выгрузить CSV</a>
+</div>
+<section class="panel panel--flush">
+  <% if (!leads.length) { %><p class="empty-sm pad">Заявок не найдено.</p><% } else { %>
+  <div class="table-wrap">
+  <table class="table table--click">
+    <thead><tr><th>№</th><th>Дата</th><th>Тип</th><th>Клиент</th><th>Детали</th><th>Ответственный</th><th>Статус</th></tr></thead>
+    <tbody>
+    <% leads.forEach(function(l){ %>
+      <tr data-href="/admin/leads/<%= l.id %>" class="<%= l.status === 'new' ? 'row--new' : '' %>">
+        <td class="muted"><%= l.id %></td>
+        <td class="nowrap"><%= fmtDateTime(l.created_at) %></td>
+        <td><%= TYPE_NAMES[l.type] || l.type %><% if (l.lang === 'kk') { %> <span class="tag">KZ</span><% } %></td>
+        <td><a href="/admin/leads/<%= l.id %>"><%= l.name %></a><br><span class="nowrap"><%= l.phone %></span><% if (l.company) { %><br><small class="muted"><%= l.company %></small><% } %></td>
+        <td class="cell-clip"><%= l.details || l.message %></td>
+        <td><%= l.staff_name || '—' %></td>
+        <td><span class="st st--<%= l.status %>"><%= opt(E.LEAD_STATUS, l.status) %></span></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+<%- include('_bottom') %>

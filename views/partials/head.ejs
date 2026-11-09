@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="<%= htmlLang %>">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= meta.title || t('seo.home.title') %></title>
+<% if (meta.description) { %><meta name="description" content="<%= meta.description %>"><% } %>
+<% if (noindex) { %><meta name="robots" content="noindex, nofollow"><% } else { %>
+<link rel="canonical" href="<%= absUrl(lang) %>">
+<% LANGS.forEach(function(l){ %><link rel="alternate" hreflang="<%= l %>" href="<%= absUrl(l) %>">
+<% }) %><link rel="alternate" hreflang="x-default" href="<%= absUrl('ru') %>">
+<% } %>
+<meta property="og:type" content="<%= meta.type || 'website' %>">
+<meta property="og:title" content="<%= meta.title || t('seo.home.title') %>">
+<% if (meta.description) { %><meta property="og:description" content="<%= meta.description %>"><% } %>
+<meta property="og:url" content="<%= absUrl(lang) %>">
+<meta property="og:image" content="<%= baseUrl + (meta.image || '/img/og.jpg') %>">
+<meta property="og:locale" content="<%= lang === 'kk' ? 'kk_KZ' : 'ru_RU' %>">
+<meta name="theme-color" content="#544cab">
+<% if (st.analytics && st.analytics.gsc) { %><meta name="google-site-verification" content="<%= st.analytics.gsc %>"><% } %>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css?v=<%= locals.assetV || 1 %>">
+<% if (locals.bodyClass === 'cab') { %><link rel="stylesheet" href="/css/app.css?v=<%= locals.assetV || 1 %>"><% } %>
+<% if (st.analytics && st.analytics.gtm) { %>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<%= st.analytics.gtm %>');</script>
+<% } %>
+<% if (st.analytics && st.analytics.ga4) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= st.analytics.ga4 %>"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','<%= st.analytics.ga4 %>');</script>
+<% } %>
+<% if (locals.jsonLd) { %><script type="application/ld+json"><%- JSON.stringify(jsonLd).replace(/</g, '\\u003c') %></script><% } %>
+</head>

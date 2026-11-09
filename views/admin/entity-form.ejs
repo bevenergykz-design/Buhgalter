@@ -1,0 +1,74 @@
+<%- include('_top') %>
+<p class="backlink"><a href="/admin/content/<%= entKey %>"><%- icon('arrow') %><%= ent.title %></a><% if (!isNew && ent.publicUrl && row.slug) { %> · <a href="<%= ent.publicUrl(row) %>" target="_blank" rel="noopener">Открыть на сайте <%- icon('external') %></a><% } %></p>
+<form class="panel form-stack entity-form" method="post" action="/admin/content/<%= entKey %>/<%= isNew ? 'new' : row.id %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% ent.fields.forEach(function(f){
+       const val = function(n){ const v = row[n]; return v === undefined || v === null ? '' : v; };
+       const opts = f.options === 'categories' ? cats : f.options; %>
+    <% if (f.bi) { %>
+      <div class="bi-field <%= f.type === 'html' ? 'bi-field--stack' : '' %>">
+        <div class="bi-field__label"><%= f.label %><%= f.required ? ' *' : '' %></div>
+        <div class="bi-field__inputs">
+          <% ['ru', 'kk'].forEach(function(l){ const n = f.name + '_' + l; %>
+          <div class="bi-field__one">
+            <span class="lang-chip"><%= l === 'ru' ? 'RU' : 'KZ' %></span>
+            <% if (f.type === 'textarea') { %><textarea class="input" name="<%= n %>" rows="4" <%= f.required && l === 'ru' ? 'required' : '' %>><%= val(n) %></textarea>
+            <% } else if (f.type === 'html') { %>
+              <div class="editor" data-editor>
+                <div class="editor__bar">
+                  <button type="button" data-cmd="formatBlock" data-arg="H2" title="Заголовок">H2</button>
+                  <button type="button" data-cmd="formatBlock" data-arg="H3" title="Подзаголовок">H3</button>
+                  <button type="button" data-cmd="formatBlock" data-arg="P" title="Обычный текст">¶</button>
+                  <button type="button" data-cmd="bold" title="Жирный"><b>Ж</b></button>
+                  <button type="button" data-cmd="italic" title="Курсив"><i>К</i></button>
+                  <button type="button" data-cmd="insertUnorderedList" title="Список">• —</button>
+                  <button type="button" data-cmd="insertOrderedList" title="Нумерованный список">1.</button>
+                  <button type="button" data-cmd="formatBlock" data-arg="BLOCKQUOTE" title="Выделенный блок">❝</button>
+                  <button type="button" data-cmd="createLink" title="Ссылка">🔗</button>
+                  <button type="button" data-cmd="removeFormat" title="Очистить оформление">⌫</button>
+                  <button type="button" data-html title="Редактировать HTML">&lt;/&gt;</button>
+                </div>
+                <div class="editor__area prose" contenteditable="true"><%- val(n) %></div>
+                <textarea class="input editor__src" name="<%= n %>" hidden><%= val(n) %></textarea>
+              </div>
+            <% } else { %><input class="input" name="<%= n %>" value="<%= val(n) %>" <%= f.required && l === 'ru' ? 'required' : '' %>><% } %>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } else if (f.type === 'check') { %>
+      <label class="check"><input type="checkbox" name="<%= f.name %>" value="1" <%= row[f.name] ? 'checked' : '' %>><span class="check__box"></span><span class="check__text"><%= f.label %></span></label>
+    <% } else if (f.type === 'image') { %>
+      <div class="field">
+        <span class="field__label"><%= f.label %></span>
+        <div class="img-inline">
+          <% if (val(f.name)) { %><img src="<%= val(f.name) %>" alt=""><% } %>
+          <div>
+            <input type="file" name="<%= f.name %>" accept=".jpg,.jpeg,.png,.webp,.gif">
+            <% if (val(f.name)) { %><label class="check"><input type="checkbox" name="remove_<%= f.name %>" value="1"><span class="check__box"></span><span class="check__text">Убрать изображение</span></label><% } %>
+          </div>
+        </div>
+      </div>
+    <% } else if (f.type === 'select') { %>
+      <label class="field field--half"><span class="field__label"><%= f.label %><%= f.required ? ' *' : '' %></span>
+        <select class="input" name="<%= f.name %>"><% opts.forEach(function(o){ %><option value="<%= o[0] %>" <%= String(val(f.name)) === String(o[0]) ? 'selected' : '' %>><%= o[1] %></option><% }) %></select>
+      </label>
+    <% } else if (f.type === 'date') { %>
+      <label class="field field--half"><span class="field__label"><%= f.label %></span><input class="input" type="date" name="<%= f.name %>" value="<%= String(val(f.name)).slice(0, 10) %>"></label>
+    <% } else if (f.type === 'number') { %>
+      <label class="field field--half"><span class="field__label"><%= f.label %></span><input class="input" type="number" name="<%= f.name %>" value="<%= val(f.name) || 0 %>"></label>
+    <% } else { %>
+      <label class="field"><span class="field__label"><%= f.label %><%= f.required ? ' *' : '' %></span>
+        <input class="input" name="<%= f.name %>" value="<%= val(f.name) %>" <%= f.required ? 'required' : '' %> <%= f.name === 'slug' && row.system ? 'readonly' : '' %>>
+        <% if (f.hint) { %><span class="field__hint"><%= f.hint %></span><% } %>
+      </label>
+    <% } %>
+  <% }) %>
+  <div class="sticky-save"><button class="btn btn--primary" type="submit"><%= isNew ? 'Создать' : 'Сохранить' %></button></div>
+</form>
+<% if (!isNew && !row.system) { %>
+<form method="post" action="/admin/content/<%= entKey %>/<%= row.id %>/delete" data-confirm="Удалить безвозвратно?" class="danger-zone">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить <%= ent.one %></button>
+</form>
+<% } %>
+<%- include('_bottom') %>

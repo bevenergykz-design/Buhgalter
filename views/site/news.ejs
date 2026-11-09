@@ -1,0 +1,30 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: t('news.title'), lead: t('news.text') }) %>
+<section class="section section--first">
+  <div class="container">
+    <% if (st.images && st.images.team) { %>
+    <figure class="team-photo">
+      <img src="<%= st.images.team %>" alt="<%= t('news.team_caption') %>" loading="lazy">
+      <figcaption><%= t('news.team_caption') %></figcaption>
+    </figure>
+    <% } %>
+    <div class="chips">
+      <a class="chip <%= !cat ? 'is-active' : '' %>" href="<%= L('/novosti') %>"><%= s.news_all %></a>
+      <% cats.forEach(function(c){ %><a class="chip <%= cat === c ? 'is-active' : '' %>" href="<%= L('/novosti?cat=' + c) %>"><%= s.news_cats[c] %><% if (counts[c]) { %> <small><%= counts[c] %></small><% } %></a><% }) %>
+    </div>
+    <% if (!posts.length) { %>
+      <p class="empty"><%- icon('doc') %><%= s.news_empty %></p>
+    <% } else { %>
+      <div class="posts">
+        <% posts.forEach(function(p){ %><%- include('_post-card', { p: p }) %><% }) %>
+      </div>
+      <% if (pages > 1) { %>
+      <nav class="pager">
+        <% for (let i = 1; i <= pages; i++) { %><a class="<%= i === pageNo ? 'is-active' : '' %>" href="<%= L('/novosti?' + (cat ? 'cat=' + cat + '&' : '') + 'page=' + i) %>"><%= i %></a><% } %>
+      </nav>
+      <% } %>
+    <% } %>
+  </div>
+</section>
+<%- include('../partials/footer') %>

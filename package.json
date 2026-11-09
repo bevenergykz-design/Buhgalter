@@ -1,0 +1,22 @@
+{
+  "name": "dialog-uchet-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт ТОО «Образцовая бухгалтерия \"Диалог Учёт\"»: публичная часть RU/KZ, кабинет клиента, панель управления",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "create-admin": "node scripts/create-admin.js",
+    "test": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.22.3",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.4.0"
+  }
+}

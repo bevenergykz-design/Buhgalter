@@ -1,0 +1,37 @@
+<%- include('_top') %>
+<div class="toolbar">
+  <% if (entKey === 'services') { %>
+  <div class="seg-links">
+    <a href="/admin/content/services" class="<%= !filterCat ? 'is-active' : '' %>">Все разделы</a>
+    <% cats.forEach(function(c){ %><a href="/admin/content/services?cat=<%= c[0] %>" class="<%= String(filterCat) === c[0] ? 'is-active' : '' %>"><%= c[1] %></a><% }) %>
+  </div>
+  <% } else { %><span></span><% } %>
+  <a class="btn btn--primary btn--sm" href="/admin/content/<%= entKey %>/new<%= entKey === 'services' && filterCat ? '?cat=' + filterCat : '' %>"><%- icon('plus') %>Добавить <%= ent.one %></a>
+</div>
+<section class="panel panel--flush">
+  <% if (!rows.length) { %><p class="empty-sm pad">Пока ничего нет. Нажмите «Добавить <%= ent.one %>».</p><% } else { %>
+  <div class="table-wrap">
+  <table class="table table--click">
+    <thead><tr><% ent.columns.forEach(function(c){ %><th><%= c[1] %></th><% }) %><th></th></tr></thead>
+    <tbody>
+    <% rows.forEach(function(r){ %>
+      <tr data-href="/admin/content/<%= entKey %>/<%= r.id %>">
+        <% ent.columns.forEach(function(c, i){ const v = r[c[0]]; %>
+        <td>
+          <% if (c[2] === 'bool') { %><span class="st <%= v ? 'st--accepted' : 'st--closed' %>"><%= v ? 'да' : 'нет' %></span>
+          <% } else if (c[2] === 'date') { %><%= fmtDateShort(v) %>
+          <% } else if (c[2] === 'cat') { %><%= (cats.find(function(x){ return x[0] === String(v); }) || [, '—'])[1] %>
+          <% } else if (typeof c[2] === 'function') { %><%= c[2](v) %>
+          <% } else if (i === 0) { %><a href="/admin/content/<%= entKey %>/<%= r.id %>"><%= v %></a><% if (r.system) { %> <span class="tag">системная</span><% } %>
+          <% } else { %><%= v %><% } %>
+        </td>
+        <% }) %>
+        <td class="nowrap"><% if (ent.publicUrl) { %><a class="icon-btn icon-btn--sm" href="<%= ent.publicUrl(r) %>" target="_blank" rel="noopener" title="Открыть на сайте"><%- icon('external') %></a><% } %></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+<%- include('_bottom') %>

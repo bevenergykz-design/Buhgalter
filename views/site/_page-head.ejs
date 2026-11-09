@@ -1,0 +1,11 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="breadcrumbs">
+      <a href="<%= L('/') %>"><%= s.breadcrumbs_home %></a>
+      <% (locals.crumbs || []).forEach(function(c){ %><span>/</span><a href="<%= c[0] %>"><%= c[1] %></a><% }) %>
+      <span>/</span><span aria-current="page"><%= title %></span>
+    </nav>
+    <h1 class="page-head__title"><%= title %></h1>
+    <% if (locals.lead) { %><p class="page-head__lead"><%= lead %></p><% } %>
+  </div>
+</section>

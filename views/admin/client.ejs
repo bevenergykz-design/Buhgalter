@@ -1,0 +1,157 @@
+<%- include('_top') %>
+<p class="backlink"><a href="/admin/clients"><%- icon('arrow') %>Все клиенты</a></p>
+<div class="client-head">
+  <div>
+    <h2 class="client-head__name"><%= c.company %></h2>
+    <p class="muted"><%= opt(E.ENTITY_TYPES, c.entity_type) %> · <%= opt(E.TAX_REGIMES, c.tax_regime) %> · <%= c.bin ? 'БИН ' + c.bin : 'БИН не указан' %> · в кабинете с <%= fmtDateShort(c.created_at) %><% if (c.last_login) { %> · последний вход <%= fmtDateTime(c.last_login) %><% } %></p>
+  </div>
+  <span class="st st--<%= c.status %> st--lg"><%= opt(E.CLIENT_STATUS, c.status) %></span>
+</div>
+<nav class="tabs-line">
+  <a href="?tab=overview" class="<%= tab === 'overview' ? 'is-active' : '' %>">Карточка</a>
+  <a href="?tab=reports" class="<%= tab === 'reports' ? 'is-active' : '' %>">Отчётность <small><%= reports.length %></small></a>
+  <a href="?tab=files" class="<%= tab === 'files' ? 'is-active' : '' %>">Документы <% if (newFiles) { %><b class="pill pill--accent"><%= newFiles %></b><% } else { %><small><%= files.length %></small><% } %></a>
+  <a href="?tab=messages" class="<%= tab === 'messages' ? 'is-active' : '' %>">Сообщения <% if (unread) { %><b class="pill"><%= unread %></b><% } %></a>
+</nav>
+
+<% if (tab === 'overview') { %>
+<form class="grid-2 grid-2--wide" method="post" action="/admin/clients/<%= c.id %>">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <section class="panel form-stack">
+    <h2>Обслуживание</h2>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Статус</span><select class="input" name="status"><% E.CLIENT_STATUS.forEach(function(x){ %><option value="<%= x[0] %>" <%= c.status === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+      <label class="field"><span class="field__label">Ответственный бухгалтер</span><select class="input" name="accountant_id"><option value="">— не назначен —</option><% staffList.forEach(function(s){ %><option value="<%= s.id %>" <%= c.accountant_id === s.id ? 'selected' : '' %>><%= s.name %></option><% }) %></select></label>
+      <label class="field"><span class="field__label">Тариф, ₸ в месяц</span><input class="input" type="number" name="tariff" value="<%= c.tariff || '' %>" min="0" step="500"></label>
+      <label class="field"><span class="field__label">№ договора</span><input class="input" name="contract_no" value="<%= c.contract_no %>"></label>
+      <label class="field"><span class="field__label">Дата договора</span><input class="input" type="date" name="contract_date" value="<%= c.contract_date %>"></label>
+    </div>
+    <label class="field"><span class="field__label">Внутренние заметки (клиент их не видит)</span><textarea class="input" name="internal_notes" rows="6"><%= c.internal_notes %></textarea></label>
+    <p class="field__hint">Статус, бухгалтер, тариф и договор отображаются клиенту в личном кабинете.</p>
+  </section>
+  <section class="panel form-stack">
+    <h2>Реквизиты и контакты</h2>
+    <label class="field"><span class="field__label">Компания</span><input class="input" name="company" value="<%= c.company %>" required></label>
+    <div class="form-grid">
+      <label class="field"><span class="field__label">Форма</span><select class="input" name="entity_type"><% E.ENTITY_TYPES.forEach(function(x){ %><option value="<%= x[0] %>" <%= c.entity_type === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+      <label class="field"><span class="field__label">БИН / ИИН</span><input class="input mono" name="bin" value="<%= c.bin %>" maxlength="12"></label>
+      <label class="field field--full"><span class="field__label">Режим налогообложения</span><select class="input" name="tax_regime"><% E.TAX_REGIMES.forEach(function(x){ %><option value="<%= x[0] %>" <%= c.tax_regime === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select></label>
+      <label class="field"><span class="field__label">Контактное лицо</span><input class="input" name="contact_name" value="<%= c.contact_name %>"></label>
+      <label class="field"><span class="field__label">Телефон</span><input class="input" name="phone" value="<%= c.phone %>" data-phone></label>
+      <label class="field field--full"><span class="field__label">E-mail (логин в кабинет)</span><input class="input" type="email" name="email" value="<%= c.email %>"></label>
+    </div>
+    <div class="actions-row">
+      <% if (c.phone) { %><a class="btn btn--ghost btn--sm" href="<%= phoneHref(c.phone) %>"><%- icon('phone') %>Позвонить</a><a class="btn btn--ghost btn--sm" href="<%= waHref(c.phone) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
+    </div>
+  </section>
+  <div class="form-actions"><button class="btn btn--primary" type="submit">Сохранить карточку</button></div>
+</form>
+<div class="danger-zone">
+  <form method="post" action="/admin/clients/<%= c.id %>/password" data-confirm="Сгенерировать клиенту новый пароль? Старый перестанет работать.">
+    <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--outline btn--sm" type="submit"><%- icon('lock') %>Сбросить пароль клиента</button>
+  </form>
+  <% if (me.role === 'admin') { %>
+  <form method="post" action="/admin/clients/<%= c.id %>/delete" data-confirm="Удалить клиента со всеми документами, отчётами и перепиской? Действие необратимо.">
+    <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить клиента</button>
+  </form>
+  <% } %>
+</div>
+<% } %>
+
+<% if (tab === 'reports') { %>
+<datalist id="report-presets"><% E.REPORT_PRESETS.forEach(function(p){ %><option value="<%= p %>"><% }) %></datalist>
+<form class="panel add-report" method="post" action="/admin/clients/<%= c.id %>/reports">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <h2>Добавить отчёт или задачу</h2>
+  <div class="add-report__grid">
+    <label class="field"><span class="field__label">Отчёт / форма *</span><input class="input" name="title" list="report-presets" required placeholder="Начните вводить: ФНО 910.00…"></label>
+    <label class="field"><span class="field__label">Период</span><input class="input" name="period" placeholder="1 полугодие 2026"></label>
+    <label class="field"><span class="field__label">Срок</span><input class="input" type="date" name="deadline"></label>
+    <label class="field"><span class="field__label">Статус</span><select class="input" name="status"><% E.REPORT_STATUS.forEach(function(x){ %><option value="<%= x[0] %>"><%= x[1] %></option><% }) %></select></label>
+    <label class="field"><span class="field__label">К уплате</span><input class="input" name="amount" placeholder="125 000 ₸"></label>
+    <label class="field"><span class="field__label">Комментарий для клиента</span><input class="input" name="note"></label>
+  </div>
+  <button class="btn btn--primary btn--sm" type="submit"><%- icon('plus') %>Добавить</button>
+</form>
+<section class="panel panel--flush">
+  <% if (!reports.length) { %><p class="empty-sm pad">Отчётов пока нет. Клиент увидит их в личном кабинете сразу после добавления.</p><% } else { %>
+  <div class="rep-table">
+    <div class="rep-grid rep-grid--head"><span>Отчёт</span><span>Период</span><span>Срок</span><span>Статус</span><span>К уплате</span><span>Комментарий</span><span></span><span></span></div>
+    <% reports.forEach(function(r){ const od = r.deadline && r.deadline < today && !['submitted','accepted'].includes(r.status); %>
+    <form method="post" action="/admin/reports/<%= r.id %>" class="rep-grid rep-row <%= od ? 'row--overdue' : '' %>">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <span class="rep-title"><input class="input input--sm" name="title" value="<%= r.title %>" list="report-presets" aria-label="Отчёт" title="<%= r.title %>"><% if (od) { %><span class="st st--overdue report-od">просрочен</span><% } %></span>
+      <input class="input input--sm" name="period" value="<%= r.period %>" aria-label="Период">
+      <input class="input input--sm" type="date" name="deadline" value="<%= r.deadline %>" aria-label="Срок">
+      <select class="input input--sm st-select st--<%= r.status %>" name="status" aria-label="Статус" onchange="this.form.submit()"><% E.REPORT_STATUS.forEach(function(x){ %><option value="<%= x[0] %>" <%= r.status === x[0] ? 'selected' : '' %>><%= x[1] %></option><% }) %></select>
+      <input class="input input--sm" name="amount" value="<%= r.amount %>" aria-label="К уплате">
+      <input class="input input--sm" name="note" value="<%= r.note %>" aria-label="Комментарий">
+      <button class="icon-btn icon-btn--sm" type="submit" title="Сохранить" aria-label="Сохранить"><%- icon('check') %></button>
+      <button class="icon-btn icon-btn--sm" type="submit" form="del-r<%= r.id %>" title="Удалить" aria-label="Удалить"><%- icon('trash') %></button>
+    </form>
+    <form id="del-r<%= r.id %>" method="post" action="/admin/reports/<%= r.id %>/delete" data-confirm="Удалить отчёт «<%= r.title %>»?" hidden><input type="hidden" name="_csrf" value="<%= csrf %>"></form>
+    <% }) %>
+  </div>
+  <% } %>
+</section>
+<% } %>
+
+<% if (tab === 'files') { %>
+<form class="panel upload" method="post" action="/admin/clients/<%= c.id %>/files" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <h2 class="upload__title">Отправить документы клиенту</h2>
+  <p class="muted">Акты, счета, отчёты, справки — до <%= maxMb %> МБ на файл. Клиент увидит их в разделе «Документы»<%= ' ' %>и получит письмо, если настроена почта.</p>
+  <label class="dropzone">
+    <input type="file" name="files" multiple required>
+    <span class="dropzone__icon"><%- icon('upload') %></span>
+    <span class="dropzone__text" data-dz-text data-default="Выберите файлы или перетащите их сюда">Выберите файлы или перетащите их сюда</span>
+  </label>
+  <label class="field"><span class="field__label">Комментарий для клиента</span><input class="input" name="comment" maxlength="500"></label>
+  <button class="btn btn--accent btn--sm" type="submit"><%- icon('upload') %>Отправить клиенту</button>
+</form>
+<section class="panel panel--flush">
+  <% if (!files.length) { %><p class="empty-sm pad">Документов пока нет.</p><% } else { %>
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>Файл</th><th>Направление</th><th>Дата</th><th>Размер</th><th>Комментарий</th><th></th></tr></thead>
+    <tbody>
+    <% files.forEach(function(f){ const isNew = f.direction === 'in' && !f.seen; %>
+      <tr class="<%= isNew ? 'row--new' : '' %>">
+        <td><a href="/admin/files/<%= f.id %>"><%- icon('download') %> <%= f.orig_name %></a><% if (isNew) { %> <b class="pill pill--accent">новый</b><% } %></td>
+        <td><%= f.direction === 'in' ? 'от клиента' : 'клиенту' %><br><small class="muted"><%= f.uploaded_by %></small></td>
+        <td class="nowrap"><%= fmtDateTime(f.created_at) %></td>
+        <td class="nowrap"><%= fmtSize(f.size) %></td>
+        <td><%= f.comment %><% if (f.direction === 'out') { %><br><small class="muted"><%= f.seen ? 'клиент скачал' : 'клиент ещё не открыл' %></small><% } %></td>
+        <td class="nowrap">
+          <% if (isNew) { %><form method="post" action="/admin/files/<%= f.id %>/seen" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Отметить как просмотренный"><%- icon('eye') %></button></form><% } %>
+          <form method="post" action="/admin/files/<%= f.id %>/delete" data-confirm="Удалить файл?" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Удалить"><%- icon('trash') %></button></form>
+        </td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+<% } %>
+
+<% if (tab === 'messages') { %>
+<section class="panel chat">
+  <div class="chat__list" data-chat>
+    <% if (!msgs.length) { %><p class="empty-sm">Переписки пока нет. Напишите клиенту — он увидит сообщение в личном кабинете.</p><% } %>
+    <% msgs.forEach(function(m){ %>
+    <div class="msg <%= m.sender === 'staff' ? 'msg--me' : 'msg--them' %>">
+      <div class="msg__bubble"><%- nl2br(m.body) %></div>
+      <div class="msg__meta"><%= m.sender === 'staff' ? (m.staff_name || 'Сотрудник') : c.contact_name %> · <%= fmtDateTime(m.created_at) %><% if (m.sender === 'client' && !m.is_read) { %> · <b>новое</b><% } %></div>
+    </div>
+    <% }) %>
+    <span id="bottom"></span>
+  </div>
+  <form class="chat__form" method="post" action="/admin/clients/<%= c.id %>/messages">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <textarea class="input" name="body" rows="2" maxlength="4000" required placeholder="Сообщение клиенту… (Ctrl+Enter — отправить)" data-enter-submit></textarea>
+    <button class="btn btn--primary" type="submit">Отправить</button>
+  </form>
+</section>
+<% } %>
+<%- include('_bottom') %>
