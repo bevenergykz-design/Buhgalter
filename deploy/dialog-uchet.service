@@ -1,0 +1,22 @@
+[Unit]
+Description=Сайт «Диалог Учёт» (Node.js)
+After=network.target
+
+[Service]
+Type=simple
+User=dialog
+Group=dialog
+WorkingDirectory=/srv/dialog-uchet/app
+EnvironmentFile=/etc/dialog-uchet.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+# защита
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/srv/dialog-uchet/data
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

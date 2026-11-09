@@ -128,7 +128,8 @@ if (require.main === module) {
   ensureAdmin();
   autoBackup();
   setInterval(autoBackup, 6 * 3600 * 1000).unref();
-  app.listen(PORT, () => console.log(`Сайт «Диалог Учёт» запущен: http://localhost:${PORT}  (база: ${DB_PATH})`));
+  const HOST = process.env.HOST || '0.0.0.0'; // на сервере за Nginx — 127.0.0.1
+  app.listen(PORT, HOST, () => console.log(`Сайт «Диалог Учёт» запущен: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}  (данные: ${DATA_DIR})`));
 }
 
 module.exports = { app, ensureAdmin };
