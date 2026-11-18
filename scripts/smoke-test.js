@@ -166,7 +166,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok((await pub.get('/kk')).text.includes('Жаңа тақырып'), 'новый текст на казахской главной');
     const pf = new FormData();
     for (const [k, v] of Object.entries({ _csrf: acsrf, title_ru: 'Изменения по НДС с 2027 года', title_kk: 'ҚҚС өзгерістері', category: 'tax', published_at: '2026-11-09', slug: '', excerpt_ru: 'Кратко', excerpt_kk: 'Қысқаша', body_ru: '<h2>Что изменилось</h2><p>Текст <script>alert(1)</script><a href="javascript:alert(1)">ссылка</a></p>', body_kk: '<p>Мәтін</p>', published: '1' })) pf.append(k, v);
-    pf.append('image', new Blob([fs.readFileSync(path.join(__dirname, '..', 'public', 'img', 'hero.jpg'))], { type: 'image/jpeg' }), 'cover.jpg');
+    pf.append('image', new Blob([fs.readFileSync(path.join(__dirname, '..', 'public', 'img', 'team.jpg'))], { type: 'image/jpeg' }), 'cover.jpg');
     r = await ad.post(AP + '/content/posts/new', { multipart: pf });
     ok(r.status === 302 && r.location.includes('ok=created'), 'создана новость с обложкой');
     r = await pub.get('/novosti/izmeneniya-po-nds-s-2027-goda');

@@ -274,7 +274,7 @@ const DEFAULT_SETTINGS = {
   email: '',
   hours_ru: 'Пн–Пт: с 9:00 до 17:00', hours_kk: 'Дс–Жм: 9:00-ден 17:00-ге дейін',
   socials: { instagram: '', facebook: '', telegram: '', youtube: '', linkedin: '' },
-  images: { hero: '/img/hero.webp', team: '', about: '' },
+  images: { hero: '/img/team.webp', team: '/img/team.jpg', about: '' },
   site_url: '',
   notify_email: '',
   smtp: { host: '', port: 465, secure: true, user: '', pass: '', from: '' },

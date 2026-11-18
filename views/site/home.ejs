@@ -1,7 +1,7 @@
 <%
   locals.jsonLd = {
     '@context': 'https://schema.org', '@type': 'AccountingService',
-    name: sv('company_name'), alternateName: sv('brand'), url: baseUrl + L('/'), logo: baseUrl + '/img/logo-full.png', image: baseUrl + '/img/hero.jpg',
+    name: sv('company_name'), alternateName: sv('brand'), url: baseUrl + L('/'), logo: baseUrl + '/img/logo-1c-full.png', image: baseUrl + '/img/team.jpg',
     taxID: st.bin, foundingDate: st.reg_date, telephone: (st.phones || [])[0], email: st.email || undefined,
     address: (st.offices || []).map(function(o){ return { '@type': 'PostalAddress', addressLocality: o['city_' + lang] || o.city_ru, streetAddress: o['address_' + lang] || o.address_ru, addressCountry: 'KZ' }; }),
     areaServed: { '@type': 'Country', name: 'Kazakhstan' },
@@ -32,7 +32,8 @@
     <div class="hero__media">
       <div class="hero__photo">
         <picture>
-          <% if ((st.images && st.images.hero || '').endsWith('.webp') && st.images.hero === '/img/hero.webp') { %><source srcset="/img/hero.webp" type="image/webp"><img src="/img/hero.jpg" alt="<%= sv('brand') %>" width="720" height="964" fetchpriority="high"><% } else { %><img src="<%= st.images.hero %>" alt="<%= sv('brand') %>" fetchpriority="high"><% } %>
+          <% const heroImg = (st.images && st.images.hero) || '/img/team.webp'; const heroAlt = (lang === 'kk' ? '«Диалог Учёт» командасы' : 'Команда «Диалог Учёт»'); %>
+          <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= heroAlt %>" width="857" height="600" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= heroAlt %>" fetchpriority="high"><% } %>
         </picture>
       </div>
       <div class="hero__card hero__card--top">

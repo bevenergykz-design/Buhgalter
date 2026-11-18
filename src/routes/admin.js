@@ -372,7 +372,7 @@ router.post('/images', F.imageUpload.any(), csrf, (req, res) => {
   for (const k of ['hero', 'team', 'about']) {
     const file = (req.files || []).find((f) => f.fieldname === k);
     if (file) images[k] = `/uploads/${file.filename}`;
-    else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/hero.webp' : '';
+    else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/team.webp' : '';
   }
   setSetting('images', images);
   back(res, AP + '/images');
