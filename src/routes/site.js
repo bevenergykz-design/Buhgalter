@@ -112,7 +112,7 @@ router.get('/spasibo', (req, res) => res.render('site/thanks', { meta: { title: 
 // ---------- robots.txt и sitemap.xml ----------
 router.get('/robots.txt', (req, res) => {
   if (req.lang !== 'ru') return res.status(404).end();
-  res.type('text/plain').send(`User-agent: *\nDisallow: /admin\nDisallow: /cabinet\nDisallow: /kk/cabinet\nDisallow: /api/\nDisallow: /spasibo\nDisallow: /kk/spasibo\n\nSitemap: ${req.baseUrl0}/sitemap.xml\n`);
+  res.type('text/plain').send(`User-agent: *\nDisallow: /cabinet\nDisallow: /kk/cabinet\nDisallow: /api/\nDisallow: /spasibo\nDisallow: /kk/spasibo\n\nSitemap: ${req.baseUrl0}/sitemap.xml\n`);
 });
 
 router.get('/sitemap.xml', (req, res) => {

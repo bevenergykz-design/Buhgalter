@@ -1,5 +1,5 @@
 <%- include('_top') %>
-<form class="panel form-stack" method="post" action="/admin/images" enctype="multipart/form-data">
+<form class="panel form-stack" method="post" action="<%= ab %>/images" enctype="multipart/form-data">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <p class="muted">Форматы JPG, PNG или WEBP, до 8 МБ. Для быстрой загрузки сайта используйте фото шириной 1200–1600 px.</p>
   <div class="img-grid">

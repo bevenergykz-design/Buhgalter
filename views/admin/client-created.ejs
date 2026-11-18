@@ -10,7 +10,7 @@
   <% if (invited) { %><p class="alert alert--info">Письмо с данными для входа отправлено на <%= cl.email %> (если почта SMTP настроена).</p><% } %>
   <div class="actions-row">
     <button class="btn btn--ghost btn--sm" type="button" data-copy-all>Скопировать данные</button>
-    <a class="btn btn--primary btn--sm" href="/admin/clients/<%= cl.id %>">Открыть карточку клиента</a>
+    <a class="btn btn--primary btn--sm" href="<%= ab %>/clients/<%= cl.id %>">Открыть карточку клиента</a>
   </div>
 </section>
 <%- include('_bottom') %>

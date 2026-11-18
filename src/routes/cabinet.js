@@ -7,6 +7,7 @@ const A = require('../auth');
 const { str, isEmail, int } = require('../util');
 const { clientDocsUpload, removeClientFile, sendDownload } = require('../files');
 const { notifyStaff, sendMail, webhook } = require('../notify');
+const { adminPath } = require('../admin-path');
 
 const router = express.Router();
 
@@ -86,7 +87,7 @@ router.post('/register', (req, res) => {
   A.createSession(req, res, 'client', r.lastInsertRowid);
   notifyStaff('Новая регистрация в личном кабинете', [
     ['Компания', v.company], ['БИН/ИИН', v.bin || '—'], ['Контакт', v.contact_name], ['Телефон', v.phone], ['E-mail', v.email],
-  ], `${req.baseUrl0}/admin/clients/${r.lastInsertRowid}`);
+  ], `${req.baseUrl0}${adminPath()}/clients/${r.lastInsertRowid}`);
   webhook('client.registered', { client: { id: r.lastInsertRowid, ...v } });
   res.redirect(res.locals.L('/cabinet'));
 });
@@ -162,7 +163,7 @@ router.post('/documents', need, (req, res, next) => {
     }
     notifyStaff(`Клиент загрузил документы: ${req.cu.company}`, [
       ['Компания', req.cu.company], ['Файлов', String(req.files.length)], ['Файлы', req.files.map((f) => f.originalname).join('\n')], ['Комментарий', comment || '—'],
-    ], `${req.baseUrl0}/admin/clients/${req.cu.id}?tab=files`);
+    ], `${req.baseUrl0}${adminPath()}/clients/${req.cu.id}?tab=files`);
     res.redirect(L('/cabinet/documents?ok=c_uploaded'));
   });
 });
@@ -198,7 +199,7 @@ router.post('/messages', need, csrf, (req, res) => {
   const body = str(req.body.body, 4000);
   if (body && A.rateLimit(`cmsg:${req.cu.id}`, 30, 60 * 60 * 1000)) {
     run("INSERT INTO messages(client_id, sender, body, created_at) VALUES(?, 'client', ?, ?)", req.cu.id, body, now());
-    notifyStaff(`Сообщение от клиента: ${req.cu.company}`, [['Компания', req.cu.company], ['Сообщение', body]], `${req.baseUrl0}/admin/clients/${req.cu.id}?tab=messages`);
+    notifyStaff(`Сообщение от клиента: ${req.cu.company}`, [['Компания', req.cu.company], ['Сообщение', body]], `${req.baseUrl0}${adminPath()}/clients/${req.cu.id}?tab=messages`);
   }
   res.redirect(res.locals.L('/cabinet/messages') + '#bottom');
 });

@@ -1,5 +1,5 @@
 <%- include('_top') %>
-<p class="backlink"><a href="/admin/clients"><%- icon('arrow') %>Все клиенты</a></p>
+<p class="backlink"><a href="<%= ab %>/clients"><%- icon('arrow') %>Все клиенты</a></p>
 <div class="client-head">
   <div>
     <h2 class="client-head__name"><%= c.company %></h2>
@@ -15,7 +15,7 @@
 </nav>
 
 <% if (tab === 'overview') { %>
-<form class="grid-2 grid-2--wide" method="post" action="/admin/clients/<%= c.id %>">
+<form class="grid-2 grid-2--wide" method="post" action="<%= ab %>/clients/<%= c.id %>">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <section class="panel form-stack">
     <h2>Обслуживание</h2>
@@ -47,11 +47,11 @@
   <div class="form-actions"><button class="btn btn--primary" type="submit">Сохранить карточку</button></div>
 </form>
 <div class="danger-zone">
-  <form method="post" action="/admin/clients/<%= c.id %>/password" data-confirm="Сгенерировать клиенту новый пароль? Старый перестанет работать.">
+  <form method="post" action="<%= ab %>/clients/<%= c.id %>/password" data-confirm="Сгенерировать клиенту новый пароль? Старый перестанет работать.">
     <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--outline btn--sm" type="submit"><%- icon('lock') %>Сбросить пароль клиента</button>
   </form>
   <% if (me.role === 'admin') { %>
-  <form method="post" action="/admin/clients/<%= c.id %>/delete" data-confirm="Удалить клиента со всеми документами, отчётами и перепиской? Действие необратимо.">
+  <form method="post" action="<%= ab %>/clients/<%= c.id %>/delete" data-confirm="Удалить клиента со всеми документами, отчётами и перепиской? Действие необратимо.">
     <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить клиента</button>
   </form>
   <% } %>
@@ -60,7 +60,7 @@
 
 <% if (tab === 'reports') { %>
 <datalist id="report-presets"><% E.REPORT_PRESETS.forEach(function(p){ %><option value="<%= p %>"><% }) %></datalist>
-<form class="panel add-report" method="post" action="/admin/clients/<%= c.id %>/reports">
+<form class="panel add-report" method="post" action="<%= ab %>/clients/<%= c.id %>/reports">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <h2>Добавить отчёт или задачу</h2>
   <div class="add-report__grid">
@@ -78,7 +78,7 @@
   <div class="rep-table">
     <div class="rep-grid rep-grid--head"><span>Отчёт</span><span>Период</span><span>Срок</span><span>Статус</span><span>К уплате</span><span>Комментарий</span><span></span><span></span></div>
     <% reports.forEach(function(r){ const od = r.deadline && r.deadline < today && !['submitted','accepted'].includes(r.status); %>
-    <form method="post" action="/admin/reports/<%= r.id %>" class="rep-grid rep-row <%= od ? 'row--overdue' : '' %>">
+    <form method="post" action="<%= ab %>/reports/<%= r.id %>" class="rep-grid rep-row <%= od ? 'row--overdue' : '' %>">
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <span class="rep-title"><input class="input input--sm" name="title" value="<%= r.title %>" list="report-presets" aria-label="Отчёт" title="<%= r.title %>"><% if (od) { %><span class="st st--overdue report-od">просрочен</span><% } %></span>
       <input class="input input--sm" name="period" value="<%= r.period %>" aria-label="Период">
@@ -89,7 +89,7 @@
       <button class="icon-btn icon-btn--sm" type="submit" title="Сохранить" aria-label="Сохранить"><%- icon('check') %></button>
       <button class="icon-btn icon-btn--sm" type="submit" form="del-r<%= r.id %>" title="Удалить" aria-label="Удалить"><%- icon('trash') %></button>
     </form>
-    <form id="del-r<%= r.id %>" method="post" action="/admin/reports/<%= r.id %>/delete" data-confirm="Удалить отчёт «<%= r.title %>»?" hidden><input type="hidden" name="_csrf" value="<%= csrf %>"></form>
+    <form id="del-r<%= r.id %>" method="post" action="<%= ab %>/reports/<%= r.id %>/delete" data-confirm="Удалить отчёт «<%= r.title %>»?" hidden><input type="hidden" name="_csrf" value="<%= csrf %>"></form>
     <% }) %>
   </div>
   <% } %>
@@ -97,7 +97,7 @@
 <% } %>
 
 <% if (tab === 'files') { %>
-<form class="panel upload" method="post" action="/admin/clients/<%= c.id %>/files" enctype="multipart/form-data">
+<form class="panel upload" method="post" action="<%= ab %>/clients/<%= c.id %>/files" enctype="multipart/form-data">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <h2 class="upload__title">Отправить документы клиенту</h2>
   <p class="muted">Акты, счета, отчёты, справки — до <%= maxMb %> МБ на файл. Клиент увидит их в разделе «Документы»<%= ' ' %>и получит письмо, если настроена почта.</p>
@@ -117,14 +117,14 @@
     <tbody>
     <% files.forEach(function(f){ const isNew = f.direction === 'in' && !f.seen; %>
       <tr class="<%= isNew ? 'row--new' : '' %>">
-        <td><a href="/admin/files/<%= f.id %>"><%- icon('download') %> <%= f.orig_name %></a><% if (isNew) { %> <b class="pill pill--accent">новый</b><% } %></td>
+        <td><a href="<%= ab %>/files/<%= f.id %>"><%- icon('download') %> <%= f.orig_name %></a><% if (isNew) { %> <b class="pill pill--accent">новый</b><% } %></td>
         <td><%= f.direction === 'in' ? 'от клиента' : 'клиенту' %><br><small class="muted"><%= f.uploaded_by %></small></td>
         <td class="nowrap"><%= fmtDateTime(f.created_at) %></td>
         <td class="nowrap"><%= fmtSize(f.size) %></td>
         <td><%= f.comment %><% if (f.direction === 'out') { %><br><small class="muted"><%= f.seen ? 'клиент скачал' : 'клиент ещё не открыл' %></small><% } %></td>
         <td class="nowrap">
-          <% if (isNew) { %><form method="post" action="/admin/files/<%= f.id %>/seen" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Отметить как просмотренный"><%- icon('eye') %></button></form><% } %>
-          <form method="post" action="/admin/files/<%= f.id %>/delete" data-confirm="Удалить файл?" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Удалить"><%- icon('trash') %></button></form>
+          <% if (isNew) { %><form method="post" action="<%= ab %>/files/<%= f.id %>/seen" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Отметить как просмотренный"><%- icon('eye') %></button></form><% } %>
+          <form method="post" action="<%= ab %>/files/<%= f.id %>/delete" data-confirm="Удалить файл?" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-btn icon-btn--sm" type="submit" title="Удалить"><%- icon('trash') %></button></form>
         </td>
       </tr>
     <% }) %>
@@ -147,7 +147,7 @@
     <% }) %>
     <span id="bottom"></span>
   </div>
-  <form class="chat__form" method="post" action="/admin/clients/<%= c.id %>/messages">
+  <form class="chat__form" method="post" action="<%= ab %>/clients/<%= c.id %>/messages">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <textarea class="input" name="body" rows="2" maxlength="4000" required placeholder="Сообщение клиенту… (Ctrl+Enter — отправить)" data-enter-submit></textarea>
     <button class="btn btn--primary" type="submit">Отправить</button>

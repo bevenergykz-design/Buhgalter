@@ -1,5 +1,5 @@
 <%- include('_top') %>
-<form class="panel form-stack form-narrow" method="post" action="/admin/profile">
+<form class="panel form-stack form-narrow" method="post" action="<%= ab %>/profile">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <h2>Смена пароля</h2>
   <p class="muted"><%= me.name %> · <%= me.email %></p>

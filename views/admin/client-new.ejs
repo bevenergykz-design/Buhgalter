@@ -1,7 +1,7 @@
 <%- include('_top') %>
-<p class="backlink"><a href="/admin/clients"><%- icon('arrow') %>Все клиенты</a></p>
+<p class="backlink"><a href="<%= ab %>/clients"><%- icon('arrow') %>Все клиенты</a></p>
 <% if (error) { %><p class="alert alert--err"><%= error %></p><% } %>
-<form class="panel form-stack form-narrow" method="post" action="/admin/clients">
+<form class="panel form-stack form-narrow" method="post" action="<%= ab %>/clients">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <input type="hidden" name="lead_id" value="<%= v.lead_id || '' %>">
   <p class="muted">Клиент получит доступ в личный кабинет. Пароль будет сгенерирован автоматически и показан после создания.</p>

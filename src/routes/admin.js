@@ -12,6 +12,8 @@ const E = require('../admin-entities');
 const F = require('../files');
 const { sendMail, webhook, TYPE_NAMES } = require('../notify');
 const { DEFAULT_SETTINGS } = require('../seed');
+const { adminPath } = require('../admin-path');
+const AP = adminPath(); // секретный адрес панели, например /admin-k7x2m9q4wz
 
 const router = express.Router();
 const OK = {
@@ -35,14 +37,14 @@ router.use((req, res, next) => {
     if (u) { req.staff = u; req.sess = sess; }
   }
   Object.assign(res.locals, {
-    me: req.staff || null, csrf: sess ? sess.csrf : '', E, adminPath: req.path,
+    me: req.staff || null, csrf: sess ? sess.csrf : '', E, adminPath: req.path, ab: AP,
     ok: OK[req.query.ok] || '', err: ERR[req.query.err] || '',
     opt: (list, v) => (list.find((x) => x[0] === v) || [, v])[1],
   });
   next();
 });
 
-const needStaff = (req, res, next) => (req.staff ? next() : res.redirect('/admin/login'));
+const needStaff = (req, res, next) => (req.staff ? next() : res.redirect(AP + '/login'));
 const needAdmin = (req, res, next) => (req.staff && req.staff.role === 'admin' ? next() : res.status(403).type('text').send('Раздел доступен только администратору.'));
 const csrf = (req, res, next) => (A.checkCsrf(req, req.sess) ? next() : res.status(403).type('text').send('Сессия устарела. Обновите страницу и повторите действие.'));
 const back = (res, url, key = 'saved') => res.redirect(url + (url.includes('?') ? '&' : '?') + 'ok=' + key);
@@ -62,7 +64,7 @@ function render(res, view, data) {
 
 // ---------- вход ----------
 router.get('/login', (req, res) => {
-  if (req.staff) return res.redirect('/admin');
+  if (req.staff) return res.redirect(AP + '');
   res.render('admin/login', { error: '', email: '' });
 });
 router.post('/login', (req, res) => {
@@ -75,11 +77,11 @@ router.post('/login', (req, res) => {
   A.resetRate(`slogin:${req.ip}`);
   A.createSession(req, res, 'staff', u.id);
   run('UPDATE staff SET last_login = ? WHERE id = ?', now(), u.id);
-  res.redirect('/admin');
+  res.redirect(AP + '');
 });
 router.post('/logout', (req, res) => {
   if (req.sess && A.checkCsrf(req, req.sess)) A.destroySession(req, res, 'staff');
-  res.redirect('/admin/login');
+  res.redirect(AP + '/login');
 });
 
 router.use(needStaff);
@@ -147,11 +149,11 @@ router.post('/leads/:id', csrf, (req, res) => {
   const assigned = int(req.body.assigned_id) || null;
   run('UPDATE leads SET status = ?, notes = ?, assigned_id = ?, updated_at = ? WHERE id = ?', status, str(req.body.notes, 5000), assigned, now(), id);
   webhook('lead.updated', { lead: get('SELECT * FROM leads WHERE id = ?', id) });
-  back(res, `/admin/leads/${id}`);
+  back(res, `${AP}/leads/${id}`);
 });
 router.post('/leads/:id/delete', csrf, needAdmin, (req, res) => {
   run('DELETE FROM leads WHERE id = ?', int(req.params.id));
-  back(res, '/admin/leads', 'deleted');
+  back(res, AP + '/leads', 'deleted');
 });
 
 // =====================================================================
@@ -234,10 +236,10 @@ router.get('/clients/:id', loadClient, (req, res) => {
 router.post('/clients/:id', csrf, loadClient, (req, res) => {
   const b = req.body; const c = req.cl;
   const bin = str(b.bin, 20).replace(/\s/g, '');
-  if (bin && !/^\d{12}$/.test(bin)) return backErr(res, `/admin/clients/${c.id}`, 'bin');
+  if (bin && !/^\d{12}$/.test(bin)) return backErr(res, `${AP}/clients/${c.id}`, 'bin');
   const email = str(b.email, 160).toLowerCase();
-  if (!isEmail(email)) return backErr(res, `/admin/clients/${c.id}`, 'email');
-  if (email !== c.email && get('SELECT 1 FROM clients WHERE email = ?', email)) return backErr(res, `/admin/clients/${c.id}`, 'exists');
+  if (!isEmail(email)) return backErr(res, `${AP}/clients/${c.id}`, 'email');
+  if (email !== c.email && get('SELECT 1 FROM clients WHERE email = ?', email)) return backErr(res, `${AP}/clients/${c.id}`, 'exists');
   const status = E.CLIENT_STATUS.some((x) => x[0] === b.status) ? b.status : c.status;
   run(`UPDATE clients SET company = ?, contact_name = ?, phone = ?, email = ?, bin = ?, entity_type = ?, tax_regime = ?, status = ?,
        accountant_id = ?, tariff = ?, contract_no = ?, contract_date = ?, internal_notes = ? WHERE id = ?`,
@@ -246,7 +248,7 @@ router.post('/clients/:id', csrf, loadClient, (req, res) => {
   E.TAX_REGIMES.some((x) => x[0] === b.tax_regime) ? b.tax_regime : c.tax_regime,
   status, int(b.accountant_id) || null, int(b.tariff) || null, str(b.contract_no, 60), str(b.contract_date, 10), str(b.internal_notes, 10000), c.id);
   if (status !== c.status) webhook('client.status', { client_id: c.id, company: c.company, from: c.status, to: status });
-  back(res, `/admin/clients/${c.id}`);
+  back(res, `${AP}/clients/${c.id}`);
 });
 
 router.post('/clients/:id/password', csrf, loadClient, (req, res) => {
@@ -259,7 +261,7 @@ router.post('/clients/:id/password', csrf, loadClient, (req, res) => {
 router.post('/clients/:id/delete', csrf, needAdmin, loadClient, (req, res) => {
   for (const f of all('SELECT * FROM client_files WHERE client_id = ?', req.cl.id)) F.removeClientFile(f);
   run('DELETE FROM clients WHERE id = ?', req.cl.id);
-  back(res, '/admin/clients', 'deleted');
+  back(res, AP + '/clients', 'deleted');
 });
 
 // ---- отчётность клиента ----
@@ -271,10 +273,10 @@ function reportFields(b) {
 }
 router.post('/clients/:id/reports', csrf, loadClient, (req, res) => {
   const r = reportFields(req.body);
-  if (!r.title) return backErr(res, `/admin/clients/${req.cl.id}?tab=reports`, 'required');
+  if (!r.title) return backErr(res, `${AP}/clients/${req.cl.id}?tab=reports`, 'required');
   run('INSERT INTO client_reports(client_id, title, period, deadline, status, amount, note, updated_at) VALUES(?,?,?,?,?,?,?,?)',
     req.cl.id, r.title, r.period, r.deadline, r.status, r.amount, r.note, now());
-  back(res, `/admin/clients/${req.cl.id}?tab=reports`, 'added');
+  back(res, `${AP}/clients/${req.cl.id}?tab=reports`, 'added');
 });
 router.post('/reports/:rid', csrf, (req, res) => {
   const old = get('SELECT * FROM client_reports WHERE id = ?', int(req.params.rid));
@@ -286,12 +288,12 @@ router.post('/reports/:rid', csrf, (req, res) => {
     const c = get('SELECT email, contact_name, company FROM clients WHERE id = ?', old.client_id);
     sendMail(c.email, `Отчёт сдан: ${old.title}`, `Здравствуйте, ${c.contact_name}!\n\nОтчёт «${old.title}»${r.period ? ' за ' + r.period : ''} — статус: ${E.REPORT_STATUS.find((x) => x[0] === r.status)[1].toLowerCase()}.\n\nПодробности — в личном кабинете: ${req.baseUrl0}/cabinet/reports`);
   }
-  back(res, `/admin/clients/${old.client_id}?tab=reports`);
+  back(res, `${AP}/clients/${old.client_id}?tab=reports`);
 });
 router.post('/reports/:rid/delete', csrf, (req, res) => {
   const old = get('SELECT * FROM client_reports WHERE id = ?', int(req.params.rid));
   if (old) run('DELETE FROM client_reports WHERE id = ?', old.id);
-  back(res, `/admin/clients/${old ? old.client_id : ''}?tab=reports`, 'deleted');
+  back(res, `${AP}/clients/${old ? old.client_id : ''}?tab=reports`, 'deleted');
 });
 
 // ---- файлы клиента ----
@@ -299,7 +301,7 @@ router.post('/clients/:id/files', loadClient, (req, res) => {
   req.uploadClientId = req.cl.id;
   F.clientDocsUpload()(req, res, (err) => {
     if (!A.checkCsrf(req, req.sess)) { (req.files || []).forEach((f) => fs.unlink(f.path, () => {})); return res.status(403).type('text').send('Сессия устарела.'); }
-    const url = `/admin/clients/${req.cl.id}?tab=files`;
+    const url = `${AP}/clients/${req.cl.id}?tab=files`;
     if (err || !req.files || !req.files.length) return backErr(res, url, 'upload');
     const comment = str(req.body.comment, 500);
     for (const f of req.files) {
@@ -320,12 +322,12 @@ router.get('/files/:fid', (req, res) => {
 router.post('/files/:fid/seen', csrf, (req, res) => {
   const f = get('SELECT * FROM client_files WHERE id = ?', int(req.params.fid));
   if (f) run('UPDATE client_files SET seen = 1 WHERE id = ?', f.id);
-  back(res, `/admin/clients/${f ? f.client_id : ''}?tab=files`);
+  back(res, `${AP}/clients/${f ? f.client_id : ''}?tab=files`);
 });
 router.post('/files/:fid/delete', csrf, (req, res) => {
   const f = get('SELECT * FROM client_files WHERE id = ?', int(req.params.fid));
   if (f) { F.removeClientFile(f); run('DELETE FROM client_files WHERE id = ?', f.id); }
-  back(res, `/admin/clients/${f ? f.client_id : ''}?tab=files`, 'deleted');
+  back(res, `${AP}/clients/${f ? f.client_id : ''}?tab=files`, 'deleted');
 });
 
 // ---- сообщения ----
@@ -337,7 +339,7 @@ router.post('/clients/:id/messages', csrf, loadClient, (req, res) => {
     sendMail(req.cl.email, 'Новое сообщение от бухгалтера «Диалог Учёт»',
       `Здравствуйте, ${req.cl.contact_name}!\n\n${req.staff.name} написал(а) вам сообщение:\n\n${body}\n\nОтветить: ${req.baseUrl0}/cabinet/messages`);
   }
-  res.redirect(`/admin/clients/${req.cl.id}?tab=messages#bottom`);
+  res.redirect(`${AP}/clients/${req.cl.id}?tab=messages#bottom`);
 });
 
 // =====================================================================
@@ -360,7 +362,7 @@ router.post('/texts', csrf, (req, res) => {
     }
   });
   resetTextsCache();
-  back(res, `/admin/texts?grp=${encodeURIComponent(req.body.grp || '')}`);
+  back(res, `${AP}/texts?grp=${encodeURIComponent(req.body.grp || '')}`);
 });
 
 // ---- изображения сайта ----
@@ -373,7 +375,7 @@ router.post('/images', F.imageUpload.any(), csrf, (req, res) => {
     else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/hero.webp' : '';
   }
   setSetting('images', images);
-  back(res, '/admin/images');
+  back(res, AP + '/images');
 });
 
 // ---- универсальный редактор разделов ----
@@ -428,7 +430,7 @@ router.post('/content/:ent/:id', entityOr404, F.imageUpload.any(), csrf, (req, r
   const old = isNew ? null : get(`SELECT * FROM ${ent.table} WHERE id = ?`, int(req.params.id));
   if (!isNew && !old) return res.status(404).type('text').send('Запись не найдена');
   const v = collectEntity(ent, req.body, req.files, old);
-  const listUrl = `/admin/content/${req.entKey}`;
+  const listUrl = `${AP}/content/${req.entKey}`;
   const formUrl = isNew ? `${listUrl}/new` : `${listUrl}/${old.id}`;
   for (const f of ent.fields) {
     if (!f.required) continue;
@@ -458,7 +460,7 @@ router.post('/content/:ent/:id', entityOr404, F.imageUpload.any(), csrf, (req, r
 router.post('/content/:ent/:id/delete', entityOr404, csrf, (req, res) => {
   const row = get(`SELECT * FROM ${req.ent.table} WHERE id = ?`, int(req.params.id));
   if (row && !row.system) run(`DELETE FROM ${req.ent.table} WHERE id = ?`, row.id);
-  back(res, `/admin/content/${req.entKey}`, 'deleted');
+  back(res, `${AP}/content/${req.entKey}`, 'deleted');
 });
 
 // ---- калькулятор ----
@@ -472,7 +474,7 @@ router.post('/tariffs', csrf, (req, res) => {
   const t = {};
   for (const [k] of TARIFF_FIELDS) t[k] = Math.max(0, int(String(req.body[k] || '').replace(/\s/g, ''), 0));
   setSetting('tariffs', t);
-  back(res, '/admin/tariffs');
+  back(res, AP + '/tariffs');
 });
 
 // ---- контакты и реквизиты ----
@@ -495,7 +497,7 @@ router.post('/contacts', csrf, (req, res) => {
   const socials = {};
   for (const k of Object.keys(DEFAULT_SETTINGS.socials)) { const u = str(b[`soc_${k}`], 300); socials[k] = /^https?:\/\//.test(u) ? u : ''; }
   setSetting('socials', socials);
-  back(res, '/admin/contacts');
+  back(res, AP + '/contacts');
 });
 
 // ---- настройки и интеграции ----
@@ -513,22 +515,22 @@ router.post('/settings', csrf, (req, res) => {
   if (b.tg_clear) setSetting('telegram', { token: '', chat_id: '' });
   setSetting('webhook_url', /^https?:\/\//.test(b.webhook_url || '') ? str(b.webhook_url, 500) : '');
   setSetting('analytics', { ga4: str(b.ga4, 40).replace(/[^\w-]/g, ''), gtm: str(b.gtm, 40).replace(/[^\w-]/g, ''), gsc: str(b.gsc, 200).replace(/[^\w-]/g, '') });
-  back(res, '/admin/settings');
+  back(res, AP + '/settings');
 });
 router.post('/settings/test-mail', csrf, async (req, res) => {
   const s = settings();
-  if (!s.smtp || !s.smtp.host || !s.smtp.user) return backErr(res, '/admin/settings', 'smtp');
+  if (!s.smtp || !s.smtp.host || !s.smtp.user) return backErr(res, AP + '/settings', 'smtp');
   const r = await sendMail(s.notify_email || req.staff.email, 'Проверка почты — сайт «Диалог Учёт»', 'Если вы получили это письмо, уведомления о заявках настроены правильно.');
-  r.ok ? back(res, '/admin/settings', 'mail_ok') : backErr(res, '/admin/settings', 'mail');
+  r.ok ? back(res, AP + '/settings', 'mail_ok') : backErr(res, AP + '/settings', 'mail');
 });
 
 // ---- сотрудники ----
 router.get('/staff', (req, res) => render(res, 'staff', { title: 'Сотрудники', list: all('SELECT s.*, (SELECT COUNT(*) FROM clients c WHERE c.accountant_id = s.id) AS clients FROM staff s ORDER BY active DESC, name'), created: null }));
 router.post('/staff', csrf, (req, res) => {
   const name = str(req.body.name, 120), email = str(req.body.email, 160).toLowerCase(), role = req.body.role === 'admin' ? 'admin' : 'accountant';
-  if (!name || !email) return backErr(res, '/admin/staff', 'required');
-  if (!isEmail(email)) return backErr(res, '/admin/staff', 'email');
-  if (get('SELECT 1 FROM staff WHERE email = ?', email)) return backErr(res, '/admin/staff', 'exists');
+  if (!name || !email) return backErr(res, AP + '/staff', 'required');
+  if (!isEmail(email)) return backErr(res, AP + '/staff', 'email');
+  if (get('SELECT 1 FROM staff WHERE email = ?', email)) return backErr(res, AP + '/staff', 'exists');
   const pass = A.randomPassword(12);
   run('INSERT INTO staff(name, email, pass_hash, role, created_at) VALUES(?,?,?,?,?)', name, email, A.hashPassword(pass), role, now());
   render(res, 'staff', { title: 'Сотрудники', list: all('SELECT s.*, (SELECT COUNT(*) FROM clients c WHERE c.accountant_id = s.id) AS clients FROM staff s ORDER BY active DESC, name'), created: { name, email, pass } });
@@ -538,10 +540,10 @@ router.post('/staff/:id', csrf, (req, res) => {
   if (!u) return res.status(404).end();
   const active = req.body.active ? 1 : 0;
   const role = req.body.role === 'admin' ? 'admin' : 'accountant';
-  if (u.id === req.staff.id && (!active || role !== 'admin')) return backErr(res, '/admin/staff', 'self');
+  if (u.id === req.staff.id && (!active || role !== 'admin')) return backErr(res, AP + '/staff', 'self');
   run('UPDATE staff SET name = ?, role = ?, active = ? WHERE id = ?', str(req.body.name, 120) || u.name, role, active, u.id);
   if (!active) A.destroyUserSessions('staff', u.id);
-  back(res, '/admin/staff');
+  back(res, AP + '/staff');
 });
 router.post('/staff/:id/password', csrf, (req, res) => {
   const u = get('SELECT * FROM staff WHERE id = ?', int(req.params.id));
@@ -555,11 +557,11 @@ router.post('/staff/:id/password', csrf, (req, res) => {
 // ---- мой профиль (любой сотрудник) ----
 router.get('/profile', (req, res) => render(res, 'profile', { title: 'Мой профиль' }));
 router.post('/profile', csrf, (req, res) => {
-  if (!A.verifyPassword(req.body.current || '', req.staff.pass_hash)) return backErr(res, '/admin/profile', 'current');
-  if (String(req.body.password || '').length < 8) return backErr(res, '/admin/profile', 'pass');
+  if (!A.verifyPassword(req.body.current || '', req.staff.pass_hash)) return backErr(res, AP + '/profile', 'current');
+  if (String(req.body.password || '').length < 8) return backErr(res, AP + '/profile', 'pass');
   run('UPDATE staff SET pass_hash = ? WHERE id = ?', A.hashPassword(req.body.password), req.staff.id);
   A.destroyUserSessions('staff', req.staff.id, req.sess.id);
-  back(res, '/admin/profile', 'pass');
+  back(res, AP + '/profile', 'pass');
 });
 
 // ---- резервные копии ----

@@ -5,7 +5,7 @@
     taxID: st.bin, foundingDate: st.reg_date, telephone: (st.phones || [])[0], email: st.email || undefined,
     address: (st.offices || []).map(function(o){ return { '@type': 'PostalAddress', addressLocality: o['city_' + lang] || o.city_ru, streetAddress: o['address_' + lang] || o.address_ru, addressCountry: 'KZ' }; }),
     areaServed: { '@type': 'Country', name: 'Kazakhstan' },
-    openingHours: 'Mo-Fr 09:00-16:00',
+    openingHours: 'Mo-Fr 09:00-17:00',
     founder: { '@type': 'Person', name: sv('director') },
   };
   const featIcons = ['people', 'layers', 'briefcase', 'clock', 'lock', 'handshake', 'grad'];

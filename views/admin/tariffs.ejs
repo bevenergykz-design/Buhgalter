@@ -1,6 +1,6 @@
 <%- include('_top') %>
 <div class="grid-2 grid-2--wide">
-  <form class="panel form-stack" method="post" action="/admin/tariffs">
+  <form class="panel form-stack" method="post" action="<%= ab %>/tariffs">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <h2>Цены калькулятора, ₸ в месяц</h2>
     <p class="muted">Итог = базовая стоимость (ИП или ТОО) + надбавка за ОУР + сотрудники × цена + надбавка за объём документов + выбранные опции.</p>

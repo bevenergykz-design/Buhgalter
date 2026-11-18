@@ -272,7 +272,7 @@ const DEFAULT_SETTINGS = {
   phones: ['+7 771 037 7827', '+7 708 466 6708'],
   whatsapp: '+7 771 037 7827',
   email: '',
-  hours_ru: 'Пн–Пт: с 9:00 до 16:00', hours_kk: 'Дс–Жм: 9:00-ден 16:00-ге дейін',
+  hours_ru: 'Пн–Пт: с 9:00 до 17:00', hours_kk: 'Дс–Жм: 9:00-ден 17:00-ге дейін',
   socials: { instagram: '', facebook: '', telegram: '', youtube: '', linkedin: '' },
   images: { hero: '/img/hero.webp', team: '', about: '' },
   site_url: '',

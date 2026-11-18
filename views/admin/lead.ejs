@@ -1,5 +1,5 @@
 <%- include('_top') %>
-<p class="backlink"><a href="/admin/leads"><%- icon('arrow') %>Все заявки</a></p>
+<p class="backlink"><a href="<%= ab %>/leads"><%- icon('arrow') %>Все заявки</a></p>
 <div class="grid-2 grid-2--wide">
   <section class="panel">
     <div class="panel__head"><h2><%= TYPE_NAMES[lead.type] || lead.type %></h2><span class="st st--<%= lead.status %>"><%= opt(E.LEAD_STATUS, lead.status) %></span></div>
@@ -15,13 +15,13 @@
     </dl>
     <div class="actions-row">
       <% if (cl) { %>
-        <a class="btn btn--ghost btn--sm" href="/admin/clients/<%= cl.id %>"><%- icon('briefcase') %>Карточка клиента: <%= cl.company %></a>
+        <a class="btn btn--ghost btn--sm" href="<%= ab %>/clients/<%= cl.id %>"><%- icon('briefcase') %>Карточка клиента: <%= cl.company %></a>
       <% } else { %>
-        <a class="btn btn--primary btn--sm" href="/admin/clients/new?lead=<%= lead.id %>"><%- icon('plus') %>Создать клиента из заявки</a>
+        <a class="btn btn--primary btn--sm" href="<%= ab %>/clients/new?lead=<%= lead.id %>"><%- icon('plus') %>Создать клиента из заявки</a>
       <% } %>
     </div>
   </section>
-  <form class="panel form-stack" method="post" action="/admin/leads/<%= lead.id %>">
+  <form class="panel form-stack" method="post" action="<%= ab %>/leads/<%= lead.id %>">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <h2>Обработка</h2>
     <label class="field"><span class="field__label">Статус</span>
@@ -35,7 +35,7 @@
   </form>
 </div>
 <% if (me.role === 'admin') { %>
-<form method="post" action="/admin/leads/<%= lead.id %>/delete" data-confirm="Удалить заявку безвозвратно?" class="danger-zone">
+<form method="post" action="<%= ab %>/leads/<%= lead.id %>/delete" data-confirm="Удалить заявку безвозвратно?" class="danger-zone">
   <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить заявку</button>
 </form>
 <% } %>

@@ -72,7 +72,7 @@
   }
 
   // предупреждение о несохранённых изменениях в формах редактирования
-  $$('form.entity-form, form[action="/admin/texts"], form[action="/admin/contacts"]').forEach(function (f) {
+  $$('form.entity-form, form[action$="/texts"], form[action$="/contacts"]').forEach(function (f) {
     var dirty = false;
     f.addEventListener('input', function () { dirty = true; });
     f.addEventListener('submit', function () { dirty = false; });

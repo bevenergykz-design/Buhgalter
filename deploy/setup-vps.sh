@@ -81,7 +81,7 @@ certbot --nginx --non-interactive --agree-tos --redirect -m "$ADMIN_EMAIL" -d "$
   || echo "!!! Сертификат не выпущен. Проверьте DNS (A-записи $DOMAIN и www.$DOMAIN) и запустите: certbot --nginx -d $DOMAIN -d www.$DOMAIN"
 
 echo
-echo "Готово. Сайт: https://$DOMAIN   Панель: https://$DOMAIN/admin"
+echo "Готово. Сайт: https://$DOMAIN   (адрес панели управления — в файле первого входа ниже)"
 if [ -f "$DATA_DIR/FIRST-ADMIN.txt" ]; then
   echo "Данные первого входа в панель:"; cat "$DATA_DIR/FIRST-ADMIN.txt"
   echo "После входа смените пароль и удалите файл: rm $DATA_DIR/FIRST-ADMIN.txt"

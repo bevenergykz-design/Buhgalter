@@ -1,6 +1,6 @@
 <%- include('_top') %>
-<p class="backlink"><a href="/admin/content/<%= entKey %>"><%- icon('arrow') %><%= ent.title %></a><% if (!isNew && ent.publicUrl && row.slug) { %> · <a href="<%= ent.publicUrl(row) %>" target="_blank" rel="noopener">Открыть на сайте <%- icon('external') %></a><% } %></p>
-<form class="panel form-stack entity-form" method="post" action="/admin/content/<%= entKey %>/<%= isNew ? 'new' : row.id %>" enctype="multipart/form-data">
+<p class="backlink"><a href="<%= ab %>/content/<%= entKey %>"><%- icon('arrow') %><%= ent.title %></a><% if (!isNew && ent.publicUrl && row.slug) { %> · <a href="<%= ent.publicUrl(row) %>" target="_blank" rel="noopener">Открыть на сайте <%- icon('external') %></a><% } %></p>
+<form class="panel form-stack entity-form" method="post" action="<%= ab %>/content/<%= entKey %>/<%= isNew ? 'new' : row.id %>" enctype="multipart/form-data">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <% ent.fields.forEach(function(f){
        const val = function(n){ const v = row[n]; return v === undefined || v === null ? '' : v; };
@@ -67,7 +67,7 @@
   <div class="sticky-save"><button class="btn btn--primary" type="submit"><%= isNew ? 'Создать' : 'Сохранить' %></button></div>
 </form>
 <% if (!isNew && !row.system) { %>
-<form method="post" action="/admin/content/<%= entKey %>/<%= row.id %>/delete" data-confirm="Удалить безвозвратно?" class="danger-zone">
+<form method="post" action="<%= ab %>/content/<%= entKey %>/<%= row.id %>/delete" data-confirm="Удалить безвозвратно?" class="danger-zone">
   <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--danger btn--sm" type="submit"><%- icon('trash') %>Удалить <%= ent.one %></button>
 </form>
 <% } %>

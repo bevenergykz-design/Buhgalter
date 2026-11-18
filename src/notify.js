@@ -70,7 +70,7 @@ function leadNotify(lead, baseUrl) {
   if (lead.message) rows.push(['Сообщение', lead.message]);
   if (lead.details) rows.push(['Детали', lead.details]);
   rows.push(['Страница', lead.page || '—'], ['Язык', lead.lang === 'kk' ? 'казахский' : 'русский']);
-  notifyStaff(`Новая заявка с сайта: ${TYPE_NAMES[lead.type] || lead.type}`, rows, `${baseUrl}/admin/leads/${lead.id}`);
+  notifyStaff(`Новая заявка с сайта: ${TYPE_NAMES[lead.type] || lead.type}`, rows, `${baseUrl}${require('./admin-path').adminPath()}/leads/${lead.id}`);
   webhook('lead.created', { lead });
 }
 

@@ -1,5 +1,5 @@
 <%- include('_top') %>
-<form class="form-stack" method="post" action="/admin/settings">
+<form class="form-stack" method="post" action="<%= ab %>/settings">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <section class="panel form-stack">
     <h2>Куда приходят заявки</h2>
@@ -49,7 +49,7 @@
   </section>
   <div class="sticky-save"><button class="btn btn--primary" type="submit">Сохранить настройки</button></div>
 </form>
-<form method="post" action="/admin/settings/test-mail" class="danger-zone">
+<form method="post" action="<%= ab %>/settings/test-mail" class="danger-zone">
   <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--outline btn--sm" type="submit"><%- icon('mail') %>Отправить тестовое письмо</button>
 </form>
 <%- include('_bottom') %>

@@ -79,14 +79,17 @@ app.use((req, res, next) => {
 });
 
 // ---------- маршруты ----------
-app.use('/admin', require('./src/routes/admin'));
+// Панель управления — по секретному адресу (src/admin-path.js); /admin открывает обычную 404
+const { adminPath } = require('./src/admin-path');
+const ADMIN = adminPath();
+app.use(ADMIN, require('./src/routes/admin'));
 app.use('/cabinet', require('./src/routes/cabinet'));
 app.use('/', require('./src/routes/site'));
 
 // 404
 app.use((req, res) => {
   res.status(404);
-  if (req.originalUrl.startsWith('/admin')) return res.type('text').send('Не найдено');
+  if (req.originalUrl.startsWith(ADMIN + '/')) return res.type('text').send('Не найдено');
   res.render('site/404', { meta: { title: res.locals.s.not_found_title }, noindex: true });
 });
 // ошибки
@@ -105,7 +108,7 @@ function ensureAdmin() {
   run('INSERT INTO staff(name, email, pass_hash, role, created_at) VALUES(?,?,?,?,?)', 'Администратор', email, auth.hashPassword(pass), 'admin', now());
   if (!process.env.ADMIN_PASSWORD) {
     const f = path.join(DATA_DIR, 'FIRST-ADMIN.txt');
-    fs.writeFileSync(f, `Вход в панель управления: /admin\nE-mail: ${email}\nПароль: ${pass}\n\nСмените пароль после первого входа и удалите этот файл.\n`);
+    fs.writeFileSync(f, `Вход в панель управления: ${ADMIN}\nE-mail: ${email}\nПароль: ${pass}\n\nСмените пароль после первого входа и удалите этот файл.\n`);
     console.log(`[setup] Создан администратор ${email}. Пароль записан в ${f}`);
   }
 }
@@ -129,7 +132,7 @@ if (require.main === module) {
   autoBackup();
   setInterval(autoBackup, 6 * 3600 * 1000).unref();
   const HOST = process.env.HOST || '0.0.0.0'; // на сервере за Nginx — 127.0.0.1
-  app.listen(PORT, HOST, () => console.log(`Сайт «Диалог Учёт» запущен: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}  (данные: ${DATA_DIR})`));
+  app.listen(PORT, HOST, () => console.log(`Сайт «Диалог Учёт» запущен: http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}  (данные: ${DATA_DIR})\nПанель управления: ${ADMIN}`));
 }
 
 module.exports = { app, ensureAdmin };

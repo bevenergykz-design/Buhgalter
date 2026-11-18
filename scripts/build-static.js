@@ -65,8 +65,6 @@ function write(urlPath, html) {
         write(pre + p, r.text.replace('</body>', BLOCK + '</body>')); n++;
       }
     }
-    const adm = await get('/admin/login');
-    write('/admin/login', adm.text.replace('</body>', BLOCK + '</body>')); n++;
     const nf = await get('/stranica-ne-naydena');
     fs.writeFileSync(path.join(DIST, '404.html'), nf.text);
     fs.writeFileSync(path.join(DIST, 'sitemap.xml'), (await get('/sitemap.xml')).text);
@@ -77,7 +75,6 @@ function write(urlPath, html) {
     fs.writeFileSync(path.join(DIST, '_redirects'), [
       ...cabRoutes.map((r) => `/cabinet${r}  /cabinet/login  302`),
       ...cabRoutes.map((r) => `/kk/cabinet${r}  /kk/cabinet/login  302`),
-      '/admin  /admin/login  302',
       wa ? `/whatsapp  https://wa.me/${wa}  302` : '',
     ].filter(Boolean).join('\n') + '\n');
     console.log(`Готово: ${n} страниц в ${DIST} (адрес: ${SITE_URL})`);
