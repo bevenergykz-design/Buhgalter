@@ -86,7 +86,7 @@ const ENTITIES = {
   },
 };
 
-const LEAD_STATUS = [['new', 'Новая'], ['in_progress', 'В работе'], ['won', 'Стал клиентом'], ['lost', 'Отказ'], ['spam', 'Спам']];
+const LEAD_STATUS = [['new', 'Новая'], ['in_progress', 'В работе'], ['paid', 'Оплачено'], ['won', 'Стал клиентом'], ['lost', 'Отказ'], ['spam', 'Спам']];
 const CLIENT_STATUS = [['pending', 'Заявка на подключение'], ['active', 'Обслуживается'], ['paused', 'Приостановлен'], ['closed', 'Договор завершён']];
 const REPORT_STATUS = [['planned', 'Запланирован'], ['in_progress', 'В работе'], ['waiting', 'Ждём документы'], ['submitted', 'Сдан'], ['accepted', 'Принят']];
 const REPORT_PRESETS = [

@@ -361,7 +361,7 @@ router.post('/texts', csrf, (req, res) => {
   tx(() => {
     for (const k of keys) {
       if (!get('SELECT 1 FROM texts WHERE key = ?', k)) continue;
-      run('UPDATE texts SET ru = ?, kk = ? WHERE key = ?', str(req.body[`ru__${k}`], 20000), str(req.body[`kk__${k}`], 20000), k);
+      run('UPDATE texts SET ru = ?, kk = ?, en = ? WHERE key = ?', str(req.body[`ru__${k}`], 20000), str(req.body[`kk__${k}`], 20000), str(req.body[`en__${k}`], 20000), k);
     }
   });
   resetTextsCache();
@@ -410,7 +410,7 @@ router.get('/content/:ent/:id', entityOr404, (req, res) => {
 function collectEntity(ent, body, files, old) {
   const vals = {};
   for (const f of ent.fields) {
-    const names = f.bi ? [`${f.name}_ru`, `${f.name}_kk`] : [f.name];
+    const names = f.bi ? [`${f.name}_ru`, `${f.name}_kk`, `${f.name}_en`] : [f.name];
     for (const n of names) {
       let v = body[n];
       if (f.type === 'check') v = v ? 1 : 0;
@@ -443,7 +443,7 @@ router.post('/content/:ent/:id', entityOr404, F.imageUpload.any(), csrf, (req, r
   if ('slug' in v) {
     if (old && old.system) v.slug = old.slug;
     else v.slug = slugify(v.slug || v[ent.slugFrom] || '');
-    const reserved = ['admin', 'cabinet', 'api', 'kk', 'uslugi', 'novosti', 'o-kompanii', 'kontakty', 'spasibo', 'sitemap', 'robots', 'whatsapp', 'css', 'js', 'img', 'uploads'];
+    const reserved = ['admin', 'cabinet', 'api', 'kk', 'en', 'oplata', 'uslugi', 'novosti', 'o-kompanii', 'kontakty', 'spasibo', 'sitemap', 'robots', 'whatsapp', 'css', 'js', 'img', 'uploads'];
     if (req.entKey === 'pages' && reserved.includes(v.slug)) v.slug += '-1';
     const dupe = get(`SELECT id FROM ${ent.table} WHERE slug = ? AND id != ?`, v.slug, old ? old.id : 0);
     if (dupe) return backErr(res, formUrl, 'slug');
@@ -484,8 +484,9 @@ router.post('/tariffs', csrf, (req, res) => {
 router.get('/contacts', (req, res) => render(res, 'contacts', { title: 'Контакты и реквизиты', st: settings() }));
 router.post('/contacts', csrf, (req, res) => {
   const b = req.body;
-  for (const k of ['company_name_ru', 'company_name_kk', 'brand_ru', 'brand_kk', 'brand_sub_ru', 'brand_sub_kk', 'director_ru', 'director_kk',
-    'legal_address_ru', 'legal_address_kk', 'hours_ru', 'hours_kk']) setSetting(k, str(b[k], 500));
+  for (const base of ['company_name', 'brand', 'brand_sub', 'director', 'legal_address', 'hours']) {
+    for (const l of ['ru', 'kk', 'en']) setSetting(`${base}_${l}`, str(b[`${base}_${l}`], 500));
+  }
   setSetting('bin', str(b.bin, 20).replace(/\s/g, ''));
   setSetting('reg_date', /^\d{4}-\d{2}-\d{2}$/.test(b.reg_date || '') ? b.reg_date : settings().reg_date);
   setSetting('phones', String(b.phones || '').split(/\r?\n/).map((x) => x.trim()).filter(Boolean).slice(0, 6));
@@ -493,7 +494,8 @@ router.post('/contacts', csrf, (req, res) => {
   setSetting('email', str(b.email, 160));
   const offices = [];
   for (let i = 0; i < 6; i++) {
-    const o = { city_ru: str(b[`o${i}_city_ru`], 80), city_kk: str(b[`o${i}_city_kk`], 80), address_ru: str(b[`o${i}_address_ru`], 300), address_kk: str(b[`o${i}_address_kk`], 300) };
+    const o = {};
+    for (const l of ['ru', 'kk', 'en']) { o[`city_${l}`] = str(b[`o${i}_city_${l}`], 80); o[`address_${l}`] = str(b[`o${i}_address_${l}`], 300); }
     if (o.city_ru || o.address_ru) offices.push(o);
   }
   setSetting('offices', offices);
@@ -517,7 +519,7 @@ router.post('/settings', csrf, (req, res) => {
   setSetting('telegram', { token: b.tg_token ? str(b.tg_token, 200) : (cur.telegram || {}).token || '', chat_id: str(b.tg_chat, 100) });
   if (b.tg_clear) setSetting('telegram', { token: '', chat_id: '' });
   setSetting('webhook_url', /^https?:\/\//.test(b.webhook_url || '') ? str(b.webhook_url, 500) : '');
-  setSetting('analytics', { ga4: str(b.ga4, 40).replace(/[^\w-]/g, ''), gtm: str(b.gtm, 40).replace(/[^\w-]/g, ''), gsc: str(b.gsc, 200).replace(/[^\w-]/g, '') });
+  setSetting('analytics', { ga4: str(b.ga4, 40).replace(/[^\w-]/g, ''), gtm: str(b.gtm, 40).replace(/[^\w-]/g, ''), gsc: str(b.gsc, 200).replace(/[^\w-]/g, ''), yandex: str(b.yandex, 100).replace(/[^\w-]/g, ''), metrika: str(b.metrika, 20).replace(/\D/g, '') });
   back(res, AP + '/settings');
 });
 router.post('/settings/test-mail', csrf, async (req, res) => {

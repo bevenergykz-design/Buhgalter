@@ -6,18 +6,16 @@
   <form class="panel form-stack" method="post" action="<%= ab %>/texts">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <input type="hidden" name="grp" value="<%= grp %>">
-    <div class="panel__head"><h2><%= grp %></h2><div class="lang-heads"><span>Русский</span><span>Қазақша</span></div></div>
+    <div class="panel__head"><h2><%= grp %></h2><div class="lang-heads lang-heads--3"><span>Русский</span><span>Қазақша</span><span>English</span></div></div>
     <% items.forEach(function(it){ %>
     <div class="bi-field">
       <input type="hidden" name="key" value="<%= it.key %>">
       <div class="bi-field__label"><%= it.label %></div>
-      <div class="bi-field__inputs">
+      <div class="bi-field__inputs bi-field__inputs--3">
         <% if (it.multiline) { %>
-          <textarea class="input" name="ru__<%= it.key %>" rows="<%= Math.min(14, Math.max(3, Math.ceil(it.ru.length / 70) + it.ru.split('\n').length)) %>"><%= it.ru %></textarea>
-          <textarea class="input" name="kk__<%= it.key %>" rows="<%= Math.min(14, Math.max(3, Math.ceil(it.kk.length / 70) + it.kk.split('\n').length)) %>"><%= it.kk %></textarea>
+          <% ['ru', 'kk', 'en'].forEach(function(l){ const v = it[l] || ''; %><textarea class="input" name="<%= l %>__<%= it.key %>" lang="<%= l %>" rows="<%= Math.min(14, Math.max(3, Math.ceil(it.ru.length / 55) + it.ru.split('\n').length)) %>"><%= v %></textarea><% }) %>
         <% } else { %>
-          <input class="input" name="ru__<%= it.key %>" value="<%= it.ru %>">
-          <input class="input" name="kk__<%= it.key %>" value="<%= it.kk %>">
+          <% ['ru', 'kk', 'en'].forEach(function(l){ %><input class="input" name="<%= l %>__<%= it.key %>" lang="<%= l %>" value="<%= it[l] || '' %>"><% }) %>
         <% } %>
       </div>
     </div>

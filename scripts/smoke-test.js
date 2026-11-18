@@ -66,7 +66,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     const kk = await pub.get('/kk');
     ok(kk.text.includes('lang="kk"') && kk.text.includes('Қазақстандағы'), 'казахская главная');
     const sm = await pub.get('/sitemap.xml');
-    ok(sm.text.includes('<urlset') && sm.text.includes('/kk/uslugi'), 'sitemap.xml с обеими языковыми версиями');
+    ok(sm.text.includes('<urlset') && sm.text.includes('/kk/uslugi') && sm.text.includes('/en/oplata'), 'sitemap.xml со всеми языковыми версиями');
     const robots = (await pub.get('/robots.txt')).text;
     ok(robots.includes('Disallow: /cabinet') && !robots.includes('admin'), 'robots.txt не раскрывает адрес панели');
 
@@ -84,6 +84,24 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok(r.status === 200, 'ловушка для ботов отвечает «ок», но не сохраняет');
     r = await pub.post('/api/lead', { form: { type: 'request', name: 'Без JS', phone: '+7 701 111 2235', consent: '1' } });
     ok(r.status === 302 && r.location === '/spasibo', 'отправка формы без JavaScript → страница «спасибо»');
+
+    console.log('Оплата услуг и английская версия');
+    const PH = { accept: 'application/json', 'x-forwarded-for': '10.0.0.7' };
+    ok((await pub.get('/oplata')).status === 200 && (await pub.get('/kk/oplata')).status === 200 && (await pub.get('/en/oplata')).status === 200, 'страница «Оплата услуг» на трёх языках');
+    ok((await pub.get('/pravila-oplaty')).text.includes('Возврат денежных средств') && (await pub.get('/en/pravila-oplaty')).text.includes('Refunds'), 'правила оплаты и возврата (RU и EN)');
+    r = await pub.post('/api/lead', { form: { type: 'pay', name: 'Плательщик', phone: '+7 701 222 3344', amount: '', consent: '1', ts }, headers: PH });
+    ok(r.status === 400, 'оплата без суммы отклоняется');
+    r = await pub.post('/api/lead', { form: { type: 'pay', name: 'Плательщик', phone: '+7 701 222 3344', amount: '45 000', contract: 'Договор 12/26', consent: '1', ts }, headers: PH });
+    ok(r.status === 200 && JSON.parse(r.text).ok, 'запрос оплаты через Kaspi принят');
+    r = await pub.post('/api/lead', { form: { type: 'invoice', company: 'ТОО «Тест»', bin: '123', name: 'Бухгалтер', phone: '+7 701 222 3345', consent: '1', ts }, headers: PH });
+    ok(r.status === 400, 'счёт с неверным БИН отклоняется');
+    r = await pub.post('/en/api/lead', { form: { type: 'invoice', company: 'Test LLP', bin: '123456789012', name: 'Accountant', phone: '+7 701 222 3346', consent: '1', ts }, headers: PH });
+    ok(r.status === 200, 'запрос счёта с английской версии принят');
+    const en = await pub.get('/en');
+    ok(en.text.includes('lang="en"') && en.text.includes('Professional accounting services') && en.text.includes('og:locale" content="en_US'), 'английская главная');
+    ok((await pub.get('/en/uslugi')).text.includes('Tax reporting') && (await pub.get('/en/kontakty')).text.includes('Almaty'), 'английские услуги и контакты');
+    ok(home.text.includes('hreflang="en"') && home.text.includes('logo-lockup.png'), 'hreflang en и полный логотип в шапке');
+    ok(!home.text.includes('hero__card') && !home.text.includes('preview-bar'), 'на фото первого экрана нет плашек, нет жёлтой полосы');
 
     console.log('Регистрация и кабинет клиента (этап 2: включается настройкой)');
     require('../src/db').setSetting('features', { cabinet: true });

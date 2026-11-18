@@ -4,6 +4,7 @@
 <section class="section section--first">
   <div class="container about">
     <div class="about__text prose">
+      <% if (st.images && st.images.team) { %><figure class="team-photo team-photo--plain"><img src="<%= st.images.team %>" alt="<%= s.hero_photo_alt %>" width="857" height="600" loading="lazy"><figcaption><%= s.hero_photo_alt %></figcaption></figure><% } %>
       <% paragraphs(t('about.lead')).forEach(function(p, i){ %><p class="<%= i === 0 ? 'lead' : '' %>"><%= p %></p><% }) %>
     </div>
     <aside class="about__aside">

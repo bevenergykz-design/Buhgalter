@@ -3,8 +3,7 @@
   <div class="container footer__grid">
     <div class="footer__col footer__about">
       <a class="brand brand--light" href="<%= L('/') %>">
-        <img class="brand__mark" src="/img/logo-1c-mark-white.png" alt="1С:БухОбслуживание" width="74" height="34" loading="lazy">
-        <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= sv('brand_sub') %></span></span>
+        <img class="brand__logo" src="/img/logo-lockup-white.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="1000" height="146">
       </a>
       <p class="footer__company"><%= sv('company_name') %></p>
       <p class="footer__bin"><%= s.bin %> <%= st.bin %></p>
@@ -18,6 +17,7 @@
         <li><a href="<%= L('/novosti') %>"><%= s.nav_news %></a></li>
         <li><a href="<%= L('/o-kompanii') %>"><%= s.nav_about %></a></li>
         <li><a href="<%= L('/kontakty') %>"><%= s.nav_contacts %></a></li>
+        <li><a href="<%= L('/oplata') %>"><%= s.nav_pay %></a></li>
         <% menuPages.forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>
       </ul>
     </div>
@@ -27,7 +27,7 @@
         <% if (cabinetOn) { %><li><a href="<%= L('/cabinet') %>"><%= s.cabinet %></a></li><% } %>
         <li><button type="button" class="link-btn" data-lead="consult"><%= s.btn_consult %></button></li>
         <li><button type="button" class="link-btn" data-lead="callback"><%= s.btn_callback %></button></li>
-        <% footerPages.forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>
+        <% footerPages.filter(function(p){ return p.slug !== 'pravila-oplaty' && p.slug !== 'politika-konfidencialnosti'; }).forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>
       </ul>
     </div>
     <div class="footer__col">
@@ -49,6 +49,7 @@
       <span>© <%= new Date().getFullYear() %> <%= sv('company_name') %>. <%= s.footer_rights %></span>
       <span class="footer__bottom-links">
         <a href="<%= L('/politika-konfidencialnosti') %>"><%= s.privacy %></a>
+        <a href="<%= L('/pravila-oplaty') %>"><%= s.pay_rules %></a>
       </span>
     </div>
   </div>
@@ -79,12 +80,13 @@
 <% if (staticPreview) { %>
 <!-- описание формы для Netlify Forms (только в статическом предпросмотре) -->
 <form name="lead" data-netlify="true" netlify-honeypot="website" hidden>
-  <% ['type', 'name', 'phone', 'email', 'company', 'message', 'service', 'page', 'ts', 'consent', 'website', 'entity', 'regime', 'employees', 'docs', 'vat', 'ved', 'bank', 'price'].forEach(function(n){ %><input type="text" name="<%= n %>"><% }) %>
+  <% ['type', 'name', 'phone', 'email', 'company', 'message', 'service', 'page', 'ts', 'consent', 'website', 'entity', 'regime', 'employees', 'docs', 'vat', 'ved', 'bank', 'price', 'amount', 'bin', 'contract'].forEach(function(n){ %><input type="text" name="<%= n %>"><% }) %>
 </form>
 <% } %>
 <script>window.SITE = <%- JSON.stringify({
   lang: lang, static: staticPreview,
   forms: { consult: [s.form_consult_title, s.form_consult_text], request: [s.form_request_title, s.form_request_text], callback: [s.form_callback_title, s.form_callback_text] },
+  errBin: s.err_bin, errAmount: s.err_amount, wa: { calc: s.wa_calc, ip: s.wa_ip, too: s.wa_too, emp: s.wa_emp, docs: s.wa_docs },
   sending: s.f_sending, send: s.f_send, err: s.f_err, okTitle: s.f_ok_title, okText: s.f_ok_text,
 }).replace(/</g, '\\u003c') %>;</script>
 <script src="/js/site.js?v=<%= locals.assetV || 1 %>" defer></script>

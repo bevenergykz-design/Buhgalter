@@ -71,8 +71,8 @@ app.use((req, res, next) => {
     L, curPath: pathOnly, baseUrl: base,
     langUrl: (l) => (l === 'ru' ? '' : `/${l}`) + (pathOnly === '/' && l !== 'ru' ? '' : pathOnly) || '/',
     absUrl: (l, p = pathOnly) => base + (l === 'ru' ? '' : `/${l}`) + (p === '/' && l !== 'ru' ? '' : p),
-    menuPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_menu = 1 ORDER BY sort, id'),
-    footerPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_footer = 1 ORDER BY sort, id'),
+    menuPages: all('SELECT slug, title_ru, title_kk, title_en FROM pages WHERE published = 1 AND in_menu = 1 ORDER BY sort, id'),
+    footerPages: all('SELECT slug, title_ru, title_kk, title_en FROM pages WHERE published = 1 AND in_footer = 1 ORDER BY sort, id'),
     meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1', cabinetOn: require('./src/features').cabinetOn(),
   });
   next();

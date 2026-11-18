@@ -18,7 +18,7 @@ function seoMeta(res, key, extra = {}) {
 // ---------- Главная ----------
 router.get('/', (req, res) => {
   const categories = all('SELECT * FROM service_categories ORDER BY sort, id');
-  for (const c of categories) c.services = all('SELECT title_ru, title_kk FROM services WHERE category_id = ? AND active = 1 ORDER BY sort, id LIMIT 4', c.id);
+  for (const c of categories) c.services = all('SELECT title_ru, title_kk, title_en FROM services WHERE category_id = ? AND active = 1 ORDER BY sort, id LIMIT 4', c.id);
   res.render('site/home', {
     meta: seoMeta(res, 'home'), page: 'home', categories,
     faq: all('SELECT * FROM faq WHERE published = 1 ORDER BY sort, id'),
@@ -63,9 +63,10 @@ router.get('/novosti/:slug', (req, res, next) => {
 // ---------- О компании, Контакты ----------
 router.get('/o-kompanii', (req, res) => res.render('site/about', { meta: seoMeta(res, 'about'), page: 'about' }));
 router.get('/kontakty', (req, res) => res.render('site/contacts', { meta: seoMeta(res, 'contacts'), page: 'contacts' }));
+router.get('/oplata', (req, res) => res.render('site/payment', { meta: seoMeta(res, 'pay'), page: 'pay' }));
 
 // ---------- Приём заявок ----------
-const TYPES = ['consult', 'request', 'callback', 'calc', 'contact'];
+const TYPES = ['consult', 'request', 'callback', 'calc', 'contact', 'pay', 'invoice'];
 router.post('/api/lead', (req, res) => {
   const s = strings(req.lang);
   const wantsJson = (req.headers.accept || '').includes('application/json');
@@ -88,6 +89,17 @@ router.post('/api/lead', (req, res) => {
 
   let details = '';
   if (b.service) details = `Услуга: ${str(b.service, 200)}`;
+  if (type === 'pay') {
+    const amount = int(String(b.amount || '').replace(/\D/g, ''), 0);
+    if (!amount) return fail(400, s.err_amount);
+    details = `Оплата через Kaspi Pay: ${amount.toLocaleString('ru-RU')} ₸; номер Kaspi: ${phone}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
+  }
+  if (type === 'invoice') {
+    const bin = String(b.bin || '').replace(/\D/g, '');
+    if (bin.length !== 12) return fail(400, s.err_bin);
+    if (!str(b.company, 200)) return fail(400, s.f_err_required);
+    details = `Счёт на оплату: БИН/ИИН ${bin}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
+  }
   if (type === 'calc') {
     const p = { entity: b.entity === 'ip' ? 'ip' : 'too', regime: b.regime === 'our' ? 'our' : 'simplified', employees: int(b.employees), docs: int(b.docs), vat: !!b.vat, ved: !!b.ved, bank: !!b.bank };
     const price = calcPrice(settings().tariffs, p);
@@ -112,14 +124,14 @@ router.get('/spasibo', (req, res) => res.render('site/thanks', { meta: { title: 
 // ---------- robots.txt и sitemap.xml ----------
 router.get('/robots.txt', (req, res) => {
   if (req.lang !== 'ru') return res.status(404).end();
-  res.type('text/plain').send(`User-agent: *\nDisallow: /cabinet\nDisallow: /kk/cabinet\nDisallow: /api/\nDisallow: /spasibo\nDisallow: /kk/spasibo\n\nSitemap: ${req.baseUrl0}/sitemap.xml\n`);
+  res.type('text/plain').send(`User-agent: *\n${LANGS.map((l) => (l === 'ru' ? '' : `/${l}`)).map((p) => `Disallow: ${p}/cabinet\nDisallow: ${p}/spasibo\n`).join('')}Disallow: /api/\n\nSitemap: ${req.baseUrl0}/sitemap.xml\n`);
 });
 
 router.get('/sitemap.xml', (req, res) => {
   if (req.lang !== 'ru') return res.status(404).end();
   const base = req.baseUrl0;
   const urls = [
-    ['/', null, '1.0'], ['/uslugi', null, '0.9'], ['/novosti', null, '0.7'], ['/o-kompanii', null, '0.6'], ['/kontakty', null, '0.6'],
+    ['/', null, '1.0'], ['/uslugi', null, '0.9'], ['/novosti', null, '0.7'], ['/o-kompanii', null, '0.6'], ['/kontakty', null, '0.6'], ['/oplata', null, '0.5'],
   ];
   for (const p of all('SELECT slug, updated_at FROM pages WHERE published = 1')) urls.push([`/${p.slug}`, p.updated_at, '0.4']);
   for (const p of all('SELECT slug, updated_at FROM posts WHERE published = 1 AND published_at <= ?', now())) urls.push([`/novosti/${p.slug}`, p.updated_at, '0.6']);

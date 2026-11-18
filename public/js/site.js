@@ -78,6 +78,8 @@
     return out;
   }
   document.addEventListener('input', function (e) {
+    if (e.target.matches('[data-bin]')) e.target.value = e.target.value.replace(/\D/g, '').slice(0, 12);
+    if (e.target.matches('[data-amount]')) { var d = e.target.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 9); e.target.value = d.replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
     if (e.target.matches('[data-phone]')) e.target.value = formatPhone(e.target.value);
   });
   document.addEventListener('focusin', function (e) {
@@ -98,6 +100,10 @@
     if (!name.value.trim()) { name.classList.add('is-invalid'); ok = false; }
     if (phone.value.replace(/\D/g, '').length < 11) { phone.classList.add('is-invalid'); ok = false; }
     if (consent && !consent.checked) { consent.closest('.check').classList.add('is-invalid'); ok = false; }
+    var amount = form.elements.amount, bin = form.elements.bin, company = form.elements.company;
+    if (amount && !amount.value.replace(/\D/g, '')) { amount.classList.add('is-invalid'); ok = false; }
+    if (bin && bin.value.replace(/\D/g, '').length !== 12) { bin.classList.add('is-invalid'); ok = false; }
+    if (company && company.required && !company.value.trim()) { company.classList.add('is-invalid'); ok = false; }
     var em = form.elements.email;
     if (em && em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em.value)) { em.classList.add('is-invalid'); ok = false; }
     return ok;
@@ -162,9 +168,8 @@
       fill(emp); fill(docs);
       if (wa) {
         var base = wa.getAttribute('href').split('?')[0];
-        var txt = (S.lang === 'kk' ? 'Сәлеметсіз бе! Калькулятор бойынша есеп: ' : 'Здравствуйте! Расчёт по калькулятору: ') +
-          (ent === 'ip' ? (S.lang === 'kk' ? 'ЖК' : 'ИП') : (S.lang === 'kk' ? 'ЖШС' : 'ТОО')) + ', ' + emp.value + (S.lang === 'kk' ? ' қызметкер, ' : ' сотр., ') +
-          (steps[n(docs.value)] || '') + (S.lang === 'kk' ? ' құжат — ' : ' док. — ') + priceEl.textContent + ' ₸';
+        var W = S.wa || {};
+        var txt = W.calc + (ent === 'ip' ? W.ip : W.too) + ', ' + emp.value + W.emp + (steps[n(docs.value)] || '') + W.docs + priceEl.textContent + ' ₸';
         wa.setAttribute('href', base + '?text=' + encodeURIComponent(txt));
       }
     };

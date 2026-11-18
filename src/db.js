@@ -96,6 +96,16 @@ CREATE INDEX IF NOT EXISTS idx_files_client ON client_files(client_id);
 CREATE INDEX IF NOT EXISTS idx_msg_client ON messages(client_id);
 `);
 
+// ---------- миграция: английская версия (колонки _en) ----------
+const EN_COLS = {
+  texts: ['en'], service_categories: ['title_en', 'intro_en'], services: ['title_en', 'desc_en', 'price_en'],
+  posts: ['title_en', 'excerpt_en', 'body_en'], pages: ['title_en', 'body_en', 'desc_en'], reviews: ['text_en'], faq: ['q_en', 'a_en'],
+};
+for (const [tbl, cols] of Object.entries(EN_COLS)) {
+  const have = new Set(db.prepare(`PRAGMA table_info(${tbl})`).all().map((c) => c.name));
+  for (const c of cols) if (!have.has(c)) db.exec(`ALTER TABLE ${tbl} ADD COLUMN ${c} TEXT NOT NULL DEFAULT ''`);
+}
+
 // ---------- маленькие обёртки ----------
 const all = (sql, ...p) => db.prepare(sql).all(...p);
 const get = (sql, ...p) => db.prepare(sql).get(...p);
@@ -128,10 +138,11 @@ function setSetting(key, value) {
 let textsCache = null;
 function texts() {
   if (!textsCache) {
-    textsCache = { ru: {}, kk: {} };
-    for (const r of all('SELECT key, ru, kk FROM texts')) {
+    textsCache = { ru: {}, kk: {}, en: {} };
+    for (const r of all('SELECT key, ru, kk, en FROM texts')) {
       textsCache.ru[r.key] = r.ru;
       textsCache.kk[r.key] = r.kk || r.ru;
+      textsCache.en[r.key] = r.en || r.ru;
     }
   }
   return textsCache;

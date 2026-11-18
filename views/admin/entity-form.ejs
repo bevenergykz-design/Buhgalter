@@ -8,10 +8,10 @@
     <% if (f.bi) { %>
       <div class="bi-field <%= f.type === 'html' ? 'bi-field--stack' : '' %>">
         <div class="bi-field__label"><%= f.label %><%= f.required ? ' *' : '' %></div>
-        <div class="bi-field__inputs">
-          <% ['ru', 'kk'].forEach(function(l){ const n = f.name + '_' + l; %>
+        <div class="bi-field__inputs <%= f.type === 'html' ? '' : 'bi-field__inputs--3' %>">
+          <% ['ru', 'kk', 'en'].forEach(function(l){ const n = f.name + '_' + l; %>
           <div class="bi-field__one">
-            <span class="lang-chip"><%= l === 'ru' ? 'RU' : 'KZ' %></span>
+            <span class="lang-chip"><%= { ru: 'RU', kk: 'KZ', en: 'EN' }[l] %></span>
             <% if (f.type === 'textarea') { %><textarea class="input" name="<%= n %>" rows="4" <%= f.required && l === 'ru' ? 'required' : '' %>><%= val(n) %></textarea>
             <% } else if (f.type === 'html') { %>
               <div class="editor" data-editor>

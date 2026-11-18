@@ -20,7 +20,7 @@
       <tr data-href="<%= ab %>/leads/<%= l.id %>" class="<%= l.status === 'new' ? 'row--new' : '' %>">
         <td class="muted"><%= l.id %></td>
         <td class="nowrap"><%= fmtDateTime(l.created_at) %></td>
-        <td><%= TYPE_NAMES[l.type] || l.type %><% if (l.lang === 'kk') { %> <span class="tag">KZ</span><% } %></td>
+        <td><%= TYPE_NAMES[l.type] || l.type %><% if (l.lang !== 'ru') { %> <span class="tag"><%= l.lang === 'kk' ? 'KZ' : l.lang.toUpperCase() %></span><% } %></td>
         <td><a href="<%= ab %>/leads/<%= l.id %>"><%= l.name %></a><br><span class="nowrap"><%= l.phone %></span><% if (l.company) { %><br><small class="muted"><%= l.company %></small><% } %></td>
         <td class="cell-clip"><%= l.details || l.message %></td>
         <td><%= l.staff_name || '—' %></td>

@@ -2,9 +2,9 @@
 // Строки интерфейса (кнопки, подписи форм, кабинет). Тексты контента редактируются в панели управления.
 // Чтобы добавить язык: добавить код в LANGS и объект с переводами ниже.
 
-const LANGS = ['ru', 'kk'];
-const LANG_LABELS = { ru: 'Рус', kk: 'Қаз' };
-const HTML_LANG = { ru: 'ru', kk: 'kk' };
+const LANGS = ['ru', 'kk', 'en'];
+const LANG_LABELS = { ru: 'Рус', kk: 'Қаз', en: 'Eng' };
+const HTML_LANG = { ru: 'ru', kk: 'kk', en: 'en' };
 
 const S = {
   ru: {
@@ -144,6 +144,98 @@ const S = {
   },
 };
 
-function strings(lang) { return S[lang] || S.ru; }
+// ---------- Новые строки (оплата, факты первого экрана, калькулятор WhatsApp) и английская версия ----------
+Object.assign(S.ru, {
+  nav_pay: 'Оплата услуг', lang_name: 'Русский', btn_calc: 'Рассчитать стоимость',
+  fact_since: 'С 2018 года', fact_since_sub: 'ведём учёт бизнеса',
+  fact_partner: 'Партнёр 1С:БухОбслуживание', fact_partner_sub: 'единые стандарты качества',
+  fact_offices: 'Алматы и Павлодар', fact_offices_sub: 'работаем по всему Казахстану',
+  fact_resp: '100% ответственность', fact_resp_sub: 'за штрафы по нашей вине — по договору',
+  hero_photo_alt: 'Команда «Диалог Учёт»', regime_our_short: 'ОУР',
+  wa_calc: 'Здравствуйте! Расчёт по калькулятору: ', wa_ip: 'ИП', wa_too: 'ТОО', wa_emp: ' сотр., ', wa_docs: ' док. — ',
+  f_amount: 'Сумма к оплате, ₸', f_contract: 'Услуга или номер договора', f_bin: 'БИН / ИИН', f_contact: 'Контактное лицо', f_company_name: 'Наименование ИП или ТОО',
+  btn_pay_kaspi: 'Запросить оплату в Kaspi', btn_invoice: 'Запросить счёт на оплату',
+  pay_ok_title: 'Запрос отправлен', pay_ok_text: 'Спасибо! Сотрудник выставит оплату или счёт в рабочее время и свяжется с вами.',
+  pay_for_people: 'Для физических лиц', pay_for_business: 'Для ИП и ТОО', pay_rules: 'Правила оплаты и возврата',
+  pay_steps: ['Заполните форму: имя, номер телефона Kaspi, услуга и сумма.', 'Сотрудник выставит удалённую оплату в Kaspi Pay на ваш номер.', 'Подтвердите оплату в приложении Kaspi — электронный чек придёт автоматически.'],
+  pay_steps_b: ['Заполните форму с реквизитами компании.', 'Бухгалтерия выставит счёт на оплату.', 'После оказания услуг вы получите акт выполненных работ и счёт-фактуру.'],
+  preview_bar: 'Предварительный просмотр сайта.', err_bin: 'БИН / ИИН должен состоять из 12 цифр.', err_amount: 'Укажите сумму к оплате.',
+  team_caption_default: 'Команда «Диалог Учёт»',
+});
+Object.assign(S.kk, {
+  nav_pay: 'Қызметтерге төлем', lang_name: 'Қазақша', btn_calc: 'Құнын есептеу',
+  fact_since: '2018 жылдан', fact_since_sub: 'бизнес есебін жүргіземіз',
+  fact_partner: '1С:БухОбслуживание серіктесі', fact_partner_sub: 'бірыңғай сапа стандарттары',
+  fact_offices: 'Алматы және Павлодар', fact_offices_sub: 'бүкіл Қазақстан бойынша жұмыс істейміз',
+  fact_resp: '100% жауапкершілік', fact_resp_sub: 'біздің кінәміз бойынша айыппұлдар үшін — шарт бойынша',
+  hero_photo_alt: '«Диалог Учёт» командасы', regime_our_short: 'ЖБР',
+  wa_calc: 'Сәлеметсіз бе! Калькулятор бойынша есеп: ', wa_ip: 'ЖК', wa_too: 'ЖШС', wa_emp: ' қызметкер, ', wa_docs: ' құжат — ',
+  f_amount: 'Төлем сомасы, ₸', f_contract: 'Қызмет немесе шарт нөмірі', f_bin: 'БСН / ЖСН', f_contact: 'Байланысатын тұлға', f_company_name: 'ЖК немесе ЖШС атауы',
+  btn_pay_kaspi: 'Kaspi арқылы төлем сұрату', btn_invoice: 'Төлем шотын сұрату',
+  pay_ok_title: 'Сұрау жіберілді', pay_ok_text: 'Рақмет! Қызметкер жұмыс уақытында төлемді немесе шотты жазып, сізбен байланысады.',
+  pay_for_people: 'Жеке тұлғалар үшін', pay_for_business: 'ЖК және ЖШС үшін', pay_rules: 'Төлем және қайтару ережелері',
+  pay_steps: ['Нысанды толтырыңыз: аты-жөні, Kaspi телефон нөмірі, қызмет және сома.', 'Қызметкер сіздің нөміріңізге Kaspi Pay арқылы қашықтан төлем жазады.', 'Kaspi қосымшасында төлемді растаңыз — электрондық чек автоматты түрде келеді.'],
+  pay_steps_b: ['Компания деректемелерімен нысанды толтырыңыз.', 'Бухгалтерия төлем шотын жазады.', 'Қызмет көрсетілгеннен кейін орындалған жұмыстар актісін және шот-фактураны аласыз.'],
+  preview_bar: 'Сайттың алдын ала көрінісі.', err_bin: 'БСН / ЖСН 12 цифрдан тұруы керек.', err_amount: 'Төлем сомасын көрсетіңіз.',
+  team_caption_default: '«Диалог Учёт» командасы',
+});
+
+S.en = {
+  nav_home: 'Home', nav_services: 'Services', nav_news: 'News & Insights', nav_news_short: 'News', nav_about: 'About us', nav_contacts: 'Contacts', nav_pay: 'Payment', btn_calc: 'Calculate the cost',
+  cabinet: 'Client portal', cabinet_login: 'Client portal login', staff_login: 'Staff login', lang_name: 'English',
+  menu: 'Menu', close: 'Close', write_whatsapp: 'Message us on WhatsApp', call_us: 'Call us',
+  btn_consult: 'Free consultation', btn_request: 'Submit a request', btn_callback: 'Request a call back', btn_consult_short: 'Get advice',
+  btn_all_services: 'All services', btn_more: 'Learn more', btn_read: 'Read', btn_back_news: 'All articles',
+  form_consult_title: 'Free consultation', form_consult_text: 'Describe your question and a specialist will contact you during business hours.',
+  form_request_title: 'Service request', form_request_text: 'Leave your details and our manager will prepare a proposal for your business.',
+  form_callback_title: 'Call back', form_callback_text: 'Leave your number and we will call you back during business hours.',
+  f_name: 'Your name', f_phone: 'Phone', f_email: 'Email', f_company: 'Company or sole proprietor', f_message: 'Briefly describe your request', f_service: 'Service',
+  f_consent_html: 'I agree to the processing of my personal data in accordance with the <a href="{privacy}" target="_blank">privacy policy</a>',
+  f_send: 'Send', f_sending: 'Sending…',
+  f_ok_title: 'Request sent', f_ok_text: 'Thank you! We have received your request and will contact you during business hours.',
+  f_err: 'The request could not be sent. Please check the fields or call us.', f_err_required: 'Please enter your name and phone number and confirm your consent.',
+  f_err_rate: 'Too many requests from your address. Please try again later or call us.',
+  calc_entity: 'Legal form', calc_ip: 'Sole proprietor (IP)', calc_too: 'Limited liability partnership (LLP)',
+  calc_ip_short: 'IP', calc_too_short: 'LLP',
+  calc_regime: 'Tax regime', calc_simplified: 'Simplified declaration', calc_our: 'General regime (with VAT)',
+  calc_employees: 'Employees on staff', calc_docs: 'Documents and transactions per month', calc_docs_hint: 'E-invoices, acts, waybills, bank statements',
+  calc_docs_steps: ['up to 10', 'up to 50', 'up to 150', 'over 150'],
+  calc_options: 'Additional options', calc_opt_vat: 'VAT payer (form 300.00)', calc_opt_ved: 'Foreign trade: export / import / EAEU (form 328.00)', calc_opt_bank: 'Online banking and payment orders',
+  calc_result: 'Service fee', calc_from: 'from', calc_per_month: '₸ / month', calc_send: 'Get an exact quote', calc_people: 'people',
+  steps_label: 'Step',
+  verify_director: 'Director', verify_reg: 'Registration date', verify_activity: 'Business activity', verify_bin: 'Business ID (BIN)',
+  services_request: 'Submit a request', services_consult: 'Get advice', services_price: 'Price',
+  news_all: 'All', news_empty: 'No articles yet.', news_cats: {
+    company: 'Company news', tax: 'Tax legislation', labor: 'Labour legislation',
+    tips: 'Tips for entrepreneurs', explain: 'Accounting explained', clients: 'Materials for clients',
+  },
+  about_requisites: 'Company details', contacts_legal: 'Registered address', contacts_offices: 'Offices', contacts_phones: 'Phones', contacts_email: 'Email',
+  contacts_hours: 'Working hours', contacts_socials: 'Follow us', contacts_form_title: 'Write to us', contacts_map: 'Open map',
+  office: 'Office', footer_nav: 'Navigation', footer_contacts: 'Contacts', footer_clients: 'For clients', footer_rights: 'All rights reserved.',
+  privacy: 'Privacy policy', bin: 'BIN', not_found_title: 'Page not found', not_found_text: 'The page may have been removed or the address is incorrect.', to_home: 'Back to home',
+  breadcrumbs_home: 'Home', csrf_error: 'Your session has expired. Please refresh the page and try again.',
+  fact_since: 'Since 2018', fact_since_sub: 'keeping books for businesses',
+  fact_partner: '1C:BukhObsluzhivanie partner', fact_partner_sub: 'unified quality standards',
+  fact_offices: 'Almaty and Pavlodar', fact_offices_sub: 'serving clients across Kazakhstan',
+  fact_resp: '100% liability', fact_resp_sub: 'for penalties caused by our error, under contract',
+  hero_photo_alt: 'The Dialog Uchet team', regime_our_short: 'General',
+  wa_calc: 'Hello! My calculator estimate: ', wa_ip: 'IP', wa_too: 'LLP', wa_emp: ' employees, ', wa_docs: ' documents — ',
+  f_amount: 'Amount to pay, ₸', f_contract: 'Service or contract number', f_bin: 'BIN / IIN', f_contact: 'Contact person', f_company_name: 'Company name',
+  btn_pay_kaspi: 'Request a Kaspi payment', btn_invoice: 'Request an invoice',
+  pay_ok_title: 'Request sent', pay_ok_text: 'Thank you! Our staff will issue the payment request or invoice during business hours and contact you.',
+  pay_for_people: 'For individuals', pay_for_business: 'For companies and sole proprietors', pay_rules: 'Payment and refund policy',
+  pay_steps: ['Fill in the form: your name, Kaspi phone number, service and amount.', 'Our staff will send a remote payment request via Kaspi Pay to your number.', 'Confirm the payment in the Kaspi app — the electronic receipt arrives automatically.'],
+  pay_steps_b: ['Fill in the form with your company details.', 'Our accounting team will issue an invoice.', 'Once the services are rendered, you receive an act of completed work and a VAT invoice.'],
+  preview_bar: 'Website preview.', err_bin: 'BIN / IIN must consist of 12 digits.', err_amount: 'Please enter the amount to pay.',
+  team_caption_default: 'The Dialog Uchet team',
+};
+
+// недостающие строки (например, кабинет на английском) берутся из русской версии
+const MERGED = {};
+function strings(lang) {
+  if (!S[lang]) return S.ru;
+  if (!MERGED[lang]) MERGED[lang] = { ...S.ru, ...S[lang] };
+  return MERGED[lang];
+}
 
 module.exports = { LANGS, LANG_LABELS, HTML_LANG, strings };

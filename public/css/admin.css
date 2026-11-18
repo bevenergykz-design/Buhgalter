@@ -126,6 +126,8 @@ a.kpi:hover { border-color: var(--indigo-200); box-shadow: var(--sh); color: var
 .bi-field:last-of-type { border-bottom: 0; }
 .bi-field__label { font-weight: 700; color: var(--navy); font-size: 14px; }
 .bi-field__inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.bi-field__inputs--3 { grid-template-columns: repeat(3, 1fr); }
+.lang-heads--3 { grid-template-columns: repeat(3, 1fr); width: 72%; }
 .bi-field--stack .bi-field__inputs { grid-template-columns: 1fr; }
 .bi-field__one { position: relative; display: flex; flex-direction: column; gap: 4px; }
 .lang-chip { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .06em; background: var(--indigo-50); color: var(--indigo-700); padding: 1px 8px; border-radius: 4px; }
@@ -152,7 +154,7 @@ a.kpi:hover { border-color: var(--indigo-200); box-shadow: var(--sh); color: var
 .img-field__preview span { display: flex; align-items: center; gap: 8px; color: var(--muted); }
 .img-inline { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 .img-inline img { width: 160px; height: 100px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--line); }
-.office-row { display: grid; grid-template-columns: 1fr 2fr 1fr 2fr; gap: 10px; }
+.office-row { display: grid; grid-template-columns: 1fr 2fr 1fr 2fr 1fr 2fr; gap: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--line); }
 .calc-preview { font-family: var(--font-head); font-size: 34px; font-weight: 800; color: var(--indigo-700); margin: 10px 0 16px; }
 
 .adm-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(160deg, var(--indigo-900), var(--navy)); }

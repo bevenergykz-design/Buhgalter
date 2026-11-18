@@ -2,10 +2,10 @@
 <form class="form-stack" method="post" action="<%= ab %>/contacts">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <section class="panel form-stack">
-    <div class="panel__head"><h2>Компания</h2><div class="lang-heads"><span>Русский</span><span>Қазақша</span></div></div>
+    <div class="panel__head"><h2>Компания</h2><div class="lang-heads lang-heads--3"><span>Русский</span><span>Қазақша</span><span>English</span></div></div>
     <% [['company_name', 'Полное наименование'], ['brand', 'Короткое название (в шапке)'], ['brand_sub', 'Подпись под названием'], ['director', 'Руководитель'], ['legal_address', 'Юридический адрес'], ['hours', 'График работы']].forEach(function(x){ %>
     <div class="bi-field"><div class="bi-field__label"><%= x[1] %></div>
-      <div class="bi-field__inputs"><input class="input" name="<%= x[0] %>_ru" value="<%= st[x[0] + '_ru'] || '' %>"><input class="input" name="<%= x[0] %>_kk" value="<%= st[x[0] + '_kk'] || '' %>"></div>
+      <div class="bi-field__inputs bi-field__inputs--3"><% ['ru', 'kk', 'en'].forEach(function(l){ %><input class="input" name="<%= x[0] %>_<%= l %>" lang="<%= l %>" value="<%= st[x[0] + '_' + l] || '' %>"><% }) %></div>
     </div>
     <% }) %>
     <div class="form-grid">
@@ -32,6 +32,8 @@
       <input class="input" name="o<%= i %>_address_ru" value="<%= o.address_ru || '' %>" placeholder="Адрес (рус)">
       <input class="input" name="o<%= i %>_city_kk" value="<%= o.city_kk || '' %>" placeholder="Қала (қаз)">
       <input class="input" name="o<%= i %>_address_kk" value="<%= o.address_kk || '' %>" placeholder="Мекенжай (қаз)">
+      <input class="input" name="o<%= i %>_city_en" value="<%= o.city_en || '' %>" placeholder="City (eng)">
+      <input class="input" name="o<%= i %>_address_en" value="<%= o.address_en || '' %>" placeholder="Address (eng)">
     </div>
     <% }) %>
   </section>

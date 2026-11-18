@@ -38,6 +38,8 @@
       <label class="field"><span class="field__label">Google Analytics 4 (Measurement ID)</span><input class="input mono" name="ga4" value="<%= st.analytics.ga4 %>" placeholder="G-XXXXXXXXXX"></label>
       <label class="field"><span class="field__label">Google Tag Manager</span><input class="input mono" name="gtm" value="<%= st.analytics.gtm %>" placeholder="GTM-XXXXXXX"></label>
       <label class="field field--full"><span class="field__label">Google Search Console — код подтверждения (content из мета-тега)</span><input class="input mono" name="gsc" value="<%= st.analytics.gsc %>"></label>
+      <label class="field"><span class="field__label">Яндекс Вебмастер — код подтверждения (content из мета-тега yandex-verification)</span><input class="input mono" name="yandex" value="<%= st.analytics.yandex || '' %>"></label>
+      <label class="field"><span class="field__label">Яндекс Метрика — номер счётчика</span><input class="input mono" name="metrika" value="<%= st.analytics.metrika || '' %>" placeholder="12345678"></label>
     </div>
   </section>
   <section class="panel form-stack">

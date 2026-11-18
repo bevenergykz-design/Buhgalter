@@ -1,7 +1,7 @@
 <body class="<%= locals.bodyClass || '' %>">
 <% if (st.analytics && st.analytics.gtm) { %><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= st.analytics.gtm %>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><% } %>
 <%- include('icons') %>
-<a class="skip-link" href="#main">Перейти к содержанию</a>
+<a class="skip-link" href="#main"><%= { ru: 'Перейти к содержанию', kk: 'Мазмұнға өту', en: 'Skip to content' }[lang] %></a>
 <%
   const nav = [
     ['/', s.nav_home, 'home'], ['/uslugi', s.nav_services, 'services'], ['/novosti', s.nav_news_short, 'news'],
@@ -18,8 +18,9 @@
     </div>
     <div class="topbar__right">
       <% (st.phones || []).slice(1).forEach(function(p){ %><a class="topbar__item hide-sm" href="<%= phoneHref(p) %>"><%- icon('phone') %><%= p %></a><% }) %>
-      <% if (st.whatsapp) { %><a class="topbar__item topbar__wa" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
-      <div class="lang-switch" role="group" aria-label="Язык / Тіл">
+      <a class="topbar__item topbar__pay" href="<%= L('/oplata') %>"><%- icon('card') %><%= s.nav_pay %></a>
+      <% if (st.whatsapp) { %><a class="topbar__item topbar__wa hide-xs" href="<%= waHref(st.whatsapp) %>" target="_blank" rel="noopener"><%- icon('whatsapp') %>WhatsApp</a><% } %>
+      <div class="lang-switch" role="group" aria-label="Язык / Тіл / Language">
         <% LANGS.forEach(function(l){ %><a href="<%= langUrl(l) %>" hreflang="<%= l %>" class="<%= l === lang ? 'is-active' : '' %>" <%- l === lang ? 'aria-current="true"' : '' %>><%= LANG_LABELS[l] %></a><% }) %>
       </div>
     </div>
@@ -28,8 +29,7 @@
 <header class="header" id="top">
   <div class="container header__in">
     <a class="brand" href="<%= L('/') %>" aria-label="<%= sv('brand') %> — <%= s.nav_home %>">
-      <img class="brand__mark" src="/img/logo-1c-mark.png" alt="1С:БухОбслуживание" width="92" height="42">
-      <span class="brand__text"><span class="brand__name"><%= sv('brand') %></span><span class="brand__sub"><%= sv('brand_sub') %></span></span>
+      <img class="brand__logo" src="/img/logo-lockup.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="1000" height="146">
     </a>
     <nav class="nav" aria-label="<%= s.menu %>">
       <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="nav__link <%= curPage === n[2] ? 'is-active' : '' %>"><%= n[1] %></a><% }) %>
@@ -61,6 +61,7 @@
     <nav class="drawer__nav">
       <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="<%= curPage === n[2] ? 'is-active' : '' %>"><%= n[0] === '/novosti' ? s.nav_news : n[1] %></a><% }) %>
       <% menuPages.forEach(function(p){ %><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a><% }) %>
+      <a href="<%= L('/oplata') %>" class="<%= curPage === 'pay' ? 'is-active' : '' %>"><%= s.nav_pay %></a>
     </nav>
     <% if (cabinetOn) { %><a class="btn btn--outline btn--block" href="<%= L('/cabinet') %>"><%- icon('user') %><%= s.cabinet %></a><% } %>
     <button class="btn btn--accent btn--block" type="button" data-lead="request"><%= s.btn_request %></button>
@@ -71,5 +72,4 @@
     </div>
   </div>
 </div>
-<% if (staticPreview) { %><div class="preview-bar"><%= lang === 'kk' ? 'Сайттың алдын ала көрінісі.' : 'Предварительный просмотр сайта.' %></div><% } %>
 <main id="main">

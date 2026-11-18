@@ -16,14 +16,16 @@ const { all, setSetting, settings } = require('../src/db');
 const SITE_URL = (process.env.URL || 'https://buhgalterservices.netlify.app').replace(/\/$/, '');
 setSetting('site_url', SITE_URL);
 
-const PUBLIC = ['/', '/uslugi', '/novosti', '/o-kompanii', '/kontakty', '/spasibo'];
+const { LANGS } = require('../src/i18n');
+const PUBLIC = ['/', '/uslugi', '/novosti', '/o-kompanii', '/kontakty', '/oplata', '/spasibo'];
+const PREFIXES = LANGS.map((l) => (l === 'ru' ? '' : `/${l}`));
 for (const p of all('SELECT slug FROM pages WHERE published = 1')) PUBLIC.push(`/${p.slug}`);
 for (const p of all('SELECT slug FROM posts WHERE published = 1')) PUBLIC.push(`/novosti/${p.slug}`);
 const CABINET = require('../src/features').cabinetOn();
 const AUTH = CABINET ? ['/cabinet/login', '/cabinet/register', '/cabinet/forgot'] : [];
 
 // на страницах кабинета/панели формы в предпросмотре не отправляются
-const BLOCK = `<div class="preview-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:999">Предварительный просмотр: вход и регистрация заработают после размещения сайта на сервере. · Алдын ала көрініс: кіру және тіркелу сайт серверге орналастырылғаннан кейін жұмыс істейді.</div>
+const BLOCK = `<div style="position:fixed;left:0;right:0;bottom:0;z-index:999;background:#15123a;color:#fff;padding:8px 16px;text-align:center;font-size:13px">Предварительный просмотр: вход и регистрация заработают после размещения сайта на сервере. · Алдын ала көрініс: кіру және тіркелу сайт серверге орналастырылғаннан кейін жұмыс істейді.</div>
 <script>document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();alert(document.documentElement.lang==='kk'?'Бұл — алдын ала көрініс. Кіру және тіркелу сайт серверге орналастырылғаннан кейін жұмыс істейді.':'Это предварительный просмотр. Вход и регистрация заработают после размещения сайта на сервере.');},true);</script>`;
 
 function copyDir(src, dst) {
@@ -35,7 +37,7 @@ function copyDir(src, dst) {
 }
 function write(urlPath, html) {
   const files = urlPath === '/' ? ['index.html'] : [`${urlPath.slice(1)}.html`];
-  if (urlPath === '/kk') files.push('kk/index.html');
+  if (PREFIXES.includes(urlPath)) files.push(`${urlPath.slice(1)}/index.html`);
   for (const f of files) {
     const out = path.join(DIST, f);
     fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -53,7 +55,7 @@ function write(urlPath, html) {
   let n = 0;
   try {
     for (const p of PUBLIC) {
-      for (const pre of ['', '/kk']) {
+      for (const pre of PREFIXES) {
         const url = pre + (p === '/' && pre ? '' : p);
         const r = await get(url);
         if (r.status !== 200) throw new Error(`${url} → ${r.status}`);
@@ -61,7 +63,7 @@ function write(urlPath, html) {
       }
     }
     for (const p of AUTH) {
-      for (const pre of ['', '/kk']) {
+      for (const pre of PREFIXES) {
         const r = await get(pre + p);
         write(pre + p, r.text.replace('</body>', BLOCK + '</body>')); n++;
       }

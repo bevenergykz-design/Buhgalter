@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: t('pay.title'), lead: t('pay.text') }) %>
+<section class="section section--first">
+  <div class="container pay">
+    <div class="pay__card card">
+      <div class="pay__head">
+        <span class="pay__icon" aria-hidden="true"><%- icon('card') %></span>
+        <div><span class="eyebrow"><%= s.pay_for_people %></span><h2 class="card__title">Kaspi Pay</h2></div>
+      </div>
+      <ol class="pay__steps"><% s.pay_steps.forEach(function(x){ %><li><%= x %></li><% }) %></ol>
+      <div class="lead-form-wrap">
+        <form class="lead-form" action="<%= L('/api/lead') %>" method="post" novalidate data-lead-form>
+          <input type="hidden" name="type" value="pay">
+          <input type="hidden" name="page" value="<%= curPath %>">
+          <input type="hidden" name="ts" value="">
+          <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="form-grid">
+            <label class="field"><span class="field__label"><%= s.f_name %> *</span><input class="input" type="text" name="name" required maxlength="120" autocomplete="name"></label>
+            <label class="field"><span class="field__label"><%= s.f_phone %> (Kaspi) *</span><input class="input" type="tel" name="phone" required maxlength="40" autocomplete="tel" placeholder="+7 ___ ___ __ __" data-phone></label>
+            <label class="field"><span class="field__label"><%= s.f_contract %></span><input class="input" type="text" name="contract" maxlength="200"></label>
+            <label class="field"><span class="field__label"><%= s.f_amount %> *</span><input class="input" type="text" name="amount" inputmode="numeric" maxlength="12" required data-amount></label>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" value="1" required><span class="check__box"></span><span class="check__text"><%- s.f_consent_html.replace('{privacy}', L('/politika-konfidencialnosti')) %></span></label>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="btn btn--accent btn--block btn--lg" type="submit"><%= s.btn_pay_kaspi %></button>
+        </form>
+      </div>
+      <div class="form-success" hidden><div class="form-success__icon"><%- icon('check') %></div><h3><%= s.pay_ok_title %></h3><p><%= s.pay_ok_text %></p></div>
+    </div>
+
+    <div class="pay__card card">
+      <div class="pay__head">
+        <span class="pay__icon" aria-hidden="true"><%- icon('building') %></span>
+        <div><span class="eyebrow"><%= s.pay_for_business %></span><h2 class="card__title"><%= s.btn_invoice %></h2></div>
+      </div>
+      <ol class="pay__steps"><% s.pay_steps_b.forEach(function(x){ %><li><%= x %></li><% }) %></ol>
+      <div class="lead-form-wrap">
+        <form class="lead-form" action="<%= L('/api/lead') %>" method="post" novalidate data-lead-form>
+          <input type="hidden" name="type" value="invoice">
+          <input type="hidden" name="page" value="<%= curPath %>">
+          <input type="hidden" name="ts" value="">
+          <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="form-grid">
+            <label class="field"><span class="field__label"><%= s.f_company_name %> *</span><input class="input" type="text" name="company" required maxlength="200" autocomplete="organization"></label>
+            <label class="field"><span class="field__label"><%= s.f_bin %> *</span><input class="input mono" type="text" name="bin" required inputmode="numeric" maxlength="12" pattern="\d{12}" data-bin></label>
+            <label class="field"><span class="field__label"><%= s.f_contact %> *</span><input class="input" type="text" name="name" required maxlength="120" autocomplete="name"></label>
+            <label class="field"><span class="field__label"><%= s.f_phone %> *</span><input class="input" type="tel" name="phone" required maxlength="40" autocomplete="tel" placeholder="+7 ___ ___ __ __" data-phone></label>
+            <label class="field"><span class="field__label"><%= s.f_email %></span><input class="input" type="email" name="email" maxlength="160" autocomplete="email"></label>
+            <label class="field"><span class="field__label"><%= s.f_contract %></span><input class="input" type="text" name="contract" maxlength="200"></label>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" value="1" required><span class="check__box"></span><span class="check__text"><%- s.f_consent_html.replace('{privacy}', L('/politika-konfidencialnosti')) %></span></label>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="btn btn--primary btn--block btn--lg" type="submit"><%= s.btn_invoice %></button>
+        </form>
+      </div>
+      <div class="form-success" hidden><div class="form-success__icon"><%- icon('check') %></div><h3><%= s.pay_ok_title %></h3><p><%= s.pay_ok_text %></p></div>
+    </div>
+  </div>
+  <div class="container">
+    <p class="pay__note"><%- icon('lock') %><span><%= t('pay.note') %> <a href="<%= L('/pravila-oplaty') %>"><%= s.pay_rules %></a></span></p>
+  </div>
+</section>
+<%- include('../partials/footer') %>

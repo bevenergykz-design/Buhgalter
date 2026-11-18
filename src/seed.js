@@ -255,6 +255,55 @@ const LAUNCH_POST_KK = `<p>Біз «Диалог Учёт» компаниясы
 <h2>Бізбен қалай байланысуға болады</h2>
 <p>Сайтта өтінім қалдырыңыз, қоңырау шалыңыз немесе WhatsApp-қа жазыңыз — жұмыс уақытында, дүйсенбіден жұмаға дейін 9:00-ден 17:00-ге дейін жауап береміз.</p>`;
 
+// ---------- Правила оплаты и возврата (системная страница) ----------
+const PAY_RULES = {
+  ru: ['Правила оплаты и возврата', 'Способы оплаты услуг ТОО «Образцовая бухгалтерия „Диалог Учёт“» и порядок возврата денежных средств.', `<p>Настоящие правила описывают, как оплатить услуги ТОО «Образцовая бухгалтерия „Диалог Учёт“» (БИН 181040019474) и как вернуть оплату.</p>
+<h2>Стоимость услуг</h2>
+<p>Стоимость обслуживания определяется договором с клиентом. Расчёт в онлайн-калькуляторе на сайте носит ознакомительный характер и не является публичной офертой.</p>
+<h2>Способы оплаты</h2>
+<h3>Физические лица — Kaspi Pay</h3>
+<ol><li>Заполните форму на странице «Оплата услуг»: имя, номер телефона, привязанный к Kaspi, услуга или номер договора и сумма.</li><li>Сотрудник компании выставит удалённую оплату через Kaspi Pay на указанный номер.</li><li>Подтвердите оплату в приложении Kaspi.kz. Электронный чек формирует Kaspi.</li></ol>
+<p>Данные банковских карт вводятся только в приложении Kaspi.kz; сайт компании их не получает и не хранит.</p>
+<h3>ИП и юридические лица — по счёту</h3>
+<p>Оплата производится безналичным переводом по счёту на оплату. Запросить счёт можно через форму на странице «Оплата услуг», по телефону или в WhatsApp. После оказания услуг клиент получает акт выполненных работ и, при необходимости, электронный счёт-фактуру.</p>
+<h2>Возврат денежных средств</h2>
+<ul><li>Если услуга не была оказана или оплата произведена ошибочно, клиент вправе потребовать возврат.</li><li>Для возврата направьте обращение по телефону, в WhatsApp или по электронной почте, указав дату и сумму оплаты.</li><li>Возврат производится тем же способом, которым была произведена оплата, в сроки, предусмотренные договором и законодательством Республики Казахстан. Для оплаты через Kaspi Pay деньги возвращаются на тот же счёт Kaspi.</li><li>За услуги, оказанные до момента обращения, оплата не возвращается.</li></ul>
+<h2>Контакты</h2>
+<p>По вопросам оплаты и возврата обращайтесь по телефонам, указанным на странице «Контакты».</p>`],
+  kk: ['Төлем және қайтару ережелері', '«Образцовая бухгалтерия „Диалог Учёт“» ЖШС қызметтерін төлеу тәсілдері және ақшаны қайтару тәртібі.', `<p>Осы ережелер «Образцовая бухгалтерия „Диалог Учёт“» ЖШС (БСН 181040019474) қызметтерін қалай төлеуге және төлемді қалай қайтаруға болатынын сипаттайды.</p>
+<h2>Қызметтердің құны</h2>
+<p>Қызмет көрсету құны клиентпен жасалған шартта айқындалады. Сайттағы онлайн-калькулятордағы есеп танысу үшін берілген және жария оферта болып табылмайды.</p>
+<h2>Төлем тәсілдері</h2>
+<h3>Жеке тұлғалар — Kaspi Pay</h3>
+<ol><li>«Қызметтерге төлем» бетіндегі нысанды толтырыңыз: аты-жөні, Kaspi-ге байланған телефон нөмірі, қызмет немесе шарт нөмірі және сома.</li><li>Компания қызметкері көрсетілген нөмірге Kaspi Pay арқылы қашықтан төлем жазады.</li><li>Kaspi.kz қосымшасында төлемді растаңыз. Электрондық чекті Kaspi қалыптастырады.</li></ol>
+<p>Банк картасының деректері тек Kaspi.kz қосымшасында енгізіледі; компания сайты оларды алмайды және сақтамайды.</p>
+<h3>ЖК және заңды тұлғалар — шот бойынша</h3>
+<p>Төлем төлем шоты бойынша қолма-қол ақшасыз аударыммен жүргізіледі. Шотты «Қызметтерге төлем» бетіндегі нысан арқылы, телефон немесе WhatsApp арқылы сұратуға болады. Қызмет көрсетілгеннен кейін клиент орындалған жұмыстар актісін және қажет болса электрондық шот-фактураны алады.</p>
+<h2>Ақшаны қайтару</h2>
+<ul><li>Егер қызмет көрсетілмесе немесе төлем қателесіп жасалса, клиент ақшаны қайтаруды талап етуге құқылы.</li><li>Қайтару үшін төлем күні мен сомасын көрсетіп, телефон, WhatsApp немесе электрондық пошта арқылы өтініш жіберіңіз.</li><li>Ақша төлем жасалған тәсілмен шартта және Қазақстан Республикасының заңнамасында көзделген мерзімде қайтарылады. Kaspi Pay арқылы төленген ақша сол Kaspi шотына қайтарылады.</li><li>Өтініш берілгенге дейін көрсетілген қызметтер үшін төлем қайтарылмайды.</li></ul>
+<h2>Байланыс</h2>
+<p>Төлем және қайтару мәселелері бойынша «Байланыс» бетінде көрсетілген телефондарға хабарласыңыз.</p>`],
+  en: ['Payment and Refund Policy', 'How to pay for the services of Dialog Uchet Model Accounting LLP and how refunds are made.', `<p>This policy describes how to pay for the services of Dialog Uchet Model Accounting LLP (BIN 181040019474) and how refunds are made.</p>
+<h2>Service fees</h2>
+<p>The service fee is set out in the contract with the client. The online calculator estimate on this website is for information only and is not a public offer.</p>
+<h2>Payment methods</h2>
+<h3>Individuals — Kaspi Pay</h3>
+<ol><li>Fill in the form on the Payment page: your name, the phone number linked to Kaspi, the service or contract number and the amount.</li><li>Our staff will send a remote payment request via Kaspi Pay to that number.</li><li>Confirm the payment in the Kaspi.kz app. The electronic receipt is issued by Kaspi.</li></ol>
+<p>Card details are entered only in the Kaspi.kz app; our website neither receives nor stores them.</p>
+<h3>Sole proprietors and companies — by invoice</h3>
+<p>Payment is made by bank transfer against an invoice. You can request an invoice using the form on the Payment page, by phone or via WhatsApp. Once the services are rendered, the client receives an act of completed work and, where required, an electronic VAT invoice.</p>
+<h2>Refunds</h2>
+<ul><li>If a service has not been rendered or a payment was made by mistake, the client is entitled to a refund.</li><li>To request a refund, contact us by phone, WhatsApp or email, stating the date and amount of the payment.</li><li>Refunds are made by the same method as the original payment, within the time limits set by the contract and the laws of the Republic of Kazakhstan. Payments made via Kaspi Pay are returned to the same Kaspi account.</li><li>Services rendered before the refund request are not refundable.</li></ul>
+<h2>Contacts</h2>
+<p>For any questions about payments and refunds, please call the numbers listed on the Contacts page.</p>`],
+};
+
+t('pay.title', 'Страница «Оплата услуг»', 'Заголовок', 'Оплата услуг', 'Қызметтерге төлем');
+t('pay.text', 'Страница «Оплата услуг»', 'Подзаголовок', 'Физические лица оплачивают через Kaspi Pay, ИП и ТОО — по счёту. Сумма к оплате указана в договоре или счёте.', 'Жеке тұлғалар Kaspi Pay арқылы, ЖК мен ЖШС шот бойынша төлейді. Төлем сомасы шартта немесе шотта көрсетілген.', 1);
+t('pay.note', 'Страница «Оплата услуг»', 'Примечание о безопасности', 'Сайт не принимает и не хранит данные банковских карт — оплата подтверждается только в приложении Kaspi.kz.', 'Сайт банк картасының деректерін қабылдамайды және сақтамайды — төлем тек Kaspi.kz қосымшасында расталады.', 1);
+t('seo.pay.title', 'SEO: заголовки и описания', 'Оплата услуг: Title', 'Оплата бухгалтерских услуг — Kaspi Pay и счёт | «Диалог Учёт»', 'Бухгалтерлік қызметтерге төлем — Kaspi Pay және шот | «Диалог Учёт»');
+t('seo.pay.description', 'SEO: заголовки и описания', 'Оплата услуг: Description', 'Как оплатить услуги «Диалог Учёт»: удалённая оплата через Kaspi Pay для физических лиц и счёт на оплату для ИП и ТОО.', '«Диалог Учёт» қызметтерін қалай төлеуге болады: жеке тұлғаларға Kaspi Pay арқылы қашықтан төлем, ЖК мен ЖШС-ға төлем шоты.', 1);
+
 const DEFAULT_SETTINGS = {
   company_name_ru: 'ТОО «Образцовая бухгалтерия „Диалог Учёт“»',
   company_name_kk: '«Образцовая бухгалтерия „Диалог Учёт“» ЖШС',
@@ -280,7 +329,7 @@ const DEFAULT_SETTINGS = {
   smtp: { host: '', port: 465, secure: true, user: '', pass: '', from: '' },
   telegram: { token: '', chat_id: '' },
   webhook_url: '',
-  analytics: { ga4: '', gtm: '', gsc: '' },
+  analytics: { ga4: '', gtm: '', gsc: '', yandex: '', metrika: '' },
   tariffs: {
     base_ip: 25000, base_too: 40000, regime_our: 20000, per_employee: 2500,
     docs_10: 0, docs_50: 10000, docs_150: 25000, docs_more: 50000,
@@ -330,6 +379,46 @@ function seed({ run, get, now, setSetting, settings }) {
       'Қызмет құнының онлайн-калькуляторы, қызметтер тізімі және жылдам өтінімдер — енді сайтта.',
       LAUNCH_POST_RU, LAUNCH_POST_KK, now(), now());
   }
+  // правила оплаты и возврата — системная страница на трёх языках
+  if (!get("SELECT 1 FROM pages WHERE slug = 'pravila-oplaty'")) {
+    run(`INSERT INTO pages(slug, title_ru, title_kk, title_en, body_ru, body_kk, body_en, desc_ru, desc_kk, desc_en, in_footer, sort, system, updated_at)
+         VALUES(?,?,?,?,?,?,?,?,?,?,1,5,1,?)`, 'pravila-oplaty', PAY_RULES.ru[0], PAY_RULES.kk[0], PAY_RULES.en[0],
+      PAY_RULES.ru[2], PAY_RULES.kk[2], PAY_RULES.en[2], PAY_RULES.ru[1], PAY_RULES.kk[1], PAY_RULES.en[1], now());
+  }
+
+  // английская версия: заполняет только пустые поля, правки из панели не трогает
+  let EN = null;
+  try { EN = require('./seed-en'); } catch { EN = null; }
+  if (!EN) return;
+  const st = settings();
+  for (const [k, v] of Object.entries(EN.settings || {})) if (!st[k]) setSetting(k, v);
+  if (Array.isArray(st.offices) && EN.offices) {
+    let changed = false;
+    const offices = st.offices.map((o, i) => {
+      const e = EN.offices.find((x, j) => j === i && DEFAULT_SETTINGS.offices[j] && DEFAULT_SETTINGS.offices[j].city_ru === o.city_ru);
+      if (e && !o.city_en) { changed = true; return { ...o, ...e }; }
+      return o;
+    });
+    if (changed) setSetting('offices', offices);
+  }
+  for (const [k, v] of Object.entries(EN.texts || {})) run("UPDATE texts SET en = ? WHERE key = ? AND en = ''", v, k);
+  for (const [slug, [ti, intro]] of Object.entries(EN.categories || {})) {
+    run("UPDATE service_categories SET title_en = ? WHERE slug = ? AND title_en = ''", ti, slug);
+    run("UPDATE service_categories SET intro_en = ? WHERE slug = ? AND intro_en = ''", intro, slug);
+  }
+  for (const [slug, list] of Object.entries(EN.services || {})) {
+    (SERVICES[slug] || []).forEach(([ru], i) => {
+      if (!list[i]) return;
+      run("UPDATE services SET title_en = ? WHERE title_ru = ? AND title_en = ''", list[i][0], ru);
+      run("UPDATE services SET desc_en = ? WHERE title_ru = ? AND desc_en = ''", list[i][1], ru);
+    });
+  }
+  FAQ.forEach(([qr], i) => {
+    const e = (EN.faq || [])[i];
+    if (e) run("UPDATE faq SET q_en = ?, a_en = ? WHERE q_ru = ? AND q_en = ''", e[0], e[1], qr);
+  });
+  for (const [slug, p] of Object.entries(EN.pages || {})) run("UPDATE pages SET title_en = ?, body_en = ?, desc_en = ? WHERE slug = ? AND title_en = ''", p.title, p.body, p.desc, slug);
+  for (const [slug, p] of Object.entries(EN.posts || {})) run("UPDATE posts SET title_en = ?, excerpt_en = ?, body_en = ? WHERE slug = ? AND title_en = ''", p.title, p.excerpt, p.body, slug);
 }
 
 module.exports = { seed, DEFAULT_SETTINGS };

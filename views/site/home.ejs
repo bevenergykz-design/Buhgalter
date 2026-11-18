@@ -17,41 +17,52 @@
 <section class="hero">
   <div class="container hero__grid">
     <div class="hero__content">
-      <span class="badge"><%- icon('shield') %><%= t('home.hero.badge') %></span>
+      <span class="eyebrow eyebrow--light"><%= t('home.hero.badge') %></span>
       <h1 class="hero__title"><%= t('home.hero.title') %></h1>
       <p class="hero__subtitle"><%= t('home.hero.subtitle') %></p>
-      <p class="hero__text"><%= t('home.hero.text') %></p>
       <ul class="hero__adv">
         <% lines(t('home.hero.advantages')).forEach(function(a){ %><li><span class="tick"><%- icon('check') %></span><%= a %></li><% }) %>
       </ul>
       <div class="hero__actions">
         <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
-        <button class="btn btn--outline btn--lg" type="button" data-lead="request"><%= s.btn_request %></button>
+        <a class="btn btn--line btn--lg" href="#calculator"><%- icon('calc') %><%= s.btn_calc %></a>
       </div>
     </div>
-    <div class="hero__media">
-      <div class="hero__photo">
-        <picture>
-          <% const heroImg = (st.images && st.images.hero) || '/img/team.webp'; const heroAlt = (lang === 'kk' ? '«Диалог Учёт» командасы' : 'Команда «Диалог Учёт»'); %>
-          <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= heroAlt %>" width="857" height="600" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= heroAlt %>" fetchpriority="high"><% } %>
-        </picture>
-      </div>
-      <div class="hero__card hero__card--top">
-        <span class="hero__card-icon"><%- icon('check-circle') %></span>
-        <span><strong><%= lang === 'kk' ? '2018 жылдан' : 'С 2018 года' %></strong><small><%= lang === 'kk' ? 'бизнес есебін жүргіземіз' : 'ведём учёт бизнеса' %></small></span>
-      </div>
-      <div class="hero__card hero__card--bottom">
-        <span class="hero__card-icon hero__card-icon--accent"><%- icon('building') %></span>
-        <span><strong><%= s.bin %> <%= st.bin %></strong><small><%= t('home.verify.badge') %></small></span>
-      </div>
+    <figure class="hero__media">
+      <% const heroImg = (st.images && st.images.hero) || '/img/team.webp'; %>
+      <picture>
+        <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="857" height="600" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %>
+      </picture>
+      <figcaption class="hero__caption"><%- icon('map') %><%= s.hero_photo_alt %> · <%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Полоса доверия -->
+<section class="trust" aria-label="<%= sv('brand') %>">
+  <div class="container trust__grid">
+    <div class="trust__item"><span class="trust__icon"><%- icon('calendar') %></span><span><strong><%= s.fact_since %></strong><small><%= s.fact_since_sub %></small></span></div>
+    <div class="trust__item"><span class="trust__icon"><%- icon('shield') %></span><span><strong><%= s.fact_partner %></strong><small><%= s.fact_partner_sub %></small></span></div>
+    <div class="trust__item"><span class="trust__icon"><%- icon('building') %></span><span><strong><%= s.fact_offices %></strong><small><%= s.fact_offices_sub %></small></span></div>
+    <div class="trust__item"><span class="trust__icon"><%- icon('handshake') %></span><span><strong><%= s.fact_resp %></strong><small><%= s.fact_resp_sub %></small></span></div>
+  </div>
+</section>
+
+<!-- О компании кратко -->
+<section class="section section--tight intro">
+  <div class="container intro__grid">
+    <div>
+      <span class="eyebrow"><%= s.nav_about %></span>
+      <h2 class="section__title"><%= sv('company_name') %></h2>
     </div>
+    <p class="intro__text"><%= t('home.hero.text') %></p>
   </div>
 </section>
 
 <!-- Преимущества -->
 <section class="section section--tight">
   <div class="container">
-    <h2 class="section__title section__title--center"><%= t('home.features.title') %></h2>
+    <div class="section__head section__head--center"><span class="eyebrow"><%= sv('brand') %></span><h2 class="section__title"><%= t('home.features.title') %></h2></div>
     <div class="features">
       <% lines(t('home.features.items')).forEach(function(item, i){ %>
       <div class="feature"><span class="feature__icon"><%- icon(featIcons[i % featIcons.length]) %></span><span class="feature__text"><%= item %></span></div>
@@ -65,6 +76,7 @@
   <div class="container">
     <div class="section__head">
       <div>
+        <span class="eyebrow"><%= s.nav_services %></span>
         <h2 class="section__title"><%= t('home.services.title') %></h2>
         <p class="section__lead"><%= t('home.services.text') %></p>
       </div>
@@ -90,6 +102,7 @@
 <section class="section" id="calculator">
   <div class="container">
     <div class="section__head section__head--center">
+      <span class="eyebrow"><%= s.calc_result %></span>
       <h2 class="section__title"><%= t('home.calc.title') %></h2>
       <p class="section__lead"><%= t('home.calc.text') %></p>
     </div>
@@ -106,7 +119,7 @@
           <legend class="calc__label"><%= s.calc_regime %></legend>
           <div class="seg">
             <label class="seg__opt"><input type="radio" name="regime" value="simplified" checked><span><strong>3%</strong><small><%= s.calc_simplified %></small></span></label>
-            <label class="seg__opt"><input type="radio" name="regime" value="our"><span><strong><%= lang === 'kk' ? 'ЖБР' : 'ОУР' %></strong><small><%= s.calc_our %></small></span></label>
+            <label class="seg__opt"><input type="radio" name="regime" value="our"><span><strong><%= s.regime_our_short %></strong><small><%= s.calc_our %></small></span></label>
           </div>
         </fieldset>
         <div class="calc__group">
@@ -156,9 +169,10 @@
 </section>
 
 <!-- 3. Процесс -->
-<section class="section section--alt">
+<section class="section section--dark">
   <div class="container">
     <div class="section__head section__head--center">
+      <span class="eyebrow eyebrow--light"><%= s.steps_label %> 01–04</span>
       <h2 class="section__title"><%= t('home.process.title') %></h2>
       <p class="section__lead"><%= t('home.process.text') %></p>
     </div>
@@ -225,7 +239,7 @@
 <% if (faq.length) { %>
 <section class="section <%= reviews.length ? '' : 'section--alt' %>" id="faq">
   <div class="container container--narrow">
-    <h2 class="section__title section__title--center"><%= t('home.faq.title') %></h2>
+    <div class="section__head section__head--center"><span class="eyebrow">FAQ</span><h2 class="section__title"><%= t('home.faq.title') %></h2></div>
     <div class="faq">
       <% faq.forEach(function(q, i){ %>
       <details class="faq__item" <%= i === 0 ? 'open' : '' %>>

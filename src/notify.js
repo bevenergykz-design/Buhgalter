@@ -49,7 +49,7 @@ async function webhook(event, payload) {
   } catch (e) { console.error('[webhook]', e.message); }
 }
 
-const TYPE_NAMES = { consult: 'Бесплатная консультация', request: 'Заявка на обслуживание', callback: 'Обратный звонок', calc: 'Расчёт из калькулятора', contact: 'Сообщение со страницы контактов' };
+const TYPE_NAMES = { consult: 'Бесплатная консультация', request: 'Заявка на обслуживание', callback: 'Обратный звонок', calc: 'Расчёт из калькулятора', contact: 'Сообщение со страницы контактов', pay: 'Оплата через Kaspi Pay', invoice: 'Запрос счёта на оплату' };
 
 function notifyStaff(subject, rows, link) {
   const st = settings();
