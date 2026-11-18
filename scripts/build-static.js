@@ -19,7 +19,8 @@ setSetting('site_url', SITE_URL);
 const PUBLIC = ['/', '/uslugi', '/novosti', '/o-kompanii', '/kontakty', '/spasibo'];
 for (const p of all('SELECT slug FROM pages WHERE published = 1')) PUBLIC.push(`/${p.slug}`);
 for (const p of all('SELECT slug FROM posts WHERE published = 1')) PUBLIC.push(`/novosti/${p.slug}`);
-const AUTH = ['/cabinet/login', '/cabinet/register', '/cabinet/forgot'];
+const CABINET = require('../src/features').cabinetOn();
+const AUTH = CABINET ? ['/cabinet/login', '/cabinet/register', '/cabinet/forgot'] : [];
 
 // на страницах кабинета/панели формы в предпросмотре не отправляются
 const BLOCK = `<div class="preview-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:999">Предварительный просмотр: вход и регистрация заработают после размещения сайта на сервере. · Алдын ала көрініс: кіру және тіркелу сайт серверге орналастырылғаннан кейін жұмыс істейді.</div>
@@ -73,8 +74,8 @@ function write(urlPath, html) {
     const wa = String(settings().whatsapp || '').replace(/\D/g, '');
     const cabRoutes = ['', '/documents', '/reports', '/messages', '/profile', '/reset/*'];
     fs.writeFileSync(path.join(DIST, '_redirects'), [
-      ...cabRoutes.map((r) => `/cabinet${r}  /cabinet/login  302`),
-      ...cabRoutes.map((r) => `/kk/cabinet${r}  /kk/cabinet/login  302`),
+      ...(CABINET ? cabRoutes.map((r) => `/cabinet${r}  /cabinet/login  302`) : []),
+      ...(CABINET ? cabRoutes.map((r) => `/kk/cabinet${r}  /kk/cabinet/login  302`) : []),
       wa ? `/whatsapp  https://wa.me/${wa}  302` : '',
     ].filter(Boolean).join('\n') + '\n');
     console.log(`Готово: ${n} страниц в ${DIST} (адрес: ${SITE_URL})`);

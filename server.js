@@ -73,7 +73,7 @@ app.use((req, res, next) => {
     absUrl: (l, p = pathOnly) => base + (l === 'ru' ? '' : `/${l}`) + (p === '/' && l !== 'ru' ? '' : p),
     menuPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_menu = 1 ORDER BY sort, id'),
     footerPages: all('SELECT slug, title_ru, title_kk FROM pages WHERE published = 1 AND in_footer = 1 ORDER BY sort, id'),
-    meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1',
+    meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1', cabinetOn: require('./src/features').cabinetOn(),
   });
   next();
 });
@@ -83,7 +83,10 @@ app.use((req, res, next) => {
 const { adminPath } = require('./src/admin-path');
 const ADMIN = adminPath();
 app.use(ADMIN, require('./src/routes/admin'));
-app.use('/cabinet', require('./src/routes/cabinet'));
+// Личный кабинет клиента — функция второго этапа, включается настройкой (src/features.js)
+const { cabinetOn } = require('./src/features');
+const cabinetRouter = require('./src/routes/cabinet');
+app.use('/cabinet', (req, res, next) => (cabinetOn() ? cabinetRouter(req, res, next) : next()));
 app.use('/', require('./src/routes/site'));
 
 // 404

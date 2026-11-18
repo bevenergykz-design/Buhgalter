@@ -24,7 +24,7 @@
     <label class="field"><span class="field__label">Пароль</span><input class="input" type="password" name="password" required autocomplete="current-password"></label>
     <button class="btn btn--primary btn--block btn--lg" type="submit">Войти</button>
   </form>
-  <p class="adm-login__foot">Клиенты входят через <a href="/cabinet/login">личный кабинет</a>. · <a href="/">На сайт</a></p>
+  <p class="adm-login__foot"><% if (cabinetOn) { %>Клиенты входят через <a href="/cabinet/login">личный кабинет</a>. · <% } %><a href="/">На сайт</a></p>
 </main>
 </body>
 </html>

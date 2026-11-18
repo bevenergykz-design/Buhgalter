@@ -48,7 +48,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     console.log('Публичная часть');
     const pub = agent(base);
     for (const u of ['/', '/uslugi', '/uslugi?cat=kadrovyy-uchet', '/novosti', '/o-kompanii', '/kontakty', '/politika-konfidencialnosti',
-      '/kk', '/kk/uslugi', '/kk/novosti', '/kk/o-kompanii', '/kk/kontakty', '/cabinet/login', '/kk/cabinet/register']) {
+      '/kk', '/kk/uslugi', '/kk/novosti', '/kk/o-kompanii', '/kk/kontakty']) {
       const r = await pub.get(u);
       ok(r.status === 200, `GET ${u} → 200`, r.status);
     }
@@ -60,7 +60,9 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok(!home.text.includes('Вход для сотрудников') && !home.text.includes(AP) && !home.text.includes('href="/admin'), 'в подвале нет ссылки на панель сотрудников');
     ok((await pub.get('/admin')).status === 404 && (await pub.get('/admin/login')).status === 404, '/admin не открывает панель (404)');
     ok((await pub.get(AP + '/login')).status === 200, 'панель открывается по секретному адресу');
-    ok(home.text.includes('href="/cabinet"') && home.text.includes('Личный кабинет'), 'кнопка «Личный кабинет» в шапке');
+    ok(!home.text.includes('href="/cabinet"') && !home.text.includes('Личный кабинет'), 'этап 1: кнопки «Личный кабинет» на сайте нет');
+    ok((await pub.get('/cabinet/login')).status === 404 && (await pub.get('/kk/cabinet/register')).status === 404, 'этап 1: страницы кабинета закрыты (404)');
+    ok(!(await pub.get('/novosti')).text.includes('кабинет'), 'этап 1: в новостях нет упоминаний кабинета');
     const kk = await pub.get('/kk');
     ok(kk.text.includes('lang="kk"') && kk.text.includes('Қазақстандағы'), 'казахская главная');
     const sm = await pub.get('/sitemap.xml');
@@ -83,7 +85,10 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     r = await pub.post('/api/lead', { form: { type: 'request', name: 'Без JS', phone: '+7 701 111 2235', consent: '1' } });
     ok(r.status === 302 && r.location === '/spasibo', 'отправка формы без JavaScript → страница «спасибо»');
 
-    console.log('Регистрация и кабинет клиента');
+    console.log('Регистрация и кабинет клиента (этап 2: включается настройкой)');
+    require('../src/db').setSetting('features', { cabinet: true });
+    ok((await pub.get('/cabinet/login')).status === 200 && (await pub.get('/kk/cabinet/register')).status === 200, 'кабинет включается настройкой');
+    ok((await pub.get('/')).text.includes('href="/cabinet"'), 'после включения кнопка «Личный кабинет» появляется в шапке');
     const cl = agent(base);
     r = await cl.post('/cabinet/register', { form: { company: 'ТОО «Тест»', entity_type: 'too', bin: '123', tax_regime: 'simplified', contact_name: 'Иван Петров', phone: '+7 701 555 4433', email: 'client@test.kz', password: 'secret123', password2: 'secret123', consent: '1' } });
     ok(r.status === 400 && r.text.includes('12 цифр'), 'проверка БИН при регистрации');

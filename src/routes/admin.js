@@ -13,6 +13,7 @@ const F = require('../files');
 const { sendMail, webhook, TYPE_NAMES } = require('../notify');
 const { DEFAULT_SETTINGS } = require('../seed');
 const { adminPath } = require('../admin-path');
+const { cabinetOn } = require('../features');
 const AP = adminPath(); // секретный адрес панели, например /admin-k7x2m9q4wz
 
 const router = express.Router();
@@ -203,6 +204,7 @@ router.post('/clients', csrf, (req, res) => {
   const r = run(`INSERT INTO clients(email, pass_hash, contact_name, company, bin, phone, entity_type, tax_regime, status, accountant_id, tariff, created_at)
     VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, v.email, A.hashPassword(pass), v.contact_name, v.company, v.bin, v.phone, v.entity_type, v.tax_regime, v.status, v.accountant_id, v.tariff, now());
   if (v.lead_id) run("UPDATE leads SET status = 'won', updated_at = ? WHERE id = ?", now(), v.lead_id);
+  if (!cabinetOn()) return back(res, `${AP}/clients/${r.lastInsertRowid}`, 'created');
   if (b.send_invite) {
     sendMail(v.email, 'Доступ в личный кабинет «Диалог Учёт»',
       `Здравствуйте, ${v.contact_name}!\n\nДля вас создан личный кабинет клиента «Диалог Учёт».\n\nАдрес: ${req.baseUrl0}/cabinet/login\nE-mail: ${v.email}\nПароль: ${pass}\n\nРекомендуем сменить пароль в разделе «Профиль» после первого входа.`);
@@ -218,7 +220,8 @@ function loadClient(req, res, next) {
 
 router.get('/clients/:id', loadClient, (req, res) => {
   const c = req.cl;
-  const tab = ['overview', 'reports', 'files', 'messages'].includes(req.query.tab) ? req.query.tab : 'overview';
+  const tabs = cabinetOn() ? ['overview', 'reports', 'files', 'messages'] : ['overview', 'reports'];
+  const tab = tabs.includes(req.query.tab) ? req.query.tab : 'overview';
   const data = {
     title: c.company, c, tab, today: U.today(), staffList: all('SELECT id, name FROM staff WHERE active = 1 ORDER BY name'),
     reports: all(`SELECT * FROM client_reports WHERE client_id = ? ORDER BY CASE WHEN status IN ('submitted','accepted') THEN 1 ELSE 0 END,
@@ -284,7 +287,7 @@ router.post('/reports/:rid', csrf, (req, res) => {
   const r = reportFields({ ...old, ...req.body });
   run('UPDATE client_reports SET title = ?, period = ?, deadline = ?, status = ?, amount = ?, note = ?, updated_at = ? WHERE id = ?',
     r.title || old.title, r.period, r.deadline, r.status, r.amount, r.note, now(), old.id);
-  if (r.status !== old.status && ['submitted', 'accepted'].includes(r.status)) {
+  if (cabinetOn() && r.status !== old.status && ['submitted', 'accepted'].includes(r.status)) {
     const c = get('SELECT email, contact_name, company FROM clients WHERE id = ?', old.client_id);
     sendMail(c.email, `Отчёт сдан: ${old.title}`, `Здравствуйте, ${c.contact_name}!\n\nОтчёт «${old.title}»${r.period ? ' за ' + r.period : ''} — статус: ${E.REPORT_STATUS.find((x) => x[0] === r.status)[1].toLowerCase()}.\n\nПодробности — в личном кабинете: ${req.baseUrl0}/cabinet/reports`);
   }

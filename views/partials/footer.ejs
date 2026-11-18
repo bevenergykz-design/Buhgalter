@@ -24,7 +24,7 @@
     <div class="footer__col">
       <h3 class="footer__title"><%= s.footer_clients %></h3>
       <ul class="footer__links">
-        <li><a href="<%= L('/cabinet') %>"><%= s.cabinet %></a></li>
+        <% if (cabinetOn) { %><li><a href="<%= L('/cabinet') %>"><%= s.cabinet %></a></li><% } %>
         <li><button type="button" class="link-btn" data-lead="consult"><%= s.btn_consult %></button></li>
         <li><button type="button" class="link-btn" data-lead="callback"><%= s.btn_callback %></button></li>
         <% footerPages.forEach(function(p){ %><li><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a></li><% }) %>

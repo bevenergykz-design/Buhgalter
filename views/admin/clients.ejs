@@ -16,7 +16,7 @@
   <a class="btn btn--primary btn--sm" href="<%= ab %>/clients/new"><%- icon('plus') %>Новый клиент</a>
 </div>
 <section class="panel panel--flush">
-  <% if (!clients.length) { %><p class="empty-sm pad">Клиентов не найдено. Клиенты появляются здесь после регистрации в личном кабинете на сайте или после создания вручную.</p><% } else { %>
+  <% if (!clients.length) { %><p class="empty-sm pad">Клиентов не найдено. <%= cabinetOn ? 'Клиенты появляются здесь после регистрации в личном кабинете на сайте или после создания вручную.' : 'Добавьте клиента кнопкой «Новый клиент» или из карточки заявки.' %></p><% } else { %>
   <div class="table-wrap">
   <table class="table table--click">
     <thead><tr><th>Клиент</th><th>Форма / режим</th><th>Бухгалтер</th><th>Статус</th><th>Отчётность</th><th>Ближайший срок</th><th>Новое</th></tr></thead>

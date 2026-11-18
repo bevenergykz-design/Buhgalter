@@ -42,7 +42,7 @@
         <button type="button" class="header__phone-cb" data-lead="callback"><%= s.btn_callback %></button>
       </div>
       <% } %>
-      <a class="btn btn--outline btn--sm header__cabinet" href="<%= L('/cabinet') %>"><%- icon('user') %><span><%= s.cabinet %></span></a>
+      <% if (cabinetOn) { %><a class="btn btn--outline btn--sm header__cabinet" href="<%= L('/cabinet') %>"><%- icon('user') %><span><%= s.cabinet %></span></a><% } %>
       <a class="icon-btn header__call-sm" href="<%= phoneHref(mainPhone) %>" aria-label="<%= s.call_us %>"><%- icon('phone') %></a>
       <button class="icon-btn burger" type="button" aria-label="<%= s.menu %>" aria-expanded="false" aria-controls="drawer"><%- icon('menu') %></button>
     </div>
@@ -62,7 +62,7 @@
       <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="<%= curPage === n[2] ? 'is-active' : '' %>"><%= n[0] === '/novosti' ? s.nav_news : n[1] %></a><% }) %>
       <% menuPages.forEach(function(p){ %><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a><% }) %>
     </nav>
-    <a class="btn btn--outline btn--block" href="<%= L('/cabinet') %>"><%- icon('user') %><%= s.cabinet %></a>
+    <% if (cabinetOn) { %><a class="btn btn--outline btn--block" href="<%= L('/cabinet') %>"><%- icon('user') %><%= s.cabinet %></a><% } %>
     <button class="btn btn--accent btn--block" type="button" data-lead="request"><%= s.btn_request %></button>
     <div class="drawer__contacts">
       <% (st.phones || []).forEach(function(p){ %><a href="<%= phoneHref(p) %>"><%- icon('phone') %><%= p %></a><% }) %>
@@ -71,5 +71,5 @@
     </div>
   </div>
 </div>
-<% if (staticPreview) { %><div class="preview-bar"><%= lang === 'kk' ? 'Сайттың алдын ала көрінісі. Жеке кабинет пен басқару панелі серверге орналастырылғаннан кейін жұмыс істейді.' : 'Предварительный просмотр сайта. Личный кабинет и панель управления заработают после размещения на сервере.' %></div><% } %>
+<% if (staticPreview) { %><div class="preview-bar"><%= lang === 'kk' ? 'Сайттың алдын ала көрінісі.' : 'Предварительный просмотр сайта.' %></div><% } %>
 <main id="main">
