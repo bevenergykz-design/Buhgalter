@@ -93,7 +93,7 @@ router.get('/', (req, res) => {
   const in14 = new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10);
   const mine = req.query.mine === '1';
   const scope = mine ? ' AND c.accountant_id = ' + Number(req.staff.id) : '';
-  render(res, 'dashboard', {
+  render(res, 'dashboard', { TYPE_NAMES,
     title: 'Обзор', mine,
     stats: {
       leadsNew: get("SELECT COUNT(*) AS n FROM leads WHERE status = 'new'").n,
@@ -120,12 +120,15 @@ router.get('/', (req, res) => {
 router.get('/leads', (req, res) => {
   const status = E.LEAD_STATUS.some((s) => s[0] === req.query.status) ? req.query.status : '';
   const q = str(req.query.q, 100);
+  const group = E.LEAD_GROUPS.find((g) => g[0] === req.query.group);
   const where = []; const p = [];
   if (status) { where.push('status = ?'); p.push(status); } else where.push("status != 'spam'");
+  if (group) { where.push(`type IN (${group[2].map(() => '?').join(',')})`); p.push(...group[2]); }
   if (q) { where.push('(name LIKE ? OR phone LIKE ? OR email LIKE ? OR company LIKE ?)'); p.push(...Array(4).fill(`%${q}%`)); }
   const leads = all(`SELECT l.*, s.name AS staff_name FROM leads l LEFT JOIN staff s ON s.id = l.assigned_id WHERE ${where.join(' AND ')} ORDER BY l.id DESC LIMIT 500`, ...p);
   const byStatus = Object.fromEntries(all('SELECT status, COUNT(*) AS n FROM leads GROUP BY status').map((r) => [r.status, r.n]));
-  render(res, 'leads', { title: 'Заявки с сайта', leads, status, q, byStatus, TYPE_NAMES });
+  const unpaid = get("SELECT COUNT(*) AS n FROM leads WHERE type IN ('pay','invoice') AND status IN ('new','in_progress')").n;
+  render(res, 'leads', { title: 'Заявки с сайта', leads, status, q, byStatus, TYPE_NAMES, group: group ? group[0] : '', unpaid });
 });
 
 router.get('/leads.csv', (req, res) => {
@@ -183,7 +186,7 @@ router.get('/clients', (req, res) => {
 
 router.get('/clients/new', (req, res) => {
   const lead = req.query.lead ? get('SELECT * FROM leads WHERE id = ?', int(req.query.lead)) : null;
-  const v = lead ? { company: lead.company, contact_name: lead.name, phone: lead.phone, email: lead.email, lead_id: lead.id } : {};
+  const v = lead ? { company: lead.company, contact_name: lead.name, phone: lead.phone, email: lead.email, lead_id: lead.id, bin: ((lead.details || '').match(/БИН\/ИИН (\d{12})/) || [])[1] || '' } : {};
   render(res, 'client-new', { title: 'Новый клиент', v, error: '', staffList: all('SELECT id, name FROM staff WHERE active = 1 ORDER BY name') });
 });
 router.post('/clients', csrf, (req, res) => {

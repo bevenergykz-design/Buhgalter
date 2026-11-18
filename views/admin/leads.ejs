@@ -1,11 +1,16 @@
 <%- include('_top') %>
 <div class="toolbar">
   <div class="seg-links">
-    <a href="<%= ab %>/leads" class="<%= !status ? 'is-active' : '' %>">Все</a>
-    <% E.LEAD_STATUS.forEach(function(s){ %><a href="<%= ab %>/leads?status=<%= s[0] %>" class="<%= status === s[0] ? 'is-active' : '' %>"><%= s[1] %><% if (byStatus[s[0]]) { %> <small><%= byStatus[s[0]] %></small><% } %></a><% }) %>
+    <a href="<%= ab %>/leads<%= group ? '?group=' + group : '' %>" class="<%= !status ? 'is-active' : '' %>">Все</a>
+    <% E.LEAD_STATUS.forEach(function(s){ %><a href="<%= ab %>/leads?status=<%= s[0] %><%= group ? '&group=' + group : '' %>" class="<%= status === s[0] ? 'is-active' : '' %>"><%= s[1] %><% if (byStatus[s[0]]) { %> <small><%= byStatus[s[0]] %></small><% } %></a><% }) %>
+  </div>
+  <div class="seg-links">
+    <a href="<%= ab %>/leads<%= status ? '?status=' + status : '' %>" class="<%= !group ? 'is-active' : '' %>">Все типы</a>
+    <% E.LEAD_GROUPS.forEach(function(g){ %><a href="<%= ab %>/leads?group=<%= g[0] %><%= status ? '&status=' + status : '' %>" class="<%= group === g[0] ? 'is-active' : '' %>"><%= g[1] %><% if (g[0] === 'payments' && unpaid) { %> <small><%= unpaid %></small><% } %></a><% }) %>
   </div>
   <form class="search" method="get" action="<%= ab %>/leads">
     <% if (status) { %><input type="hidden" name="status" value="<%= status %>"><% } %>
+    <% if (group) { %><input type="hidden" name="group" value="<%= group %>"><% } %>
     <%- icon('search') %><input class="input" type="search" name="q" value="<%= q %>" placeholder="Имя, телефон, компания">
   </form>
   <a class="btn btn--ghost btn--sm" href="<%= ab %>/leads.csv"><%- icon('download') %>Выгрузить CSV</a>

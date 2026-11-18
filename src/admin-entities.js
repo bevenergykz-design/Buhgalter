@@ -86,6 +86,9 @@ const ENTITIES = {
   },
 };
 
+const LANG_NAMES = { ru: 'русский', kk: 'казахский', en: 'английский' };
+// группы заявок для фильтра в панели
+const LEAD_GROUPS = [['sales', 'Новые клиенты', ['consult', 'request', 'callback', 'calc', 'contact']], ['payments', 'Оплаты и счета', ['pay', 'invoice']]];
 const LEAD_STATUS = [['new', 'Новая'], ['in_progress', 'В работе'], ['paid', 'Оплачено'], ['won', 'Стал клиентом'], ['lost', 'Отказ'], ['spam', 'Спам']];
 const CLIENT_STATUS = [['pending', 'Заявка на подключение'], ['active', 'Обслуживается'], ['paused', 'Приостановлен'], ['closed', 'Договор завершён']];
 const REPORT_STATUS = [['planned', 'Запланирован'], ['in_progress', 'В работе'], ['waiting', 'Ждём документы'], ['submitted', 'Сдан'], ['accepted', 'Принят']];
@@ -97,4 +100,4 @@ const REPORT_PRESETS = [
 const ENTITY_TYPES = [['too', 'ТОО'], ['ip', 'ИП'], ['other', 'Другое']];
 const TAX_REGIMES = [['simplified', 'Упрощённая декларация'], ['our', 'Общеустановленный'], ['other', 'Другой']];
 
-module.exports = { ENTITIES, NEWS_CATS, ICONS, LEAD_STATUS, CLIENT_STATUS, REPORT_STATUS, REPORT_PRESETS, ENTITY_TYPES, TAX_REGIMES };
+module.exports = { LANG_NAMES, LEAD_GROUPS, ENTITIES, NEWS_CATS, ICONS, LEAD_STATUS, CLIENT_STATUS, REPORT_STATUS, REPORT_PRESETS, ENTITY_TYPES, TAX_REGIMES };

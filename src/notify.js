@@ -69,7 +69,7 @@ function leadNotify(lead, baseUrl) {
   if (lead.company) rows.push(['Компания', lead.company]);
   if (lead.message) rows.push(['Сообщение', lead.message]);
   if (lead.details) rows.push(['Детали', lead.details]);
-  rows.push(['Страница', lead.page || '—'], ['Язык', lead.lang === 'kk' ? 'казахский' : 'русский']);
+  rows.push(['Страница', lead.page || '—'], ['Язык', { ru: 'русский', kk: 'казахский', en: 'английский' }[lead.lang] || lead.lang]);
   notifyStaff(`Новая заявка с сайта: ${TYPE_NAMES[lead.type] || lead.type}`, rows, `${baseUrl}${require('./admin-path').adminPath()}/leads/${lead.id}`);
   webhook('lead.created', { lead });
 }

@@ -204,3 +204,7 @@ a.kpi:hover { border-color: var(--indigo-200); box-shadow: var(--sh); color: var
   .dl dd { margin-bottom: 8px; }
   .client-head { flex-direction: column; }
 }
+
+/* подсказка сотруднику в карточке заявки */
+.hint-box { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 14px; padding: 12px 14px; border-radius: 8px; background: var(--indigo-50); color: var(--navy); font-size: 14px; line-height: 1.5; }
+.hint-box .ic { color: var(--indigo-700); margin-top: 2px; flex: none; }

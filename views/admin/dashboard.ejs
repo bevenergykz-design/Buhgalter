@@ -50,7 +50,7 @@
       <% if (!leads.length) { %><p class="empty-sm">Заявок пока нет.</p><% } %>
       <ul class="att">
         <% leads.forEach(function(l){ %>
-        <li><a href="<%= ab %>/leads/<%= l.id %>"><%= l.name %> <small class="muted"><%= l.phone %></small></a><span><small class="muted"><%= fmtDateTime(l.created_at) %></small> <span class="st st--<%= l.status %>"><%= opt(E.LEAD_STATUS, l.status) %></span></span></li>
+        <li><a href="<%= ab %>/leads/<%= l.id %>"><%= l.name %> <small class="muted"><%= TYPE_NAMES[l.type] || l.type %> · <%= l.phone %></small></a><span><small class="muted"><%= fmtDateTime(l.created_at) %></small> <span class="st st--<%= l.status %>"><%= opt(E.LEAD_STATUS, l.status) %></span></span></li>
         <% }) %>
       </ul>
     </section>

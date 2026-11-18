@@ -11,9 +11,14 @@
       <% if (lead.company) { %><dt>Компания</dt><dd><%= lead.company %></dd><% } %>
       <% if (lead.message) { %><dt>Сообщение</dt><dd><%- nl2br(lead.message) %></dd><% } %>
       <% if (lead.details) { %><dt>Детали</dt><dd><%= lead.details %></dd><% } %>
-      <dt>Страница</dt><dd><%= lead.page || '—' %> · язык: <%= lead.lang === 'kk' ? 'казахский' : 'русский' %></dd>
+      <dt>Страница</dt><dd><%= lead.page || '—' %> · язык: <%= E.LANG_NAMES[lead.lang] || lead.lang %></dd>
     </dl>
     <div class="actions-row">
+      <% if (lead.type === 'pay') { %>
+        <p class="hint-box"><%- icon('help') %><span>Выставьте удалённую оплату в Kaspi Pay (приложение Kaspi Pay или кабинет Kaspi Business) на номер клиента и сумму из заявки. Когда клиент оплатит — поставьте статус «Оплачено».</span></p>
+      <% } else if (lead.type === 'invoice') { %>
+        <p class="hint-box"><%- icon('help') %><span>Выставьте счёт на оплату по реквизитам из заявки и отправьте его клиенту на e-mail или в WhatsApp. После поступления денег — статус «Оплачено».</span></p>
+      <% } %>
       <% if (cl) { %>
         <a class="btn btn--ghost btn--sm" href="<%= ab %>/clients/<%= cl.id %>"><%- icon('briefcase') %>Карточка клиента: <%= cl.company %></a>
       <% } else { %>

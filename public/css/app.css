@@ -120,7 +120,7 @@ body.app-page, body.adm { background: #f4f6fa; }
 .st--in_progress, .st--in-progress, .st--contacted { background: var(--indigo-50); color: var(--indigo-700); }
 .st--waiting, .st--pending, .st--new { background: var(--amber-50); color: #9a5b00; }
 .st--submitted, .st--active, .st--won { background: #e6f4ff; color: #1f6aa5; }
-.st--accepted { background: var(--green-50); color: #1d7a45; }
+.st--accepted, .st--paid { background: var(--green-50); color: #1d7a45; }
 .st--overdue, .st--lost { background: var(--red-50); color: var(--red); }
 .st--paused, .st--closed, .st--spam { background: #eef0f3; color: var(--muted); }
 
