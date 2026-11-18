@@ -1,7 +1,8 @@
 'use strict';
 // Секретный адрес панели управления.
-// Панель не открывается по очевидному /admin: адрес вида /admin-k7x2m9q4wz генерируется
-// при первом запуске и хранится в базе. Можно задать свой через переменную окружения ADMIN_PATH.
+// Панель не открывается по очевидному /admin. По решению заказчика адрес — /admin-<БИН компании>
+// (/admin-181040019474), чтобы сотрудникам было легко запомнить. Адрес фиксируется в базе при первом
+// запуске и не меняется вместе с БИН. Можно задать свой через переменную окружения ADMIN_PATH.
 const crypto = require('crypto');
 const { settings, setSetting } = require('./db');
 
@@ -18,10 +19,15 @@ function adminPath() {
   }
   let p = settings().admin_path;
   if (!p || !VALID.test(p)) {
-    const abc = 'abcdefghijkmnpqrstuvwxyz23456789';
-    let tail = '';
-    for (const b of crypto.randomBytes(10)) tail += abc[b % abc.length];
-    p = `/admin-${tail}`;
+    const bin = String(settings().bin || '').replace(/\D/g, '');
+    if (bin.length === 12) p = `/admin-${bin}`;
+    else {
+      // запасной вариант, если БИН не задан: случайный адрес
+      const abc = 'abcdefghijkmnpqrstuvwxyz23456789';
+      let tail = '';
+      for (const b of crypto.randomBytes(10)) tail += abc[b % abc.length];
+      p = `/admin-${tail}`;
+    }
     setSetting('admin_path', p);
   }
   cached = p;
