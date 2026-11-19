@@ -770,3 +770,14 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
   .hero__media { max-width: none; }
   .route-video { max-width: 220px; }
 }
+
+/* ---------- логотип на жёлтом фоне (требование франчайзера «1С:БухОбслуживание») ---------- */
+:root { --brand-yellow: #FADC48; }
+.brand { background: var(--brand-yellow); padding: 11px 16px; border-radius: 4px; }
+.brand--light { padding: 12px 18px; }
+.brand--light .brand__logo { height: 40px; }
+@media (max-width: 720px) {
+  .brand { padding: 7px 10px; }
+  .brand__logo { max-width: calc(100vw - 170px); }
+  .brand--light .brand__logo { height: 32px; max-width: 100%; }
+}
