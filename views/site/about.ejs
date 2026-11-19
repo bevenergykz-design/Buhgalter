@@ -8,7 +8,6 @@
       <% paragraphs(t('about.lead')).forEach(function(p, i){ %><p class="<%= i === 0 ? 'lead' : '' %>"><%= p %></p><% }) %>
     </div>
     <aside class="about__aside">
-      <% if (st.images && st.images.about) { %><img class="about__img" src="<%= st.images.about %>" alt="<%= sv('brand') %>" loading="lazy"><% } %>
       <div class="req-card">
         <h2 class="req-card__title"><%= s.about_requisites %></h2>
         <p class="req-card__name"><%= sv('company_name') %></p>
