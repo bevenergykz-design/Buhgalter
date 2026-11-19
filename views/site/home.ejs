@@ -13,30 +13,7 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-<!-- 1. Первый экран -->
-<section class="hero">
-  <div class="container hero__grid">
-    <div class="hero__content">
-      <span class="eyebrow eyebrow--light"><%= t('home.hero.badge') %></span>
-      <h1 class="hero__title"><%= t('home.hero.title') %></h1>
-      <p class="hero__subtitle"><%= t('home.hero.subtitle') %></p>
-      <ul class="hero__adv">
-        <% lines(t('home.hero.advantages')).forEach(function(a){ %><li><span class="tick"><%- icon('check') %></span><%= a %></li><% }) %>
-      </ul>
-      <div class="hero__actions">
-        <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
-        <a class="btn btn--line btn--lg" href="#calculator"><%- icon('calc') %><%= s.btn_calc %></a>
-      </div>
-    </div>
-    <figure class="hero__media">
-      <% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; %>
-      <picture>
-        <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %>
-      </picture>
-      <figcaption class="hero__caption"><%- icon('map') %><%= s.hero_photo_alt %> · <%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></figcaption>
-    </figure>
-  </div>
-</section>
+<%- include('_hero') %>
 
 <!-- Полоса доверия -->
 <section class="trust" aria-label="<%= sv('brand') %>">

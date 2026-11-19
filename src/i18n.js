@@ -146,6 +146,7 @@ const S = {
 
 // ---------- Новые строки (оплата, факты первого экрана, калькулятор WhatsApp) и английская версия ----------
 Object.assign(S.ru, {
+  kin_prefix: 'Мы берём на себя', kin_words: ['бухгалтерию', 'налоги', 'зарплату и кадры', 'отчётность', 'проверки КГД'],
   nav_video: 'Видео', video_title: 'Видео-советы бухгалтеров', video_lead: 'Короткие ответы на частые вопросы предпринимателей: налоги, отчётность, штрафы, выбор формы бизнеса. Больше видео — в нашем Instagram.', video_all: 'Все видео', video_instagram: 'Больше видео в Instagram', video_topics: { tips: 'Советы бухгалтера', team: 'Наша команда', about: 'О компании', route: 'Как нас найти' }, video_lang_note: 'на казахском', certs_title: 'Сертификаты и квалификация', certs_lead: 'Качество нашей работы подтверждено аудитом «1С Казахстан», а специалисты регулярно повышают квалификацию.', certs_open: 'Открыть сертификат', team_title: 'Наша команда', team_lead: 'Бухгалтеры «Диалог Учёт» в нашем офисе.', about_video_title: 'Видео о компании и команде', route_title: 'Как нас найти в Павлодаре',
   nav_pay: 'Оплата услуг', lang_name: 'Русский', btn_calc: 'Рассчитать стоимость',
   fact_since: 'С 2018 года', fact_since_sub: 'ведём учёт бизнеса',
@@ -164,6 +165,7 @@ Object.assign(S.ru, {
   team_caption_default: 'Команда «Диалог Учёт»',
 });
 Object.assign(S.kk, {
+  kin_prefix: 'Біз өзімізге аламыз:', kin_words: ['бухгалтерияны', 'салықтарды', 'жалақы мен кадрларды', 'есептілікті', 'МКК тексерулерін'],
   nav_video: 'Бейне', video_title: 'Бухгалтерлердің бейне-кеңестері', video_lead: 'Кәсіпкерлердің жиі қоятын сұрақтарына қысқа жауаптар: салықтар, есептілік, айыппұлдар, бизнес нысанын таңдау. Көбірек бейне — біздің Instagram-да.', video_all: 'Барлық бейне', video_instagram: 'Instagram-дағы басқа бейнелер', video_topics: { tips: 'Бухгалтер кеңестері', team: 'Біздің команда', about: 'Компания туралы', route: 'Бізді қалай табуға болады' }, video_lang_note: 'орыс тілінде', certs_title: 'Сертификаттар және біліктілік', certs_lead: 'Жұмысымыздың сапасын «1С Қазақстан» аудиті растаған, ал мамандарымыз біліктілігін үнемі арттырады.', certs_open: 'Сертификатты ашу', team_title: 'Біздің команда', team_lead: '«Диалог Учёт» бухгалтерлері біздің кеңседе.', about_video_title: 'Компания мен команда туралы бейне', route_title: 'Павлодарда бізді қалай табуға болады',
   nav_pay: 'Қызметтерге төлем', lang_name: 'Қазақша', btn_calc: 'Құнын есептеу',
   fact_since: '2018 жылдан', fact_since_sub: 'бизнес есебін жүргіземіз',
@@ -183,6 +185,7 @@ Object.assign(S.kk, {
 });
 
 S.en = {
+  kin_prefix: 'We take care of', kin_words: ['bookkeeping', 'taxes', 'payroll and HR', 'reporting', 'tax audits'],
   nav_video: 'Video', video_title: 'Accountants\' video tips', video_lead: 'Short answers to entrepreneurs\' common questions: taxes, reporting, penalties and choosing a legal form. The videos are in Russian and Kazakh; more on our Instagram.', video_all: 'All videos', video_instagram: 'More videos on Instagram', video_topics: { tips: 'Accounting tips', team: 'Our team', about: 'About the company', route: 'How to find us' }, video_lang_note: 'in Kazakh', certs_title: 'Certificates and qualifications', certs_lead: 'The quality of our work is confirmed by the 1C Kazakhstan audit, and our specialists regularly upgrade their qualifications.', certs_open: 'Open certificate', team_title: 'Our team', team_lead: 'Dialog Uchet accountants at our office.', about_video_title: 'Videos about the company and team', route_title: 'How to find us in Pavlodar',
   nav_home: 'Home', nav_services: 'Services', nav_news: 'News & Insights', nav_news_short: 'News', nav_about: 'About us', nav_contacts: 'Contacts', nav_pay: 'Payment', btn_calc: 'Calculate the cost',
   cabinet: 'Client portal', cabinet_login: 'Client portal login', staff_login: 'Staff login', lang_name: 'English',

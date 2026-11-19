@@ -1,0 +1,24 @@
+<!-- 1. Первый экран (вариант 1 «Швейцарский модерн»): крупная типографика, живая строка, фото команды без наложений -->
+<section class="sw-hero">
+  <div class="container">
+    <p class="sw-hero__badge"><span class="sw-dot" aria-hidden="true"></span><%= t('home.hero.badge') %></p>
+    <h1 class="sw-hero__title"><%= t('home.hero.title') %></h1>
+    <p class="sw-kinetic" aria-label="<%= s.kin_prefix %> <%= s.kin_words.join(', ') %>">
+      <span aria-hidden="true"><%= s.kin_prefix %> <span class="sw-kinetic__words" data-kinetic><% s.kin_words.forEach(function(w, i){ %><b class="<%= i === 0 ? 'is-on' : '' %>"><%= w %></b><% }) %></span></span>
+    </p>
+    <div class="sw-hero__grid">
+      <div class="sw-hero__side">
+        <p class="sw-hero__sub"><%= t('home.hero.subtitle') %></p>
+        <ul class="sw-hero__adv"><% lines(t('home.hero.advantages')).forEach(function(a){ %><li><%= a %></li><% }) %></ul>
+        <div class="sw-hero__actions">
+          <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
+          <a class="btn btn--line btn--lg" href="#calculator"><%= s.btn_calc %></a>
+        </div>
+      </div>
+      <figure class="sw-hero__photo">
+        <picture><source srcset="/img/team/team-2-wide.webp" type="image/webp"><img src="/img/team/team-2-wide.jpg" alt="<%= s.hero_photo_alt %>" width="961" height="540" fetchpriority="high"></picture>
+        <figcaption><%= s.team_lead %></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

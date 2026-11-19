@@ -179,6 +179,14 @@
     recalc();
   }
 
+  // ---------- живая строка в первом экране: слово меняется раз в 2,6 с ----------
+  $$('[data-kinetic]').forEach(function (box) {
+    var words = $$('b', box); if (words.length < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var i = 0;
+    setInterval(function () { words[i].classList.remove('is-on'); i = (i + 1) % words.length; words[i].classList.add('is-on'); }, 2600);
+  });
+
   // ---------- видео: одновременно играет только одно ----------
   document.addEventListener('play', function (e) {
     if (e.target.tagName !== 'VIDEO') return;
