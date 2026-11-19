@@ -1,0 +1,8 @@
+<div class="certs">
+  <% certs.forEach(function(c){ const big = c.image; const sm = /\/img\/certs\/[^/]+\.jpg$/.test(big) ? big.replace(/\.jpg$/, '-sm.jpg') : big; %>
+  <a class="cert" href="<%= big %>" target="_blank" rel="noopener" title="<%= s.certs_open %>">
+    <span class="cert__img"><img src="<%= sm %>" alt="<%= f(c, 'title') %>" loading="lazy"></span>
+    <span class="cert__body"><strong><%= f(c, 'title') %></strong><% if (f(c, 'desc')) { %><small><%= f(c, 'desc') %></small><% } %></span>
+  </a>
+  <% }) %>
+</div>

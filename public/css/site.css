@@ -728,3 +728,45 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
   .feature { padding: 18px; }
   .pay .form-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- видео, сертификаты, галерея команды ---------- */
+.vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+.vgrid--4 { grid-template-columns: repeat(4, 1fr); }
+.vcard { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.vcard__frame { position: relative; aspect-ratio: 9 / 16; border-radius: 8px; overflow: hidden; background: var(--ink); }
+.vcard__frame video { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--ink); }
+.vcard__cap { font-weight: 600; color: var(--navy); font-size: 15px; line-height: 1.4; }
+.vcard__lang { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 4px; background: var(--indigo-50); color: var(--indigo-700); font-size: 12px; font-weight: 700; vertical-align: 1px; }
+.vgroup + .vgroup { margin-top: 56px; }
+.vgroup__title { font-size: 24px; margin-bottom: 22px; scroll-margin-top: 110px; }
+.route-video { max-width: 280px; margin-bottom: 32px; }
+.chip--video .ic { width: 16px; height: 16px; vertical-align: -3px; }
+.certs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.cert { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; color: var(--text); transition: box-shadow var(--ease), border-color var(--ease); }
+.cert:hover { color: var(--text); border-color: var(--indigo-200); box-shadow: 0 14px 34px rgba(27, 34, 56, .1); }
+.cert__img { display: flex; align-items: center; justify-content: center; height: 230px; padding: 16px; background: #f5f7fb; border-bottom: 1px solid var(--line); }
+.cert__img img { max-height: 100%; width: auto; box-shadow: 0 4px 14px rgba(27, 34, 56, .12); }
+.cert__body { padding: 16px 18px 18px; display: grid; gap: 6px; }
+.cert__body strong { font-family: var(--font-head); color: var(--navy); font-size: 15px; line-height: 1.35; }
+.cert__body small { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.gallery__item { margin: 0; border-radius: 6px; overflow: hidden; aspect-ratio: 3 / 4; background: #e9edf3; }
+.gallery__item img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.team-photo--about img { max-height: none; aspect-ratio: 4 / 5; object-position: center 30%; }
+/* первый экран: вертикальное фото команды */
+.hero__media { justify-self: end; width: 100%; max-width: 500px; }
+.hero__media img { aspect-ratio: 4 / 5; object-position: center 30%; }
+@media (max-width: 1024px) {
+  .vgrid--4, .certs, .gallery { grid-template-columns: repeat(2, 1fr); }
+  .hero__media { justify-self: start; max-width: 460px; }
+}
+@media (max-width: 720px) {
+  .vgrid, .vgrid--4 { grid-template-columns: repeat(2, 1fr); gap: 16px 12px; }
+  .vcard__cap { font-size: 14px; }
+  .certs { grid-template-columns: 1fr; }
+  .cert { flex-direction: row; }
+  .cert__img { width: 120px; height: auto; flex: none; border-bottom: 0; border-right: 1px solid var(--line); padding: 10px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .hero__media { max-width: none; }
+  .route-video { max-width: 220px; }
+}

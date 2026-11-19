@@ -1,0 +1,6 @@
+<figure class="vcard">
+  <div class="vcard__frame">
+    <video src="<%= v.file %>" poster="<%= v.poster %>" controls preload="none" playsinline width="540" height="960" aria-label="<%= f(v, 'title') %>"></video>
+  </div>
+  <figcaption class="vcard__cap"><%= f(v, 'title') %><% if (v.lang !== lang) { %> <span class="vcard__lang"><%= LANG_LABELS[v.lang] || v.lang %></span><% } %></figcaption>
+</figure>

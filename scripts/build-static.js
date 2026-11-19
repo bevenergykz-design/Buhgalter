@@ -17,7 +17,7 @@ const SITE_URL = (process.env.URL || 'https://buhgalterservices.netlify.app').re
 setSetting('site_url', SITE_URL);
 
 const { LANGS } = require('../src/i18n');
-const PUBLIC = ['/', '/uslugi', '/novosti', '/o-kompanii', '/kontakty', '/oplata', '/spasibo'];
+const PUBLIC = ['/', '/uslugi', '/novosti', '/o-kompanii', '/kontakty', '/oplata', '/video', '/spasibo'];
 const PREFIXES = LANGS.map((l) => (l === 'ru' ? '' : `/${l}`));
 for (const p of all('SELECT slug FROM pages WHERE published = 1')) PUBLIC.push(`/${p.slug}`);
 for (const p of all('SELECT slug FROM posts WHERE published = 1')) PUBLIC.push(`/novosti/${p.slug}`);

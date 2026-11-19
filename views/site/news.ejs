@@ -11,6 +11,7 @@
     <% } %>
     <div class="chips">
       <a class="chip <%= !cat ? 'is-active' : '' %>" href="<%= L('/novosti') %>"><%= s.news_all %></a>
+      <a class="chip chip--video" href="<%= L('/video') %>"><%- icon('image') %> <%= s.nav_video %></a>
       <% cats.forEach(function(c){ %><a class="chip <%= cat === c ? 'is-active' : '' %>" href="<%= L('/novosti?cat=' + c) %>"><%= s.news_cats[c] %><% if (counts[c]) { %> <small><%= counts[c] %></small><% } %></a><% }) %>
     </div>
     <% if (!posts.length) { %>

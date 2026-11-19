@@ -304,6 +304,39 @@ t('pay.note', 'Страница «Оплата услуг»', 'Примечан�
 t('seo.pay.title', 'SEO: заголовки и описания', 'Оплата услуг: Title', 'Оплата бухгалтерских услуг — Kaspi Pay и счёт | «Диалог Учёт»', 'Бухгалтерлік қызметтерге төлем — Kaspi Pay және шот | «Диалог Учёт»');
 t('seo.pay.description', 'SEO: заголовки и описания', 'Оплата услуг: Description', 'Как оплатить услуги «Диалог Учёт»: удалённая оплата через Kaspi Pay для физических лиц и счёт на оплату для ИП и ТОО.', '«Диалог Учёт» қызметтерін қалай төлеуге болады: жеке тұлғаларға Kaspi Pay арқылы қашықтан төлем, ЖК мен ЖШС-ға төлем шоты.', 1);
 
+// ---------- Видео заказчика (Instagram @dialog_uchet), сжаты до 540×960 ----------
+// [файл, раздел, язык, на главной, RU, KZ, EN]
+const VIDEOS = [
+  ['ip-ili-too', 'tips', 'ru', 1, 'ИП или ТОО: что выбрать — объясняет Наталья Кузьменко', 'ЖК ме, ЖШС ме: қайсысын таңдау керек — Наталья Кузьменко түсіндіреді', 'Sole proprietor or LLP: which to choose — Natalya Kuzmenko explains'],
+  ['4-priznaka', 'tips', 'ru', 1, '4 признака, что вам срочно нужен бухгалтер', 'Сізге бухгалтер шұғыл қажет екенінің 4 белгісі', '4 signs you urgently need an accountant'],
+  ['propustili-nalog', 'tips', 'ru', 1, 'Пропустили срок уплаты налога: штрафы и блокировка счетов', 'Салық төлеу мерзімі өтіп кетті: айыппұлдар және шоттарды бұғаттау', 'Missed a tax payment deadline: penalties and frozen accounts'],
+  ['shtraf-otchetnost', 'tips', 'ru', 0, 'Штраф за несвоевременную сдачу отчётности', 'Есептілікті уақтылы тапсырмағаны үшін айыппұл', 'Penalties for late filing of tax reports'],
+  ['nalog-kvartira', 'tips', 'ru', 0, 'Нужно ли платить налог при продаже квартиры', 'Пәтерді сатқанда салық төлеу керек пе', 'Do you pay tax when selling an apartment?'],
+  ['kredit-tender', 'tips', 'ru', 0, 'Кредит и тендеры: почему важно сдавать отчётность вовремя', 'Несие және тендерлер: есептілікті уақтылы тапсыру неге маңызды', 'Loans and tenders: why on-time reporting matters'],
+  ['posrednichestvo-our', 'tips', 'ru', 0, 'Посредничество и переход на общеустановленный режим', 'Делдалдық және жалпыға бірдей белгіленген режимге көшу', 'Agency services and switching to the general tax regime'],
+  ['ne-tolko-nalogi', 'tips', 'ru', 0, 'Бухгалтерия — это не только налоги: вычеты и оптимизация расходов', 'Бухгалтерия — тек салық емес: шегерімдер және шығындарды оңтайландыру', 'Accounting is more than taxes: deductions and cost optimisation'],
+  ['kuzmenko-kk', 'about', 'kk', 1, 'Наталья Кузьменко о компании (на казахском)', 'Наталья Кузьменко компания туралы', 'Natalya Kuzmenko about the company (in Kazakh)'],
+  ['dialog-uchet-kk', 'about', 'kk', 0, '«Диалог Учёт»: как мы работаем (на казахском)', '«Диалог Учёт»: біз қалай жұмыс істейміз', 'Dialog Uchet: how we work (in Kazakh)'],
+  ['komanda-kk', 'about', 'kk', 0, 'Почему с вами работает команда, а не один бухгалтер (на казахском)', 'Сізбен неге бір бухгалтер емес, команда жұмыс істейді', 'Why a team, not a single accountant, works with you (in Kazakh)'],
+  ['komanda-o-professii', 'team', 'ru', 0, 'Наши бухгалтеры о своей профессии', 'Біздің бухгалтерлер өз мамандығы туралы', 'Our accountants about their profession'],
+  ['rabota-na-autsorse', 'team', 'ru', 0, 'Что нам нравится в работе на бухгалтерском аутсорсе', 'Бухгалтерлік аутсорсингтегі жұмыста бізге не ұнайды', 'What we enjoy about outsourced accounting work'],
+  ['buhgalter-18-00', 'team', 'ru', 0, 'Бухгалтер в 18:00 и руководитель в 22:00', 'Бухгалтер 18:00-де, басшы 22:00-де', 'The accountant at 6 pm and the business owner at 10 pm'],
+  ['kak-nas-nayti', 'route', 'ru', 0, 'Как нас найти: Павлодар, ул. Лермонтова, 94/3', 'Бізді қалай табуға болады: Павлодар, Лермонтов к-сі, 94/3', 'How to find us: 94/3 Lermontov St, Pavlodar'],
+];
+// [файл, RU, KZ, EN, описание RU, KZ, EN]
+const CERTS = [
+  ['audit-1c-2024', 'Сертификат 1С о прохождении автоматизированного аудита', '1С автоматтандырылған аудиттен өту туралы сертификаты', '1C certificate of passing the automated audit',
+    'Подтверждает высокое качество учёта и отчётности клиентов по итогам централизованного аудита «1С Казахстан» за 2024 год. Выдан 3 июля 2025 г.',
+    '«1С Қазақстан» орталықтандырылған аудитінің 2024 жылғы қорытындысы бойынша клиенттер есебі мен есептілігінің жоғары сапасын растайды. 2025 жылғы 3 шілдеде берілген.',
+    'Confirms the high quality of clients\' accounting and reporting based on the 1C Kazakhstan centralised audit for 2024. Issued on 3 July 2025.'],
+  ['prof-buh-2015', 'Сертификат профессионального бухгалтера — Н. В. Кузьменко', 'Кәсіби бухгалтер сертификаты — Н. В. Кузьменко', 'Professional Accountant Certificate — N. V. Kuzmenko',
+    'Учебный центр «ПРОФИТренинг», 7 декабря 2015 г., № 000350.', '«ПРОФИТренинг» оқу орталығы, 2015 жылғы 7 желтоқсан, № 000350.', 'PROFITraining centre, 7 December 2015, No. 000350.'],
+  ['den-buhgaltera-2022-1', 'Повышение квалификации: «День бухгалтера 2022»', 'Біліктілікті арттыру: «Бухгалтер күні 2022»', 'Professional development: Accountant\'s Day 2022',
+    'Онлайн-конференция «Учёт», 28 сентября 2022 г., 3 академических часа.', '«Учёт» онлайн-конференциясы, 2022 жылғы 28 қыркүйек, 3 академиялық сағат.', 'Uchet online conference, 28 September 2022, 3 academic hours.'],
+  ['den-buhgaltera-2022-2', 'Повышение квалификации: аутсорсинг и автоматизация учёта', 'Біліктілікті арттыру: аутсорсинг және есепті автоматтандыру', 'Professional development: outsourcing and accounting automation',
+    'Онлайн-конференция «Учёт», 29 сентября 2022 г., 3 академических часа.', '«Учёт» онлайн-конференциясы, 2022 жылғы 29 қыркүйек, 3 академиялық сағат.', 'Uchet online conference, 29 September 2022, 3 academic hours.'],
+];
+
 const DEFAULT_SETTINGS = {
   company_name_ru: 'ТОО «Образцовая бухгалтерия „Диалог Учёт“»',
   company_name_kk: '«Образцовая бухгалтерия „Диалог Учёт“» ЖШС',
@@ -322,8 +355,8 @@ const DEFAULT_SETTINGS = {
   whatsapp: '+7 771 037 7827',
   email: '',
   hours_ru: 'Пн–Пт: с 9:00 до 17:00', hours_kk: 'Дс–Жм: 9:00-ден 17:00-ге дейін',
-  socials: { instagram: '', facebook: '', telegram: '', youtube: '', linkedin: '' },
-  images: { hero: '/img/team.webp', team: '/img/team.jpg', about: '' },
+  socials: { instagram: 'https://www.instagram.com/dialog_uchet/', facebook: '', telegram: '', youtube: '', linkedin: '' },
+  images: { hero: '/img/team/hero.webp', team: '/img/team/team-2.webp', about: '/img/team/team-1.webp' },
   site_url: '',
   notify_email: '',
   smtp: { host: '', port: 465, secure: true, user: '', pass: '', from: '' },
@@ -384,6 +417,27 @@ function seed({ run, get, now, setSetting, settings }) {
     run(`INSERT INTO pages(slug, title_ru, title_kk, title_en, body_ru, body_kk, body_en, desc_ru, desc_kk, desc_en, in_footer, sort, system, updated_at)
          VALUES(?,?,?,?,?,?,?,?,?,?,1,5,1,?)`, 'pravila-oplaty', PAY_RULES.ru[0], PAY_RULES.kk[0], PAY_RULES.en[0],
       PAY_RULES.ru[2], PAY_RULES.kk[2], PAY_RULES.en[2], PAY_RULES.ru[1], PAY_RULES.kk[1], PAY_RULES.en[1], now());
+  }
+
+  // видео и сертификаты заказчика
+  if (!get('SELECT 1 FROM videos LIMIT 1')) {
+    VIDEOS.forEach(([f, topic, lng, home, ru, kk, en], i) => run('INSERT INTO videos(title_ru, title_kk, title_en, topic, lang, file, poster, on_home, sort) VALUES(?,?,?,?,?,?,?,?,?)',
+      ru, kk, en, topic, lng, `/media/video/${f}.mp4`, `/media/video/${f}.jpg`, home, i));
+  }
+  if (!get('SELECT 1 FROM certificates LIMIT 1')) {
+    CERTS.forEach(([f, ru, kk, en, dru, dkk, den], i) => run('INSERT INTO certificates(title_ru, title_kk, title_en, desc_ru, desc_kk, desc_en, image, sort) VALUES(?,?,?,?,?,?,?,?)',
+      ru, kk, en, dru, dkk, den, `/img/certs/${f}.jpg`, i));
+  }
+  // старое фото команды заказчик попросил убрать — заменяем, если его не меняли в панели
+  {
+    const im = settings().images || {};
+    const next = { ...im };
+    if (!im.hero || im.hero === '/img/team.webp') next.hero = '/img/team/hero.webp';
+    if (!im.team || im.team === '/img/team.jpg') next.team = '/img/team/team-2.webp';
+    if (!im.about) next.about = '/img/team/team-1.webp';
+    if (JSON.stringify(next) !== JSON.stringify(im)) setSetting('images', next);
+    const so = settings().socials || {};
+    if (!so.instagram) setSetting('socials', { ...so, instagram: 'https://www.instagram.com/dialog_uchet/' });
   }
 
   // английская версия: заполняет только пустые поля, правки из панели не трогает

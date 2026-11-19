@@ -1,0 +1,21 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('_page-head', { title: s.video_title, lead: s.video_lead }) %>
+<section class="section section--first">
+  <div class="container">
+    <div class="chips">
+      <% groups.forEach(function(g){ %><a class="chip" href="#<%= g.topic %>"><%= s.video_topics[g.topic] || g.topic %> <small><%= g.items.length %></small></a><% }) %>
+      <% if (st.socials && st.socials.instagram) { %><a class="chip" href="<%= st.socials.instagram %>" target="_blank" rel="noopener"><%- icon('instagram') %> Instagram</a><% } %>
+    </div>
+    <% groups.forEach(function(g){ %>
+    <div class="vgroup" id="<%= g.topic %>">
+      <h2 class="vgroup__title"><%= s.video_topics[g.topic] || g.topic %></h2>
+      <div class="vgrid">
+        <% g.items.forEach(function(v){ %><%- include('_video-card', { v: v }) %><% }) %>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</section>
+<%- include('_cta') %>
+<%- include('../partials/footer') %>

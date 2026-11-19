@@ -1,7 +1,7 @@
 <%
   locals.jsonLd = {
     '@context': 'https://schema.org', '@type': 'AccountingService',
-    name: sv('company_name'), alternateName: sv('brand'), url: baseUrl + L('/'), logo: baseUrl + '/img/logo-1c-full.png', image: baseUrl + '/img/team.jpg',
+    name: sv('company_name'), alternateName: sv('brand'), url: baseUrl + L('/'), logo: baseUrl + '/img/logo-1c-full.png', image: baseUrl + '/img/og.jpg',
     taxID: st.bin, foundingDate: st.reg_date, telephone: (st.phones || [])[0], email: st.email || undefined,
     address: (st.offices || []).map(function(o){ return { '@type': 'PostalAddress', addressLocality: o['city_' + lang] || o.city_ru, streetAddress: o['address_' + lang] || o.address_ru, addressCountry: 'KZ' }; }),
     areaServed: { '@type': 'Country', name: 'Kazakhstan' },
@@ -29,9 +29,9 @@
       </div>
     </div>
     <figure class="hero__media">
-      <% const heroImg = (st.images && st.images.hero) || '/img/team.webp'; %>
+      <% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; %>
       <picture>
-        <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="857" height="600" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %>
+        <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %>
       </picture>
       <figcaption class="hero__caption"><%- icon('map') %><%= s.hero_photo_alt %> · <%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></figcaption>
     </figure>
@@ -213,6 +213,34 @@
     </div>
   </div>
 </section>
+
+<!-- Сертификаты -->
+<% if (homeCerts.length) { %>
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <div><h2 class="section__title"><%= s.certs_title %></h2><p class="section__lead"><%= s.certs_lead %></p></div>
+      <a class="btn btn--ghost" href="<%= L('/o-kompanii') %>#certs"><%= s.nav_about %><%- icon('arrow') %></a>
+    </div>
+    <%- include('_certs', { certs: homeCerts }) %>
+  </div>
+</section>
+<% } %>
+
+<!-- Видео-советы -->
+<% if (homeVideos.length) { %>
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <div><h2 class="section__title"><%= s.video_title %></h2><p class="section__lead"><%= s.video_lead %></p></div>
+      <a class="btn btn--ghost" href="<%= L('/video') %>"><%= s.video_all %><%- icon('arrow') %></a>
+    </div>
+    <div class="vgrid vgrid--4">
+      <% homeVideos.forEach(function(v){ %><%- include('_video-card', { v: v }) %><% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
 
 <!-- 5. Отзывы (показываются, когда добавлены в панели управления) -->
 <% if (reviews.length) { %>

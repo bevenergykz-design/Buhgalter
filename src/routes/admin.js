@@ -378,7 +378,7 @@ router.post('/images', F.imageUpload.any(), csrf, (req, res) => {
   for (const k of ['hero', 'team', 'about']) {
     const file = (req.files || []).find((f) => f.fieldname === k);
     if (file) images[k] = `/uploads/${file.filename}`;
-    else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/team.webp' : '';
+    else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/team/hero.webp' : '';
   }
   setSetting('images', images);
   back(res, AP + '/images');
@@ -419,7 +419,7 @@ function collectEntity(ent, body, files, old) {
       if (f.type === 'check') v = v ? 1 : 0;
       else if (f.type === 'number') v = int(v, 0);
       else if (f.type === 'html') v = sanitizeHtml(v);
-      else if (f.type === 'image') {
+      else if (['image', 'video', 'file'].includes(f.type)) {
         const file = (files || []).find((x) => x.fieldname === n);
         v = file ? `/uploads/${file.filename}` : body[`remove_${n}`] ? '' : (old ? old[n] : '') || '';
       } else if (f.type === 'date') v = /^\d{4}-\d{2}-\d{2}/.test(v || '') ? v : '';
@@ -446,7 +446,7 @@ router.post('/content/:ent/:id', entityOr404, F.imageUpload.any(), csrf, (req, r
   if ('slug' in v) {
     if (old && old.system) v.slug = old.slug;
     else v.slug = slugify(v.slug || v[ent.slugFrom] || '');
-    const reserved = ['admin', 'cabinet', 'api', 'kk', 'en', 'oplata', 'uslugi', 'novosti', 'o-kompanii', 'kontakty', 'spasibo', 'sitemap', 'robots', 'whatsapp', 'css', 'js', 'img', 'uploads'];
+    const reserved = ['admin', 'cabinet', 'api', 'kk', 'en', 'oplata', 'uslugi', 'novosti', 'o-kompanii', 'kontakty', 'spasibo', 'sitemap', 'robots', 'whatsapp', 'css', 'js', 'img', 'uploads', 'video', 'media'];
     if (req.entKey === 'pages' && reserved.includes(v.slug)) v.slug += '-1';
     const dupe = get(`SELECT id FROM ${ent.table} WHERE slug = ? AND id != ?`, v.slug, old ? old.id : 0);
     if (dupe) return backErr(res, formUrl, 'slug');

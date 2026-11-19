@@ -102,6 +102,11 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok((await pub.get('/en/uslugi')).text.includes('Tax reporting') && (await pub.get('/en/kontakty')).text.includes('Almaty'), 'английские услуги и контакты');
     ok(home.text.includes('hreflang="en"') && home.text.includes('logo-lockup.png'), 'hreflang en и полный логотип в шапке');
     ok(!home.text.includes('hero__card') && !home.text.includes('preview-bar'), 'на фото первого экрана нет плашек, нет жёлтой полосы');
+    ok(home.text.includes('/img/team/hero.webp') && !home.text.includes('/img/team.webp'), 'на первом экране новое фото команды, старое убрано');
+    const vp = await pub.get('/video');
+    ok(vp.status === 200 && (vp.text.match(/<video /g) || []).length >= 10 && (await pub.get('/kk/video')).status === 200, 'страница «Видео» со всеми роликами (RU и KZ)');
+    ok(home.text.includes('/media/video/') && home.text.includes('/img/certs/audit-1c-2024'), 'на главной видео-советы и сертификаты');
+    ok((await pub.get('/o-kompanii')).text.includes('id="certs"') && (await pub.get('/kontakty')).text.includes('kak-nas-nayti.mp4'), 'сертификаты на «О компании», видео «Как нас найти» в контактах');
 
     console.log('Регистрация и кабинет клиента (этап 2: включается настройкой)');
     require('../src/db').setSetting('features', { cabinet: true });
@@ -189,7 +194,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok((await pub.get('/kk')).text.includes('Жаңа тақырып'), 'новый текст на казахской главной');
     const pf = new FormData();
     for (const [k, v] of Object.entries({ _csrf: acsrf, title_ru: 'Изменения по НДС с 2027 года', title_kk: 'ҚҚС өзгерістері', category: 'tax', published_at: '2026-11-09', slug: '', excerpt_ru: 'Кратко', excerpt_kk: 'Қысқаша', body_ru: '<h2>Что изменилось</h2><p>Текст <script>alert(1)</script><a href="javascript:alert(1)">ссылка</a></p>', body_kk: '<p>Мәтін</p>', published: '1' })) pf.append(k, v);
-    pf.append('image', new Blob([fs.readFileSync(path.join(__dirname, '..', 'public', 'img', 'team.jpg'))], { type: 'image/jpeg' }), 'cover.jpg');
+    pf.append('image', new Blob([fs.readFileSync(path.join(__dirname, '..', 'public', 'img', 'team', 'team-1.jpg'))], { type: 'image/jpeg' }), 'cover.jpg');
     r = await ad.post(AP + '/content/posts/new', { multipart: pf });
     ok(r.status === 302 && r.location.includes('ok=created'), 'создана новость с обложкой');
     r = await pub.get('/novosti/izmeneniya-po-nds-s-2027-goda');

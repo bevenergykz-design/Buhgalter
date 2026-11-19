@@ -179,6 +179,12 @@
     recalc();
   }
 
+  // ---------- видео: одновременно играет только одно ----------
+  document.addEventListener('play', function (e) {
+    if (e.target.tagName !== 'VIDEO') return;
+    $$('video').forEach(function (v) { if (v !== e.target && !v.paused) v.pause(); });
+  }, true);
+
   // ---------- вкладки услуг без перезагрузки ----------
   var tabs = $$('.tab[data-tab]');
   tabs.forEach(function (t) {

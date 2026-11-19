@@ -38,14 +38,14 @@
       </div>
     <% } else if (f.type === 'check') { %>
       <label class="check"><input type="checkbox" name="<%= f.name %>" value="1" <%= row[f.name] ? 'checked' : '' %>><span class="check__box"></span><span class="check__text"><%= f.label %></span></label>
-    <% } else if (f.type === 'image') { %>
+    <% } else if (f.type === 'image' || f.type === 'video') { %>
       <div class="field">
-        <span class="field__label"><%= f.label %></span>
+        <span class="field__label"><%= f.label %><%= f.required ? ' *' : '' %></span>
         <div class="img-inline">
-          <% if (val(f.name)) { %><img src="<%= val(f.name) %>" alt=""><% } %>
+          <% if (val(f.name)) { %><% if (f.type === 'video') { %><video src="<%= val(f.name) %>" controls preload="metadata" playsinline style="width:160px;border-radius:8px"></video><% } else { %><img src="<%= val(f.name) %>" alt=""><% } %><% } %>
           <div>
-            <input type="file" name="<%= f.name %>" accept=".jpg,.jpeg,.png,.webp,.gif">
-            <% if (val(f.name)) { %><label class="check"><input type="checkbox" name="remove_<%= f.name %>" value="1"><span class="check__box"></span><span class="check__text">Убрать изображение</span></label><% } %>
+            <input type="file" name="<%= f.name %>" accept="<%= f.type === 'video' ? '.mp4,.webm' : '.jpg,.jpeg,.png,.webp,.gif' %>">
+            <% if (val(f.name)) { %><label class="check"><input type="checkbox" name="remove_<%= f.name %>" value="1"><span class="check__box"></span><span class="check__text"><%= f.type === 'video' ? 'Убрать видео' : 'Убрать изображение' %></span></label><% } %>
           </div>
         </div>
       </div>

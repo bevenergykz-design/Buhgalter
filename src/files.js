@@ -8,6 +8,7 @@ const { DATA_DIR, settings } = require('./db');
 
 const DOC_EXT = ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.gif', '.doc', '.docx', '.xls', '.xlsx', '.csv', '.txt', '.rtf', '.odt', '.ods', '.xml', '.zip', '.rar', '.7z'];
 const IMG_EXT = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const MEDIA_EXT = [...IMG_EXT, '.mp4', '.webm', '.pdf']; // для разделов «Видео», «Сертификаты» и т. п.
 const FILES_DIR = path.join(DATA_DIR, 'files');
 const UPLOADS_DIR = path.join(DATA_DIR, 'uploads'); // публичные изображения (обложки, фото), отдаются по адресу /uploads/
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
@@ -39,8 +40,12 @@ const imageUpload = multer({
     destination: UPLOADS_DIR,
     filename: (req, file, cb) => cb(null, `${Date.now().toString(36)}-${rnd().slice(0, 10)}${path.extname(fixName(file.originalname)).toLowerCase()}`),
   }),
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => cb(null, IMG_EXT.includes(path.extname(fixName(file.originalname)).toLowerCase())),
+  limits: { fileSize: 100 * 1024 * 1024 }, // видео до 100 МБ
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(fixName(file.originalname)).toLowerCase();
+    const allowed = req.path.startsWith('/images') ? IMG_EXT : MEDIA_EXT;
+    cb(null, allowed.includes(ext));
+  },
 });
 
 const clientFilePath = (f) => path.join(FILES_DIR, String(f.client_id), f.stored_name);

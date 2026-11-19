@@ -11,6 +11,12 @@ const router = express.Router();
 
 const NEWS_CATS = ['company', 'tax', 'labor', 'tips', 'explain', 'clients'];
 
+// видео: сначала на языке страницы, затем остальные
+function videos(lang, where = '1', ...p) {
+  return all(`SELECT * FROM videos WHERE published = 1 AND file != '' AND ${where} ORDER BY (lang = ?) DESC, sort, id`, ...p, lang);
+}
+const certs = (where = '1') => all(`SELECT * FROM certificates WHERE published = 1 AND image != '' AND ${where} ORDER BY sort, id`);
+
 function seoMeta(res, key, extra = {}) {
   return { title: res.locals.t(`seo.${key}.title`), description: res.locals.t(`seo.${key}.description`), ...extra };
 }
@@ -25,6 +31,7 @@ router.get('/', (req, res) => {
     reviews: all('SELECT * FROM reviews WHERE published = 1 ORDER BY sort, id DESC'),
     posts: all('SELECT * FROM posts WHERE published = 1 ORDER BY published_at DESC LIMIT 3'),
     tariffs: settings().tariffs,
+    homeVideos: videos(req.lang, 'on_home = 1').slice(0, 4), homeCerts: certs('on_home = 1'),
   });
 });
 
@@ -61,8 +68,14 @@ router.get('/novosti/:slug', (req, res, next) => {
 });
 
 // ---------- О компании, Контакты ----------
-router.get('/o-kompanii', (req, res) => res.render('site/about', { meta: seoMeta(res, 'about'), page: 'about' }));
-router.get('/kontakty', (req, res) => res.render('site/contacts', { meta: seoMeta(res, 'contacts'), page: 'contacts' }));
+router.get('/o-kompanii', (req, res) => res.render('site/about', { meta: seoMeta(res, 'about'), page: 'about', certs: certs(), aboutVideos: videos(req.lang, "topic IN ('about', 'team')").slice(0, 4) }));
+router.get('/kontakty', (req, res) => res.render('site/contacts', { meta: seoMeta(res, 'contacts'), page: 'contacts', routeVideo: videos(req.lang, "topic = 'route'")[0] }));
+router.get('/video', (req, res) => {
+  const list = videos(req.lang);
+  const groups = ['tips', 'about', 'team', 'route'].map((topic) => ({ topic, items: list.filter((v) => v.topic === topic) })).filter((g) => g.items.length);
+  const s = res.locals.s;
+  res.render('site/video', { page: 'video', groups, meta: { title: `${s.video_title} — «Диалог Учёт»`, description: s.video_lead } });
+});
 router.get('/oplata', (req, res) => res.render('site/payment', { meta: seoMeta(res, 'pay'), page: 'pay' }));
 
 // ---------- Приём заявок ----------
@@ -131,7 +144,7 @@ router.get('/sitemap.xml', (req, res) => {
   if (req.lang !== 'ru') return res.status(404).end();
   const base = req.baseUrl0;
   const urls = [
-    ['/', null, '1.0'], ['/uslugi', null, '0.9'], ['/novosti', null, '0.7'], ['/o-kompanii', null, '0.6'], ['/kontakty', null, '0.6'], ['/oplata', null, '0.5'],
+    ['/', null, '1.0'], ['/uslugi', null, '0.9'], ['/novosti', null, '0.7'], ['/o-kompanii', null, '0.6'], ['/kontakty', null, '0.6'], ['/oplata', null, '0.5'], ['/video', null, '0.5'],
   ];
   for (const p of all('SELECT slug, updated_at FROM pages WHERE published = 1')) urls.push([`/${p.slug}`, p.updated_at, '0.4']);
   for (const p of all('SELECT slug, updated_at FROM posts WHERE published = 1 AND published_at <= ?', now())) urls.push([`/novosti/${p.slug}`, p.updated_at, '0.6']);

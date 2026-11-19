@@ -8,6 +8,9 @@ const NEWS_CATS = [
 ];
 const ICONS = [['ledger', 'Книга учёта'], ['tax', 'Документ с процентом'], ['people', 'Люди'], ['plus', 'Плюс'], ['briefcase', 'Портфель'], ['shield', 'Щит'], ['chart', 'График'], ['doc', 'Документ'], ['calc', 'Калькулятор'], ['globe', 'Глобус']];
 
+const VIDEO_TOPICS = [['tips', 'Советы бухгалтера'], ['team', 'Наша команда'], ['about', 'О компании'], ['route', 'Как нас найти']];
+const VIDEO_LANGS = [['ru', 'Русский'], ['kk', 'Казахский'], ['en', 'Английский']];
+
 const ENTITIES = {
   posts: {
     table: 'posts', title: 'Новости и статьи', one: 'публикацию', icon: 'doc', order: 'published_at DESC',
@@ -74,6 +77,32 @@ const ENTITIES = {
       { name: 'published', label: 'Опубликован', type: 'check', default: 1 },
     ],
   },
+  videos: {
+    table: 'videos', title: 'Видео', one: 'видео', icon: 'image', order: 'sort, id',
+    columns: [['title_ru', 'Название'], ['topic', 'Раздел', (v) => (VIDEO_TOPICS.find((c) => c[0] === v) || [, v])[1]], ['lang', 'Язык', (v) => (VIDEO_LANGS.find((c) => c[0] === v) || [, v])[1]], ['on_home', 'На главной', 'bool'], ['published', 'Показывается', 'bool']],
+    fields: [
+      { name: 'title', label: 'Название', type: 'text', bi: true, required: true },
+      { name: 'topic', label: 'Раздел', type: 'select', options: VIDEO_TOPICS },
+      { name: 'lang', label: 'Язык, на котором говорят в видео', type: 'select', options: VIDEO_LANGS },
+      { name: 'file', label: 'Видеофайл MP4 (вертикальный 9:16, до 100 МБ; лучше заранее сжать до 540×960)', type: 'video' },
+      { name: 'poster', label: 'Обложка (кадр из видео, JPG)', type: 'image' },
+      { name: 'on_home', label: 'Показывать на главной странице (лучше 4 видео)', type: 'check' },
+      { name: 'sort', label: 'Порядок', type: 'number' },
+      { name: 'published', label: 'Показывать на сайте', type: 'check', default: 1 },
+    ],
+  },
+  certificates: {
+    table: 'certificates', title: 'Сертификаты', one: 'сертификат', icon: 'shield', order: 'sort, id',
+    columns: [['title_ru', 'Название'], ['on_home', 'На главной', 'bool'], ['published', 'Показывается', 'bool']],
+    fields: [
+      { name: 'title', label: 'Название', type: 'text', bi: true, required: true },
+      { name: 'desc', label: 'Кем и когда выдан', type: 'textarea', bi: true },
+      { name: 'image', label: 'Скан сертификата (JPG или PNG)', type: 'image', required: true },
+      { name: 'on_home', label: 'Показывать на главной странице', type: 'check', default: 1 },
+      { name: 'sort', label: 'Порядок', type: 'number' },
+      { name: 'published', label: 'Показывать на сайте', type: 'check', default: 1 },
+    ],
+  },
   faq: {
     table: 'faq', title: 'Вопросы и ответы', one: 'вопрос', icon: 'help', order: 'sort, id',
     columns: [['q_ru', 'Вопрос'], ['sort', 'Порядок'], ['published', 'Показывается', 'bool']],
@@ -100,4 +129,4 @@ const REPORT_PRESETS = [
 const ENTITY_TYPES = [['too', 'ТОО'], ['ip', 'ИП'], ['other', 'Другое']];
 const TAX_REGIMES = [['simplified', 'Упрощённая декларация'], ['our', 'Общеустановленный'], ['other', 'Другой']];
 
-module.exports = { LANG_NAMES, LEAD_GROUPS, ENTITIES, NEWS_CATS, ICONS, LEAD_STATUS, CLIENT_STATUS, REPORT_STATUS, REPORT_PRESETS, ENTITY_TYPES, TAX_REGIMES };
+module.exports = { VIDEO_TOPICS, VIDEO_LANGS, LANG_NAMES, LEAD_GROUPS, ENTITIES, NEWS_CATS, ICONS, LEAD_STATUS, CLIENT_STATUS, REPORT_STATUS, REPORT_PRESETS, ENTITY_TYPES, TAX_REGIMES };
