@@ -799,34 +799,5 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
 /* фото команды на «Новостях»: показываем кадр целиком, без обрезки сверху */
 .team-photo--plain:not(.team-photo--about) img { max-height: none; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 20%; }
 
-/* ---------- вариант 1 «Корпоративный графит» (редакция после отзыва: жёлтый с фиолетовым не сочетается) ----------
-   Основа — тёмный графит, белый и светло-серый; акцент — жёлтый франчайзера, как у самой 1С. */
-:root {
-  --indigo-900: #141619; --indigo-800: #1E2124; --indigo-700: #2A2E33; --indigo-600: #3A3F46; --indigo-500: #5B6169;
-  --indigo-200: #D3D6DA; --indigo-100: #E6E8EB; --indigo-50: #F2F3F5;
-  --navy: #1E2124; --ink: #141619; --bg-alt: #F4F5F6; --line: #E2E4E7;
-}
-a { color: #2A2E33; }
-a:hover { color: #000; }
-.hero { background: radial-gradient(1100px 520px at 85% 0%, rgba(250, 220, 72, .07), transparent 60%), linear-gradient(135deg, #141619 0%, #23272C 100%); }
-.page-head { background: radial-gradient(900px 400px at 90% 0%, rgba(250, 220, 72, .06), transparent 60%), linear-gradient(135deg, #141619, #23272C); }
-.cta, .section--dark { background: linear-gradient(120deg, #1E2124, #141619); }
-.calc__result { background: linear-gradient(160deg, #23272C, #141619); }
-.eyebrow { color: #5B6169; }
-.eyebrow--light { color: #D5D7DB; }
-.nav__link.is-active, .nav__link:hover { color: #141619; }
-.nav__link.is-active::after { background: var(--brand-yellow); }
-.cat-card { border-top-color: #2A2E33; }
-.feature__icon, .trust__icon, .cat-card__icon, .c-item__icon, .faq__chev, .mv__icon, .pay__icon { background: #F2F3F5; color: #2A2E33; }
-.cat-card__icon { background: var(--brand-yellow); color: #141619; }
-.verify__badge { background: #2A2E33; }
-.verify__checks .ic { color: #2A2E33; }
-.verify__side { background: #F4F5F6; }
-.verify__title, .c-block__title, .req-card__name { color: #141619; }
-.seg__opt input:checked + span, .check--card:has(input:checked) { border-color: #2A2E33; background: #F4F5F6; }
-.seg__opt input:checked + span strong { color: #141619; }
-.check input:checked + .check__box { background: #2A2E33; border-color: #2A2E33; }
-.check--light input:checked + .check__box { background: var(--brand-yellow); border-color: var(--brand-yellow); }
-.range { background: linear-gradient(90deg, #2A2E33 var(--p, 0%), #E2E4E7 var(--p, 0%)); }
-.footer { background: #141619; }
-.topbar { background: #141619; }
+/* подписи «Для физических лиц» / «Для ИП и ТОО» на странице оплаты видны во всех вариантах (темы скрывают остальные надзаголовки) */
+.pay__head .eyebrow { display: inline-flex; margin-bottom: 4px; }
