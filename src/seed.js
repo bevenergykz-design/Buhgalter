@@ -356,7 +356,7 @@ const DEFAULT_SETTINGS = {
   email: '',
   hours_ru: 'Пн–Пт: с 9:00 до 17:00', hours_kk: 'Дс–Жм: 9:00-ден 17:00-ге дейін',
   socials: { instagram: 'https://www.instagram.com/dialog_uchet/', facebook: '', telegram: '', youtube: '', linkedin: '' },
-  images: { hero: '/img/team/hero.webp', team: '/img/team/team-2.webp', about: '/img/team/team-1.webp' },
+  images: { hero: '/img/team/hero.webp', team: '/img/team/team-2-wide.webp', about: '/img/team/team-1.webp' },
   site_url: '',
   notify_email: '',
   smtp: { host: '', port: 465, secure: true, user: '', pass: '', from: '' },
@@ -433,7 +433,8 @@ function seed({ run, get, now, setSetting, settings }) {
     const im = settings().images || {};
     const next = { ...im };
     if (!im.hero || im.hero === '/img/team.webp') next.hero = '/img/team/hero.webp';
-    if (!im.team || im.team === '/img/team.jpg') next.team = '/img/team/team-2.webp';
+    // фото на «Новостях» — горизонтальный кадр, чтобы не обрезать головы
+    if (!im.team || im.team === '/img/team.jpg' || im.team === '/img/team/team-2.webp') next.team = '/img/team/team-2-wide.webp';
     if (!im.about) next.about = '/img/team/team-1.webp';
     if (JSON.stringify(next) !== JSON.stringify(im)) setSetting('images', next);
     const so = settings().socials || {};
