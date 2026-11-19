@@ -781,3 +781,17 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
   .brand__logo { max-width: calc(100vw - 170px); }
   .brand--light .brand__logo { height: 32px; max-width: 100%; }
 }
+
+/* ---------- вариант 1: акцент — тот же фирменный жёлтый, что под логотипом ----------
+   Янтарный #fd9f01 спорил с жёлтой плашкой логотипа: два разных жёлтых.
+   Теперь одна пара: индиго (основной) + жёлтый франчайзера (акцент). */
+:root { --amber-500: #FADC48; --amber-600: #F0CC2C; --amber-50: #FDF7DA; }
+:focus-visible, .seg__opt input:focus-visible + span, .check input:focus-visible + .check__box { outline-color: rgba(84, 76, 171, .6); }
+.btn--accent:hover { background: #FFE46A; color: var(--ink); }
+.header__phone-cb:hover { color: var(--indigo-700); }
+.badge .ic, .review__quote { color: var(--indigo-700); }
+.socials a:hover { color: var(--ink); }
+.check--light input:checked + .check__box::after { border-color: var(--ink); }
+.tick { background: rgba(250, 220, 72, .18); }
+.section--dark .step__num { border-color: rgba(250, 220, 72, .6); }
+.prose blockquote { border-left-color: var(--indigo-700); background: var(--indigo-50); }
