@@ -13,27 +13,22 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-<!-- 1. Первый экран -->
-<section class="hero">
-  <div class="container hero__grid">
-    <div class="hero__content">
-      <span class="eyebrow eyebrow--light"><%= t('home.hero.badge') %></span>
-      <h1 class="hero__title"><%= t('home.hero.title') %></h1>
-      <p class="hero__subtitle"><%= t('home.hero.subtitle') %></p>
-      <ul class="hero__adv">
-        <% lines(t('home.hero.advantages')).forEach(function(a){ %><li><span class="tick"><%- icon('check') %></span><%= a %></li><% }) %>
-      </ul>
-      <div class="hero__actions">
+<!-- 1. Первый экран (вариант 3): тёплый офис, фото команды без наложений -->
+<section class="hero3">
+  <div class="container hero3__grid">
+    <div class="hero3__text">
+      <p class="hero3__note"><i aria-hidden="true"></i><%= t('home.hero.badge') %></p>
+      <h1 class="hero3__title"><%= t('home.hero.title') %></h1>
+      <p class="hero3__sub"><%= t('home.hero.subtitle') %></p>
+      <ul class="hero3__adv"><% lines(t('home.hero.advantages')).forEach(function(a){ %><li><span class="tick"><%- icon('check') %></span><%= a %></li><% }) %></ul>
+      <div class="hero3__actions">
         <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
-        <a class="btn btn--line btn--lg" href="#calculator"><%- icon('calc') %><%= s.btn_calc %></a>
+        <a class="btn btn--outline btn--lg" href="#calculator"><%= s.btn_calc %></a>
       </div>
     </div>
-    <figure class="hero__media">
-      <% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; %>
-      <picture>
-        <% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %>
-      </picture>
-      <figcaption class="hero__caption"><%- icon('map') %><%= s.hero_photo_alt %> · <%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></figcaption>
+    <figure class="hero3__media">
+      <picture><source srcset="/img/team/team-3.webp" type="image/webp"><img src="/img/team/team-3.jpg" alt="<%= s.hero_photo_alt %>" width="999" height="1600" fetchpriority="high"></picture>
+      <figcaption><%- icon('map') %><%= s.team_lead %></figcaption>
     </figure>
   </div>
 </section>
@@ -263,18 +258,23 @@
 </section>
 <% } %>
 
-<!-- 6. Вопросы и ответы -->
+<!-- 6. «Диалог с бухгалтером»: частые вопросы в виде переписки (вариант 3) -->
 <% if (faq.length) { %>
-<section class="section <%= reviews.length ? '' : 'section--alt' %>" id="faq">
+<section class="section" id="faq">
   <div class="container container--narrow">
-    <div class="section__head section__head--center"><span class="eyebrow">FAQ</span><h2 class="section__title"><%= t('home.faq.title') %></h2></div>
-    <div class="faq">
-      <% faq.forEach(function(q, i){ %>
-      <details class="faq__item" <%= i === 0 ? 'open' : '' %>>
-        <summary class="faq__q"><%= f(q, 'q') %><span class="faq__chev"><%- icon('chevron') %></span></summary>
-        <div class="faq__a"><%- nl2br(f(q, 'a')) %></div>
-      </details>
-      <% }) %>
+    <div class="dialog" data-dialog>
+      <h2 class="section__title"><%= s.dialog_title %></h2>
+      <p class="section__lead"><%= s.dialog_lead %></p>
+      <div class="dialog__msgs">
+        <% faq.forEach(function(q){ %>
+        <p class="msg msg--q"><small><%= s.dialog_client %></small><%= f(q, 'q') %></p>
+        <div class="msg msg--a"><small><%= sv('brand') %></small><%- nl2br(f(q, 'a')) %></div>
+        <% }) %>
+      </div>
+      <div class="dialog__foot">
+        <span><%= s.dialog_more %></span>
+        <button class="btn btn--accent" type="button" data-lead="consult"><%= s.btn_consult %></button>
+      </div>
     </div>
   </div>
 </section>

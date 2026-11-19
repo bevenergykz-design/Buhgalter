@@ -179,6 +179,16 @@
     recalc();
   }
 
+  // ---------- «Диалог с бухгалтером»: реплики появляются по очереди ----------
+  document.documentElement.classList.add('js');
+  $$('[data-dialog]').forEach(function (box) {
+    var msgs = $$('.msg', box);
+    msgs.forEach(function (m, i) { m.style.transitionDelay = (i * 0.12) + 's'; });
+    if (!('IntersectionObserver' in window)) { box.classList.add('is-on'); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { box.classList.add('is-on'); io.disconnect(); } }); }, { threshold: 0.15 });
+    io.observe(box);
+  });
+
   // ---------- видео: одновременно играет только одно ----------
   document.addEventListener('play', function (e) {
     if (e.target.tagName !== 'VIDEO') return;
