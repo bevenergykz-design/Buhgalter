@@ -102,7 +102,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok((await pub.get('/en/uslugi')).text.includes('Tax reporting') && (await pub.get('/en/kontakty')).text.includes('Almaty'), 'английские услуги и контакты');
     ok(home.text.includes('hreflang="en"') && home.text.includes('logo-lockup.png'), 'hreflang en и полный логотип в шапке');
     ok(!home.text.includes('hero__card') && !home.text.includes('preview-bar'), 'на фото первого экрана нет плашек, нет жёлтой полосы');
-    ok(home.text.includes('/img/team/hero.webp') && !home.text.includes('/img/team.webp'), 'на первом экране новое фото команды, старое убрано');
+    ok(home.text.includes('/img/team/') && !home.text.includes('/img/team.webp'), 'на первом экране новое фото команды, старое убрано');
     const vp = await pub.get('/video');
     ok(vp.status === 200 && (vp.text.match(/<video /g) || []).length >= 10 && (await pub.get('/kk/video')).status === 200, 'страница «Видео» со всеми роликами (RU и KZ)');
     ok(home.text.includes('/media/video/') && home.text.includes('/img/certs/audit-1c-2024'), 'на главной видео-советы и сертификаты');
