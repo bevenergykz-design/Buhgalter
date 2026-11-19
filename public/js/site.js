@@ -187,6 +187,37 @@
     setInterval(function () { words[i].classList.remove('is-on'); i = (i + 1) % words.length; words[i].classList.add('is-on'); }, 2600);
   });
 
+  // ---------- вариант 5, момент 1: фраза загорается при прокрутке ----------
+  document.documentElement.classList.add('js');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $$('[data-highlight]').forEach(function (sec) {
+    var words = $$('.ed-statement__text span', sec);
+    if (reduce) { words.forEach(function (w) { w.classList.add('is-lit'); }); return; }
+    var tick = function () {
+      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
+      var p = Math.min(1, Math.max(0, (vh * .85 - r.top) / (r.height * .9)));
+      var n = Math.round(p * words.length);
+      words.forEach(function (w, i) { w.classList.toggle('is-lit', i < n); });
+    };
+    window.addEventListener('scroll', tick, { passive: true }); window.addEventListener('resize', tick); tick();
+  });
+
+  // ---------- вариант 5, момент 2: главы услуг, фото слева меняется ----------
+  $$('[data-chapters]').forEach(function (sec) {
+    var chapters = $$('[data-chapter]', sec), pics = $$('[data-pic]', sec);
+    if (!('IntersectionObserver' in window)) { chapters.forEach(function (c) { c.classList.add('is-on'); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = e.target.getAttribute('data-chapter');
+        chapters.forEach(function (c) { c.classList.toggle('is-on', c === e.target); });
+        pics.forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-pic') === i); });
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    chapters.forEach(function (c) { io.observe(c); });
+    chapters[0] && chapters[0].classList.add('is-on');
+  });
+
   // ---------- видео: одновременно играет только одно ----------
   document.addEventListener('play', function (e) {
     if (e.target.tagName !== 'VIDEO') return;

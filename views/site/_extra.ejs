@@ -1,1 +1,9 @@
-<%# Дополнительный блок главной перед призывом — используется вариантами дизайна (в варианте 1 пустой) %>
+<!-- Вариант 5: полноразмерное фото до края экрана + жёлтая панель с миссией компании (ничего не лежит на лицах) -->
+<section class="ed-band">
+  <picture class="ed-band__pic"><source srcset="/img/team/team-2-wide.webp" type="image/webp"><img src="/img/team/team-2-wide.jpg" alt="<%= s.hero_photo_alt %>" loading="lazy"></picture>
+  <div class="ed-band__panel">
+    <p class="ed-band__label"><%= t('about.mission.title') %></p>
+    <p class="ed-band__quote"><%= t('about.mission.text') %></p>
+    <a class="ed-link" href="<%= L('/o-kompanii') %>"><%= s.nav_about %><%- icon('arrow') %></a>
+  </div>
+</section>

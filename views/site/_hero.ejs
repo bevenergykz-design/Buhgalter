@@ -1,24 +1,53 @@
-<!-- 1. Первый экран (вариант 1 «Швейцарский модерн»): крупная типографика, живая строка, фото команды без наложений -->
-<section class="sw-hero">
-  <div class="container">
-    <p class="sw-hero__badge"><span class="sw-dot" aria-hidden="true"></span><%= t('home.hero.badge') %></p>
-    <h1 class="sw-hero__title"><%= t('home.hero.title') %></h1>
-    <p class="sw-kinetic" aria-label="<%= s.kin_prefix %> <%= s.kin_words.join(', ') %>">
-      <span aria-hidden="true"><%= s.kin_prefix %> <span class="sw-kinetic__words" data-kinetic><% s.kin_words.forEach(function(w, i){ %><b class="<%= i === 0 ? 'is-on' : '' %>"><%= w %></b><% }) %></span></span>
-    </p>
-    <div class="sw-hero__grid">
-      <div class="sw-hero__side">
-        <p class="sw-hero__sub"><%= t('home.hero.subtitle') %></p>
-        <ul class="sw-hero__adv"><% lines(t('home.hero.advantages')).forEach(function(a){ %><li><%= a %></li><% }) %></ul>
-        <div class="sw-hero__actions">
-          <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
-          <a class="btn btn--line btn--lg" href="#calculator"><%= s.btn_calc %></a>
-        </div>
+<%#
+  Вариант 5 «Премиальная редакция»: первый экран с выходом заголовка по словам,
+  момент 1 — фраза, которая «загорается» при прокрутке, момент 2 — главы услуг с закреплённым фото.
+%>
+<% const words = String(t('home.hero.title')).split(/\s+/).filter(Boolean); const chapterPhotos = ['team-1', 'team-3', 'team-4', 'team-5', 'hero']; %>
+<section class="ed-hero" data-enter>
+  <div class="ed-hero__grid">
+    <div class="ed-hero__text">
+      <p class="ed-hero__badge"><%= t('home.hero.badge') %></p>
+      <h1 class="ed-hero__title" aria-label="<%= t('home.hero.title') %>"><% words.forEach(function(w, i){ %><span class="ed-w" style="--i:<%= i %>" aria-hidden="true"><span><%= w %></span></span> <% }) %></h1>
+      <p class="ed-hero__sub"><%= t('home.hero.subtitle') %></p>
+      <div class="ed-hero__actions">
+        <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
+        <a class="ed-link" href="#calculator"><%= s.btn_calc %><%- icon('arrow') %></a>
       </div>
-      <figure class="sw-hero__photo">
-        <picture><source srcset="/img/team/team-2-wide.webp" type="image/webp"><img src="/img/team/team-2-wide.jpg" alt="<%= s.hero_photo_alt %>" width="961" height="540" fetchpriority="high"></picture>
-        <figcaption><%= s.team_lead %></figcaption>
-      </figure>
+    </div>
+    <figure class="ed-hero__photo">
+      <picture><source srcset="/img/team/hero.webp" type="image/webp"><img src="/img/team/hero.jpg" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"></picture>
+    </figure>
+  </div>
+</section>
+
+<!-- Момент 1: фраза о компании загорается слово за словом при прокрутке -->
+<section class="ed-statement" data-highlight>
+  <div class="container">
+    <p class="ed-statement__label"><%= sv('company_name') %></p>
+    <p class="ed-statement__text"><% String(t('home.hero.text')).split(/\s+/).filter(Boolean).forEach(function(w){ %><span><%= w %></span> <% }) %></p>
+  </div>
+</section>
+
+<!-- Момент 2: услуги как главы — слева закреплённое фото, справа главы -->
+<section class="ed-chapters" data-chapters>
+  <div class="container ed-chapters__grid">
+    <div class="ed-chapters__media" aria-hidden="true">
+      <div class="ed-chapters__stick">
+        <% categories.forEach(function(c, i){ %><picture class="ed-chapters__pic <%= i === 0 ? 'is-on' : '' %>" data-pic="<%= i %>"><source srcset="/img/team/<%= chapterPhotos[i % chapterPhotos.length] %>.webp" type="image/webp"><img src="/img/team/<%= chapterPhotos[i % chapterPhotos.length] %>.jpg" alt="" loading="lazy"></picture><% }) %>
+      </div>
+    </div>
+    <div class="ed-chapters__list">
+      <h2 class="ed-chapters__title"><%= t('home.services.title') %></h2>
+      <p class="ed-chapters__lead"><%= t('home.services.text') %></p>
+      <% categories.forEach(function(c, i){ %>
+      <article class="ed-chapter" data-chapter="<%= i %>">
+        <span class="ed-chapter__num"><%= String(i + 1).padStart(2, '0') %> / <%= String(categories.length).padStart(2, '0') %></span>
+        <h3 class="ed-chapter__name"><%= f(c, 'title') %></h3>
+        <p class="ed-chapter__intro"><%= f(c, 'intro') %></p>
+        <ul class="ed-chapter__items"><% c.services.forEach(function(x){ %><li><%= f(x, 'title') %></li><% }) %></ul>
+        <a class="ed-link" href="<%= L('/uslugi?cat=' + c.slug) %>"><%= s.btn_more %><%- icon('arrow') %></a>
+      </article>
+      <% }) %>
     </div>
   </div>
 </section>
