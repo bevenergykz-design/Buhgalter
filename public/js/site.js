@@ -179,6 +179,14 @@
     recalc();
   }
 
+  // ---------- живая строка в первом экране: слово меняется раз в 2,6 с ----------
+  $$('[data-kinetic]').forEach(function (box) {
+    var words = $$('b', box); if (words.length < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var i = 0;
+    setInterval(function () { words[i].classList.remove('is-on'); i = (i + 1) % words.length; words[i].classList.add('is-on'); }, 2600);
+  });
+
   // ---------- «Диалог с бухгалтером»: реплики появляются по очереди ----------
   document.documentElement.classList.add('js');
   $$('[data-dialog]').forEach(function (box) {
@@ -187,12 +195,6 @@
     if (!('IntersectionObserver' in window)) { box.classList.add('is-on'); return; }
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { box.classList.add('is-on'); io.disconnect(); } }); }, { threshold: 0.15 });
     io.observe(box);
-  // ---------- живая строка в первом экране: слово меняется раз в 2,6 с ----------
-  $$('[data-kinetic]').forEach(function (box) {
-    var words = $$('b', box); if (words.length < 2) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var i = 0;
-    setInterval(function () { words[i].classList.remove('is-on'); i = (i + 1) % words.length; words[i].classList.add('is-on'); }, 2600);
   });
 
   // ---------- видео: одновременно играет только одно ----------
