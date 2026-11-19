@@ -795,3 +795,6 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
 .tick { background: rgba(250, 220, 72, .18); }
 .section--dark .step__num { border-color: rgba(250, 220, 72, .6); }
 .prose blockquote { border-left-color: var(--indigo-700); background: var(--indigo-50); }
+
+/* фото команды на «Новостях»: показываем кадр целиком, без обрезки сверху */
+.team-photo--plain:not(.team-photo--about) img { max-height: none; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 20%; }
