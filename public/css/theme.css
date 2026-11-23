@@ -173,3 +173,18 @@ html { scroll-padding-top: 100px; }
   .mcard { flex: 0 0 80%; scroll-snap-align: start; }
   .mcard__img, .mcard--tall .mcard__img, .mcard--portrait .mcard__img, .mcard--object .mcard__img { aspect-ratio: 4 / 3.6; }
 }
+
+/* карта: подписи городов; на планшете и телефоне карта над текстом, крупнее */
+.map-label { fill: #fff; font-family: 'Commissioner', Arial, sans-serif; font-size: 30px; font-weight: 600; }
+@media (max-width: 1024px) {
+  .geo__map { order: -1; margin: 0 -8px 8px; }
+}
+@media (max-width: 720px) {
+  .geo__map svg > g:first-of-type circle { r: 4.2px; }
+  .map-city circle:last-child { r: 13px; }
+  .map-label { font-size: 46px; }
+  .geo__title { font-size: 28px; }
+}
+/* все заголовки разделов — по левому краю, как в журнале */
+.section__head--center { align-items: flex-start; text-align: left; }
+.section__title--center { text-align: left; }
