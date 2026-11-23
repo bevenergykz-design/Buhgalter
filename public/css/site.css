@@ -801,3 +801,11 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
 
 /* подписи «Для физических лиц» / «Для ИП и ТОО» на странице оплаты видны во всех вариантах (темы скрывают остальные надзаголовки) */
 .pay__head .eyebrow { display: inline-flex; margin-bottom: 4px; }
+
+/* телефон: зоны нажатия в верхней полосе и в калькуляторе не меньше 40–44 px */
+@media (max-width: 720px) {
+  .topbar__in { min-height: 44px; }
+  .topbar__item, a.topbar__item { min-height: 40px; }
+  .lang-switch a { min-height: 36px; display: inline-flex; align-items: center; padding: 0 11px; }
+  .calc__wa { min-height: 44px; }
+}
