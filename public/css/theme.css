@@ -164,14 +164,26 @@ h3, h4 { font-family: var(--font); font-weight: 600; letter-spacing: -.005em; }
 @media (prefers-reduced-motion: reduce) { .mcard { opacity: 1; transform: none; animation: none; } .mcard__img img, .mg-round { transition: none; } }
 .header__phone-num { font-family: var(--font); font-weight: 600; }
 html { scroll-padding-top: 100px; }
-/* телефон: мозаика превращается в карусель с прокруткой пальцем */
+/* телефон: мозаика — сетка в две колонки, ничего не срезано краем экрана.
+   Первая и последняя карточки во всю ширину, четыре между ними — по две в ряд. */
 @media (max-width: 720px) {
-  .mosaic4 { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 20px; margin: 0 -20px; padding: 0 20px 8px; scrollbar-width: none; }
-  .mg-hero { padding-bottom: 36px; }
-  .mosaic4::-webkit-scrollbar { display: none; }
+  .mg-hero { padding-bottom: 40px; }
+  .mosaic4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .mosaic4__col, .mosaic4__col:nth-child(3) { display: contents; }
-  .mcard { flex: 0 0 80%; scroll-snap-align: start; }
-  .mcard__img, .mcard--tall .mcard__img, .mcard--portrait .mcard__img, .mcard--object .mcard__img { aspect-ratio: 4 / 3.6; }
+  .mosaic4__col--shift { margin-top: 0; }
+  .mcard { min-width: 0; }
+  .mcard__img, .mcard--tall .mcard__img, .mcard--portrait .mcard__img, .mcard--object .mcard__img { aspect-ratio: 1 / 1; }
+  .mcard--object .mcard__img { padding: 12px; }
+  .mcard__body { padding: 12px 12px 14px; gap: 5px; }
+  .mcard__body small { font-size: 11.5px; }
+  .mcard__body strong { font-size: 16px; line-height: 1.25; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+  .mcard__body small { hyphens: auto; -webkit-hyphens: auto; }
+  .mcard__btn { font-size: 13px; padding: 8px 10px; gap: 6px; }
+  .mcard__btn .ic { width: 14px; height: 14px; }
+  /* широкие: «Видео-советы» сверху и «Калькулятор» снизу */
+  .mcard--tall, .mcard--warm { grid-column: 1 / -1; }
+  .mcard--tall .mcard__img, .mcard--warm .mcard__img { aspect-ratio: 16 / 9; }
+  .mcard--tall .mcard__body strong, .mcard--warm .mcard__body strong { font-size: 20px; }
 }
 
 /* карта: подписи городов; на планшете и телефоне карта над текстом, крупнее */
