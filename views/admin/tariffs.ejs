@@ -3,7 +3,7 @@
   <form class="panel form-stack" method="post" action="<%= ab %>/tariffs">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <h2>Цены калькулятора, ₸ в месяц</h2>
-    <p class="muted">Итог = базовая стоимость (ИП или ТОО) + надбавка за ОУР + сотрудники × цена + надбавка за объём документов + выбранные опции.</p>
+    <p class="muted">Итог = базовая стоимость (ИП или ТОО) + надбавка за ОУР + сотрудники × цена + надбавка за объём хозяйственных операций + выбранные опции.</p>
     <div class="form-grid">
       <% TARIFF_FIELDS.forEach(function(x){ %>
       <label class="field"><span class="field__label"><%= x[1] %></span><input class="input" type="number" min="0" step="500" name="<%= x[0] %>" value="<%= t[x[0]] || 0 %>" data-tariff></label>
@@ -13,7 +13,7 @@
   </form>
   <section class="panel">
     <h2>Проверка расчёта</h2>
-    <p class="muted">Пример: ТОО на упрощёнке, 3 сотрудника, до 50 документов, без опций.</p>
+    <p class="muted">Пример: ТОО на упрощёнке, 3 сотрудника, до 50 хозяйственных операций, без опций.</p>
     <p class="calc-preview"><span data-preview>—</span> ₸ / мес.</p>
     <p class="muted">Посетитель видит «от …» и примечание, что точную стоимость подтвердит менеджер. Текст примечания меняется в разделе «Тексты страниц → Главная: калькулятор».</p>
   </section>
