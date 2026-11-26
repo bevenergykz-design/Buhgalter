@@ -285,9 +285,9 @@ a:hover { color: var(--red-2); }
 .intro2__title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--brand-yellow); margin-top: 14px; border-radius: 2px; }
 .intro2__text p { font-size: 17px; line-height: 1.75; color: var(--text-2); margin: 0 0 22px; max-width: 640px; }
 
-/* видео на главной — компактные квадратные карточки */
-.page-home .vgrid--4 .vcard__frame, .vgrid--4 .vcard__frame { aspect-ratio: 1 / 1; border-radius: 8px; }
-.vgrid--4 video { object-fit: cover; }
+/* видео — вертикальные ролики целиком (9:16, лица не обрезаются), карточки умеренной ширины */
+.vgrid--4 { grid-template-columns: repeat(4, minmax(0, 230px)); justify-content: center; gap: 28px; }
+.page-home .vgrid--4 .vcard__frame, .vgrid--4 .vcard__frame { aspect-ratio: 9 / 16; border-radius: 8px; }
 
 
 /* шапки внутренних страниц — как на образцах: красный курсив, жёлтая черта, ленты */
@@ -317,7 +317,7 @@ a:hover { color: var(--red-2); }
   .pillars__ic .ic { width: 22px; height: 22px; }
   .intro2__grid { grid-template-columns: 1fr; gap: 24px; }
   .intro2__photo { max-width: 320px; }
-  .vgrid--4 { grid-template-columns: 1fr 1fr; }
+  .vgrid--4 { grid-template-columns: repeat(2, minmax(0, 230px)); gap: 16px 12px; }
   .page-head { padding: 26px 0 70px; min-height: 0; }
   .page-head::before { height: 80px; }
   .page-head__art { bottom: auto; margin: 10px auto 0; max-width: 320px; }
