@@ -359,3 +359,22 @@ a:hover { color: var(--red-2); }
 @media (max-width: 720px) {
   .page-head__art.page-head__art--3d, .page-head--center .page-head__art.page-head__art--3d { width: 100%; max-width: 300px; top: auto; }
 }
+/* шапка: длинные казахские пункты меню не должны выталкивать телефон за экран */
+.header__in { gap: 18px; }
+.header .brand { gap: 10px; }
+.brand__name { padding-left: 10px; }
+.header__phone { text-align: right; }
+.header__phone-cb { white-space: normal; max-width: 168px; line-height: 1.25; text-align: right; }
+@media (max-width: 1440px) {
+  .nav { gap: 0; }
+  .nav__link { padding: 8px 8px; font-size: 14.5px; }
+  .brand__name { font-size: 15px; }
+  .brand__name span:last-child { font-size: 16.5px; }
+  .header .brand__logo { height: 58px; }
+}
+/* узкий ноутбук: вместо знака с подписью — логотип целиком, как на телефоне */
+@media (max-width: 1240px) and (min-width: 721px) {
+  .header .brand__logo--desk, .header .brand__name { display: none; }
+  .header .brand__logo--mob { display: block; height: 62px; }
+  .nav__link { font-size: 14px; padding: 8px 7px; }
+}
