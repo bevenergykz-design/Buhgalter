@@ -235,3 +235,89 @@ a:hover { color: var(--red-2); }
 .page-head--center .page-head__title, .page-head--center .page-head__lead { max-width: 560px; }
 @media (max-width: 1150px) and (min-width: 721px) { .page-head--center .page-head__art { display: none; } }
 @media (max-width: 720px) { .page-head--center .page-head__art { width: 100%; max-width: 300px; } }
+
+/* =====================================================================
+   Редакция 26.11 (вечер): ближе к образцам заказчика — кремовый фон, плавные красно-жёлтые ленты,
+   красный курсив в заголовках страниц, короткая жёлтая черта; на главной без больших фото.
+   ===================================================================== */
+.section__title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--brand-yellow); margin-top: 14px; border-radius: 2px; }
+.section__title--center::after, .section__head--center .section__title::after { margin-left: auto; margin-right: auto; }
+
+/* первый экран главной */
+.hw { position: relative; overflow: hidden; background: linear-gradient(105deg, var(--cream) 0%, var(--cream) 45%, #F8E8D6 100%); }
+.hw::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: url('/img/heads/ribbons.svg') center bottom / 100% 100% no-repeat; pointer-events: none; }
+.hw__grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 48px; align-items: center; padding-top: 64px; padding-bottom: 150px; }
+.hw__title { font-size: clamp(30px, 3vw, 42px); line-height: 1.16; margin: 0 0 18px; letter-spacing: -.015em; color: var(--deep); }
+.hw__sub { font-size: 18px; line-height: 1.6; color: var(--text-2); max-width: 560px; margin: 0 0 22px; }
+.hw__adv { list-style: none; padding: 0; margin: 0 0 30px; display: grid; gap: 9px; }
+.hw__adv li { position: relative; padding-left: 22px; font-size: 15.5px; color: var(--text); }
+.hw__adv li::before { content: ''; position: absolute; left: 0; top: .68em; width: 12px; height: 2px; background: var(--gold); }
+.hw__actions { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; }
+.hw__link { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; color: var(--deep); }
+.hw__link .ic { width: 40px; height: 40px; padding: 10px; border-radius: 50%; border: 1px solid var(--red); color: var(--red); transition: background var(--ease), color var(--ease); }
+.hw__link:hover { color: var(--red); }
+.hw__link:hover .ic { background: var(--red); color: #fff; }
+.hw__art { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; }
+.hw__figures { width: 100%; max-width: 360px; height: auto; justify-self: end; animation: hwFloat 6s ease-in-out infinite; }
+@keyframes hwFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.pillars li { display: flex; align-items: center; gap: 16px; font-family: var(--font-head); font-style: italic; font-weight: 600; font-size: 19px; line-height: 1.25; color: var(--red); max-width: 230px; opacity: 0; transform: translateX(-10px); animation: pillIn .6s ease forwards; }
+.pillars li:nth-child(2) { animation-delay: .15s; }
+.pillars li:nth-child(3) { animation-delay: .3s; }
+@keyframes pillIn { to { opacity: 1; transform: none; } }
+.pillars__ic { flex: none; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #FFF9EF, #F8E7D2); box-shadow: 0 6px 16px rgba(138, 90, 58, .14), inset 0 0 0 1px rgba(226, 180, 59, .35); color: var(--red); }
+.pillars__ic .ic { width: 28px; height: 28px; }
+
+/* «О компании» на главной: фото коллектива умеренного размера */
+.intro2 { background: var(--cream); }
+.intro2__grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 56px; align-items: center; }
+.intro2__photo { margin: 0; border-radius: 8px; overflow: hidden; background: var(--sand); box-shadow: 0 14px 34px rgba(58, 42, 36, .10); }
+.intro2__photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; }
+.intro2__title { font-size: clamp(26px, 2.6vw, 34px); margin: 0 0 16px; }
+.intro2__title::after { content: ''; display: block; width: 56px; height: 3px; background: var(--brand-yellow); margin-top: 14px; border-radius: 2px; }
+.intro2__text p { font-size: 17px; line-height: 1.75; color: var(--text-2); margin: 0 0 22px; max-width: 640px; }
+
+/* видео на главной — компактные квадратные карточки */
+.page-home .vgrid--4 .vcard__frame, .vgrid--4 .vcard__frame { aspect-ratio: 1 / 1; border-radius: 8px; }
+.vgrid--4 video { object-fit: cover; }
+
+
+/* шапки внутренних страниц — как на образцах: красный курсив, жёлтая черта, ленты */
+.page-head { background: linear-gradient(105deg, var(--cream) 0%, var(--cream) 40%, #F8E8D6 100%); padding: 46px 0 120px; min-height: 340px; }
+.page-head::before { height: 150px; background-image: url('/img/heads/ribbons.svg'); }
+.page-head__title { color: var(--red); font-style: italic; font-weight: 600; font-size: clamp(32px, 3.6vw, 50px); }
+.page-head__title::after { content: ''; display: block; width: 64px; height: 3px; background: var(--brand-yellow); margin-top: 16px; border-radius: 2px; }
+.page-head--center .page-head__title::after { margin-left: auto; margin-right: auto; }
+.page-head__art { bottom: 70px; width: min(500px, 40vw); }
+.page-head--center .page-head__art { width: min(260px, 19vw); bottom: 80px; }
+
+@media (max-width: 1024px) {
+  .hw__grid { grid-template-columns: 1fr; gap: 28px; padding-bottom: 130px; }
+  .hw__art { max-width: 560px; }
+  .intro2__grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 36px; }
+}
+@media (max-width: 720px) {
+  .hw__grid { padding-top: 30px; padding-bottom: 110px; }
+  .hw::after { height: 120px; }
+  .hw__title { font-size: 27px; }
+  .hw__sub { font-size: 16.5px; }
+  .hw__actions .btn { width: 100%; }
+  .hw__art { grid-template-columns: 1fr 140px; }
+  .pillars { gap: 14px; }
+  .pillars li { font-size: 16px; gap: 12px; }
+  .pillars__ic { width: 50px; height: 50px; }
+  .pillars__ic .ic { width: 22px; height: 22px; }
+  .intro2__grid { grid-template-columns: 1fr; gap: 24px; }
+  .intro2__photo { max-width: 320px; }
+  .vgrid--4 { grid-template-columns: 1fr 1fr; }
+  .page-head { padding: 26px 0 70px; min-height: 0; }
+  .page-head::before { height: 80px; }
+  .page-head__art { bottom: auto; margin: 10px auto 0; max-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) { .hw__figures, .pillars li { animation: none; opacity: 1; transform: none; } }
+@media (min-width: 1025px) {
+  .hw__figures { max-width: 420px; }
+  .pillars li { font-size: 21px; max-width: 250px; }
+  .pillars__ic { width: 72px; height: 72px; }
+  .pillars__ic .ic { width: 30px; height: 30px; }
+}

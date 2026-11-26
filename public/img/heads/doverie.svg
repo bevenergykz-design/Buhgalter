@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 380" fill="none">
+  <!-- Надёжность: деревянные фигурки команды, впереди золотой щит с красной отметкой (по образцу заказчика) -->
+  <defs>
+    <radialGradient id="wood" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#F3DCC0"/><stop offset=".6" stop-color="#E3BE95"/><stop offset="1" stop-color="#C99A6E"/></radialGradient>
+    <radialGradient id="wood2" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#F6E5CF"/><stop offset=".7" stop-color="#EACBA6"/><stop offset="1" stop-color="#D6AD84"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBE6A0"/><stop offset=".5" stop-color="#F0C64F"/><stop offset="1" stop-color="#C9952B"/></linearGradient>
+    <linearGradient id="gold2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6DC"/><stop offset="1" stop-color="#F7E3AE"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#8A5A3A" flood-opacity=".22"/></filter>
+  </defs>
+  <ellipse cx="210" cy="356" rx="200" ry="16" fill="#E9CFB2" opacity=".55"/>
+  <!-- задний ряд -->
+  <g filter="url(#sh)" opacity=".92">
+    <g transform="translate(70 92)"><circle cx="40" cy="30" r="30" fill="url(#wood2)"/><path d="M0 258c0-120 14-180 40-180s40 60 40 180z" fill="url(#wood2)"/></g>
+    <g transform="translate(170 60)"><circle cx="40" cy="30" r="32" fill="url(#wood2)"/><path d="M-4 290c0-136 16-200 44-200s44 64 44 200z" fill="url(#wood2)"/></g>
+    <g transform="translate(270 92)"><circle cx="40" cy="30" r="30" fill="url(#wood2)"/><path d="M0 258c0-120 14-180 40-180s40 60 40 180z" fill="url(#wood2)"/></g>
+  </g>
+  <!-- передний ряд -->
+  <g filter="url(#sh)">
+    <g transform="translate(18 150)"><circle cx="40" cy="30" r="30" fill="url(#wood)"/><path d="M0 200c0-96 14-140 40-140s40 44 40 140z" fill="url(#wood)"/></g>
+    <g transform="translate(322 150)"><circle cx="40" cy="30" r="30" fill="url(#wood)"/><path d="M0 200c0-96 14-140 40-140s40 44 40 140z" fill="url(#wood)"/></g>
+  </g>
+  <!-- щит -->
+  <g filter="url(#sh)">
+    <path d="M210 150l92 30v78c0 64-48 104-92 120-44-16-92-56-92-120v-78z" fill="url(#gold)"/>
+    <path d="M210 172l70 23v62c0 50-36 82-70 95-34-13-70-45-70-95v-62z" fill="url(#gold2)"/>
+    <path d="M176 262l24 24 46-52" stroke="#C8352B" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

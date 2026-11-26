@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 420" preserveAspectRatio="none">
+  <!-- Плавные ленты в цветах логотипа (по образцам заказчика): снизу слева вверх направо -->
+  <defs>
+    <linearGradient id="rr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D8372C"/><stop offset=".6" stop-color="#E25A3C"/><stop offset="1" stop-color="#F2A65A" stop-opacity=".55"/></linearGradient>
+    <linearGradient id="yy" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6D45A"/><stop offset=".7" stop-color="#F9DF7A"/><stop offset="1" stop-color="#FBE9A8" stop-opacity=".6"/></linearGradient>
+  </defs>
+  <!-- нижние ленты -->
+  <path d="M0 330C240 300 470 326 700 352s470 30 740-40v26c-270 70-500 64-740 40S240 320 0 352z" fill="url(#rr)" opacity=".9"/>
+  <path d="M0 356C260 330 500 352 740 376s450 22 700-38v40c-250 52-470 54-710 32S250 362 0 386z" fill="url(#yy)"/>
+  <path d="M0 312C250 282 480 306 720 334s460 32 720-36" fill="none" stroke="#E2B43B" stroke-width="2.5" opacity=".8"/>
+  <path d="M0 392c260-26 500-6 740 16s450 18 700-30V420H0z" fill="#FBF6EE"/>
+</svg>
