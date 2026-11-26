@@ -13,7 +13,39 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-<%- include('_hero') %>
+<!-- 1. Первый экран: мозаика из настоящих материалов компании (вариант 2) -->
+<% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; const hv = homeVideos[0]; const hc = homeCerts[0]; %>
+<section class="hero2">
+  <div class="container hero2__grid">
+    <div class="hero2__text">
+      <p class="hero2__kicker"><%= t('home.hero.badge') %></p>
+      <h1 class="hero2__title"><%= t('home.hero.title') %></h1>
+      <p class="hero2__sub"><%= t('home.hero.subtitle') %></p>
+      <ul class="hero2__adv"><% lines(t('home.hero.advantages')).forEach(function(a){ %><li><%= a %></li><% }) %></ul>
+      <div class="hero2__actions">
+        <button class="btn btn--accent btn--lg" type="button" data-lead="consult"><%= s.btn_consult %></button>
+        <a class="hero2__link" href="#calculator"><%- icon('arrow') %><%= s.btn_calc %></a>
+      </div>
+    </div>
+    <div class="mosaic">
+      <figure class="mosaic__photo">
+        <picture><% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %></picture>
+      </figure>
+      <% if (hv) { %>
+      <figure class="mosaic__video">
+        <div class="vcard__frame"><video src="<%= hv.file %>" poster="<%= hv.poster %>" controls preload="none" playsinline aria-label="<%= f(hv, 'title') %>"></video></div>
+        <figcaption><small><%= s.nav_video %></small><%= f(hv, 'title') %></figcaption>
+      </figure>
+      <% } %>
+      <% if (hc) { const sm = hc.image.replace(/\.jpg$/, '-sm.jpg'); %>
+      <a class="mosaic__cert" href="<%= L('/o-kompanii') %>#certs">
+        <img src="<%= /\/img\/certs\//.test(hc.image) ? sm : hc.image %>" alt="" loading="lazy">
+        <span><strong><%= f(hc, 'title') %></strong><small><%= s.certs_title %></small></span>
+      </a>
+      <% } %>
+    </div>
+  </div>
+</section>
 
 <!-- Полоса доверия -->
 <section class="trust" aria-label="<%= sv('brand') %>">
@@ -271,6 +303,5 @@
 </section>
 <% } %>
 
-<%- include('_extra') %>
 <%- include('_cta') %>
 <%- include('../partials/footer') %>
