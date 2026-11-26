@@ -231,7 +231,7 @@
         <blockquote class="review__text"><%- nl2br(f(r, 'text')) %></blockquote>
         <figcaption class="review__author">
           <% if (r.photo) { %><img src="<%= r.photo %>" alt="" width="48" height="48" loading="lazy"><% } else { %><span class="review__avatar"><%= (r.author || '?').trim().charAt(0) %></span><% } %>
-          <span><strong><%= r.author %></strong><% if (r.company) { %><small><%= r.company %></small><% } %></span>
+          <span><strong><%= r.author %></strong><% if (r.company) { %><small><%= r.company %></small><% } %><% if (r.letter) { %><a class="review__letter" href="<%= r.letter %>" target="_blank" rel="noopener"><%= s.review_letter %><%- icon('arrow') %></a><% } %></span>
         </figcaption>
       </figure>
       <% }) %>

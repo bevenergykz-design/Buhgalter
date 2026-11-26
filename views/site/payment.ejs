@@ -8,9 +8,9 @@
         <span class="pay__icon" aria-hidden="true"><%- icon('card') %></span>
         <div><span class="eyebrow"><%= s.pay_for_people %></span><h2 class="card__title">Kaspi Pay</h2></div>
       </div>
-      <ol class="pay__steps"><% s.pay_steps.forEach(function(x){ %><li><%= x %></li><% }) %></ol>
+      <ol class="pay__steps"><% (kaspiQr ? s.pay_steps_qr : s.pay_steps).forEach(function(x){ %><li><%= x %></li><% }) %></ol>
       <div class="lead-form-wrap">
-        <form class="lead-form" action="<%= L('/api/lead') %>" method="post" novalidate data-lead-form>
+        <form class="lead-form" action="<%= L('/api/lead') %>" method="post" novalidate data-lead-form<%= kaspiQr ? ' data-pay-qr' : '' %>>
           <input type="hidden" name="type" value="pay">
           <input type="hidden" name="page" value="<%= curPath %>">
           <input type="hidden" name="ts" value="">
@@ -26,7 +26,17 @@
           <button class="btn btn--accent btn--block btn--lg" type="submit"><%= s.btn_pay_kaspi %></button>
         </form>
       </div>
+      <% if (kaspiQr) { %>
+      <div class="form-success pay-qr" hidden>
+        <h3 data-qr-title data-t="<%= s.pay_qr_title %>" data-t0="<%= s.pay_qr_title0 %>"><%= s.pay_qr_title0 %></h3>
+        <p data-qr-text data-t="<%= s.pay_qr_text %>"></p>
+        <figure class="pay-qr__code" role="img" aria-label="<%= s.pay_qr_alt %>"><%- kaspiQrSvg %></figure>
+        <a class="btn btn--accent btn--block btn--lg" href="<%= kaspiQr %>" target="_blank" rel="noopener"><%= s.pay_qr_open %></a>
+        <p class="pay-qr__note"><%= s.pay_qr_phone %></p>
+      </div>
+      <% } else { %>
       <div class="form-success" hidden><div class="form-success__icon"><%- icon('check') %></div><h3><%= s.pay_ok_title %></h3><p><%= s.pay_ok_text %></p></div>
+      <% } %>
     </div>
 
     <div class="pay__card card">
