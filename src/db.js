@@ -116,6 +116,9 @@ for (const [tbl, cols] of Object.entries(EN_COLS)) {
   for (const c of cols) if (!have.has(c)) db.exec(`ALTER TABLE ${tbl} ADD COLUMN ${c} TEXT NOT NULL DEFAULT ''`);
 }
 
+// ---------- отзывы: скан рекомендательного письма ----------
+if (!db.prepare('PRAGMA table_info(reviews)').all().some((c) => c.name === 'letter')) db.exec("ALTER TABLE reviews ADD COLUMN letter TEXT NOT NULL DEFAULT ''");
+
 // ---------- маленькие обёртки ----------
 const all = (sql, ...p) => db.prepare(sql).all(...p);
 const get = (sql, ...p) => db.prepare(sql).get(...p);

@@ -73,6 +73,7 @@ const ENTITIES = {
       { name: 'company', label: 'Компания / должность', type: 'text' },
       { name: 'text', label: 'Текст отзыва', type: 'textarea', bi: true, required: true },
       { name: 'photo', label: 'Фото автора (необязательно)', type: 'image' },
+      { name: 'letter', label: 'Скан рекомендательного письма (JPG/PNG, необязательно)', type: 'image' },
       { name: 'sort', label: 'Порядок', type: 'number' },
       { name: 'published', label: 'Опубликован', type: 'check', default: 1 },
     ],

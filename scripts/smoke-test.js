@@ -93,6 +93,9 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok(r.status === 400, 'оплата без суммы отклоняется');
     r = await pub.post('/api/lead', { form: { type: 'pay', name: 'Плательщик', phone: '+7 701 222 3344', amount: '45 000', contract: 'Договор 12/26', consent: '1', ts }, headers: PH });
     ok(r.status === 200 && JSON.parse(r.text).ok, 'запрос оплаты через Kaspi принят');
+    ok(Number(JSON.parse(r.text).id) > 0, 'ответ на оплату содержит номер заявки');
+    const op = (await pub.get('/oplata')).text;
+    ok(op.includes('<svg') && op.includes('https://qr.kaspi.kz/') && op.includes('data-pay-qr'), 'на странице оплаты есть Kaspi QR и ссылка «Открыть в Kaspi»');
     r = await pub.post('/api/lead', { form: { type: 'invoice', company: 'ТОО «Тест»', bin: '123', name: 'Бухгалтер', phone: '+7 701 222 3345', consent: '1', ts }, headers: PH });
     ok(r.status === 400, 'счёт с неверным БИН отклоняется');
     r = await pub.post('/en/api/lead', { form: { type: 'invoice', company: 'Test LLP', bin: '123456789012', name: 'Accountant', phone: '+7 701 222 3346', consent: '1', ts }, headers: PH });
