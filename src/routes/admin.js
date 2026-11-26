@@ -495,6 +495,8 @@ router.post('/contacts', csrf, (req, res) => {
   setSetting('phones', String(b.phones || '').split(/\r?\n/).map((x) => x.trim()).filter(Boolean).slice(0, 6));
   setSetting('whatsapp', str(b.whatsapp, 40));
   setSetting('email', str(b.email, 160));
+  const kq = str(b.kaspi_qr, 300);
+  setSetting('kaspi_qr', /^https:\/\/(qr|pay)\.kaspi\.kz\//.test(kq) ? kq : '');
   const offices = [];
   for (let i = 0; i < 6; i++) {
     const o = {};

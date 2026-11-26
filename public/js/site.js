@@ -131,7 +131,13 @@
       .then(function (res) {
         if (!res.ok) throw new Error(res.j.error || S.err);
         var wrap = scope.querySelector('.lead-form-wrap, .calc__lead'), ok = scope.querySelector('.form-success');
-        if (wrap) wrap.hidden = true; if (ok) ok.hidden = false;
+        if (form.hasAttribute('data-pay-qr') && ok) {
+          var sum = Number(String(form.elements.amount.value).replace(/\D/g, '')).toLocaleString('ru-RU').replace(/,/g, ' ');
+          var tt = $('[data-qr-title]', ok), tx = $('[data-qr-text]', ok);
+          if (tt) tt.textContent = res.j.id ? tt.getAttribute('data-t').replace('{id}', res.j.id) : tt.getAttribute('data-t0');
+          if (tx) tx.textContent = tx.getAttribute('data-t').replace('{amount}', sum);
+        }
+        if (wrap) wrap.hidden = true; if (ok) { ok.hidden = false; if (ok.scrollIntoView) ok.scrollIntoView({ block: 'nearest' }); }
         form.reset(); if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', lead_type: form.elements.type.value });
         if (form.matches('[data-calc]')) recalc();
       })
