@@ -406,3 +406,17 @@ a:hover { color: var(--red-2); }
 @media (max-width: 1150px) and (min-width: 721px) {
   .page-head--center .page-head__art, .page-head--center .page-head__art.page-head__art--3d { display: block; position: relative; top: auto; right: auto; bottom: auto; width: 300px; max-width: 40vw; height: auto; margin: 18px auto 0; }
 }
+/* подвал: картинка вместо логотипа */
+.footer__pic { display: block; max-width: 300px; margin-bottom: 16px; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(138, 90, 58, .12); }
+.footer__pic img { display: block; width: 100%; height: auto; }
+/* контакты: соцсети в общей рамке */
+.c-item__soc { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--deep); }
+.c-item__soc .ic { width: 18px; height: 18px; color: var(--red); }
+.c-item__soc:hover { color: var(--red); }
+/* текст над видео не прилипает к роликам */
+.section__head:has(+ .vgrid) { margin-bottom: 60px; }
+@media (max-width: 720px) { .section__head:has(+ .vgrid) { margin-bottom: 32px; } }
+/* весы на первом экране — картинка шире */
+@media (min-width: 1025px) { .hw__art .hw__figures { max-width: 600px; width: calc(100% + 140px); margin-right: -140px; } }
+.news-video-lead { margin: 0 0 44px; max-width: 760px; }
+@media (max-width: 720px) { .news-video-lead { margin-bottom: 28px; } }

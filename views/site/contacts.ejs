@@ -29,6 +29,12 @@
           <div><h3><%= s.contacts_email %></h3><a href="mailto:<%= st.email %>"><%= st.email %></a></div>
         </div>
         <% } %>
+        <% const soc = Object.entries(st.socials || {}).filter(function(e){ return e[1]; }); if (soc.length) { %>
+        <div class="c-item">
+          <span class="c-item__icon"><%- icon(soc[0][0]) %></span>
+          <div><h3><%= s.contacts_socials %></h3><% soc.forEach(function(e){ const h = e[1].replace(/\/+$/, '').split('/').pop(); %><a class="c-item__soc" href="<%= e[1] %>" target="_blank" rel="noopener"><%- icon(e[0]) %><%= e[0] === 'instagram' ? 'Instagram @' + h : h %></a><% }) %></div>
+        </div>
+        <% } %>
       </div>
       <h2 class="c-sub"><%= s.contacts_offices %></h2>
       <div class="offices">
@@ -44,10 +50,6 @@
           <p><%= sv('legal_address') %></p>
         </div>
       </div>
-      <% const soc = Object.entries(st.socials || {}).filter(function(e){ return e[1]; }); if (soc.length) { %>
-      <h2 class="c-sub"><%= s.contacts_socials %></h2>
-      <div class="socials socials--dark"><% soc.forEach(function(e){ %><a href="<%= e[1] %>" target="_blank" rel="noopener" aria-label="<%= e[0] %>"><%- icon(e[0]) %></a><% }) %></div>
-      <% } %>
     </div>
     <div class="contacts__form card">
       <h2 class="card__title"><%= s.contacts_form_title %></h2>
