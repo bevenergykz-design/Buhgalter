@@ -30,6 +30,14 @@ app.use((req, res, next) => {
 });
 
 // ---------- статика ----------
+// версия стилей и скриптов: меняется при каждом обновлении файлов, чтобы браузеры не держали старый вид 7 дней
+const ASSET_V = (() => {
+  const crypto = require('crypto'); const h = crypto.createHash('md5');
+  for (const f of ['css/site.css', 'css/theme.css', 'css/app.css', 'js/site.js']) {
+    try { h.update(require('fs').readFileSync(path.join(ROOT, 'public', f))); } catch (e) { /* файла может не быть */ }
+  }
+  return h.digest('hex').slice(0, 10);
+})();
 const staticOpts = { maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0, index: false };
 app.use(express.static(path.join(ROOT, 'public'), staticOpts));
 app.use('/uploads', express.static(require('./src/files').UPLOADS_DIR, staticOpts));
@@ -73,7 +81,7 @@ app.use((req, res, next) => {
     absUrl: (l, p = pathOnly) => base + (l === 'ru' ? '' : `/${l}`) + (p === '/' && l !== 'ru' ? '' : p),
     menuPages: all('SELECT slug, title_ru, title_kk, title_en FROM pages WHERE published = 1 AND in_menu = 1 ORDER BY sort, id'),
     footerPages: all('SELECT slug, title_ru, title_kk, title_en FROM pages WHERE published = 1 AND in_footer = 1 ORDER BY sort, id'),
-    meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1', cabinetOn: require('./src/features').cabinetOn(),
+    assetV: ASSET_V, meta: {}, noindex: false, staticPreview: process.env.STATIC_BUILD === '1', cabinetOn: require('./src/features').cabinetOn(),
   });
   next();
 });
