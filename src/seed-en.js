@@ -29,7 +29,7 @@ module.exports = {
     'home.process.step3.title': 'Day-to-day bookkeeping',
     'home.process.step3.text': 'You send photos or files of your documents to a private WhatsApp chat or by email; we enter the source documents, keep the books, issue all required documents and prepare payment orders in your online banking.',
     'home.process.step4.title': 'Filing reports with peace of mind',
-    'home.process.step4.text': 'We calculate taxes in advance, agree the amounts payable with the company head, file tax and statistical forms on time and send you filing confirmations.',
+    'home.process.step4.text': 'We calculate taxes in advance, agree the amounts payable with your company’s director, file tax and statistical forms on time and send you filing confirmations.',
     'home.verify.text': 'We run a transparent and lawful business in accordance with the legislation of the Republic of Kazakhstan. All our details are verified in the state registers of legal entities, government information systems and the state revenue authorities.',
     'home.verify.activity': 'Tax consulting and accounting, tax and HR record-keeping services',
     'home.verify.badge': 'Verified in the state registers of Kazakhstan',
@@ -63,7 +63,7 @@ module.exports = {
     'about.value4.items': 'we provide convenient and fast service for our clients\nour clients always feel our support and commitment\nour communication with clients is predictable and comfortable',
     'contacts.title': 'Contacts',
     'contacts.text': 'Call us, message us on WhatsApp or submit a request; we will reply during business hours and find a convenient way of working together.',
-    'seo.home.title': 'Accounting Services for IP and LLPs in Kazakhstan | Dialog Uchet',
+    'seo.home.title': 'Accounting Services for Sole Proprietors and LLPs in Kazakhstan | Dialog Uchet',
     'seo.home.description': 'Outsourced accounting, tax and payroll for sole proprietors and LLPs in Kazakhstan: 1C 8.3, on-time filing, desk audit support. Almaty and Pavlodar.',
     'seo.services.title': 'Accounting, Tax and HR Services | Dialog Uchet',
     'seo.services.description': 'Accounting, tax reporting, HR records and payroll for sole proprietors and LLPs in Kazakhstan. Submit a request or book a free consultation.',
@@ -85,12 +85,12 @@ module.exports = {
   services: {
     'buhgalterskiy-uchet': [
       ['Full-service bookkeeping', 'Complete bookkeeping in 1C 8.3: processing of source documents, bank and cash transactions, accounting for goods, materials and fixed assets, and month-end close.'],
-      ['Accounting recovery', 'We put prior-period records in order: reconciling data, correcting errors and restoring missing source documents.'],
+      ['Restoring accounting records', 'We put prior-period records in order: reconciling data, correcting errors and restoring missing source documents.'],
       ['IS ESF and SNT', 'Issuing and receiving electronic invoices, preparing accompanying goods documents (SNT) and working with the Virtual Warehouse module.'],
       ['Payment orders and online banking', 'We prepare payment orders for taxes, salaries and supplier payments in your online banking.'],
     ],
     'nalogovaya-otchetnost': [
-      ['Tax calculation and tax reporting', 'We prepare and file returns under the simplified and general tax regimes, calculate taxes in advance and agree the amounts payable with the company head.'],
+      ['Tax calculation and tax reporting', 'We prepare and file returns under the simplified and general tax regimes, calculate taxes in advance and agree the amounts payable with your company’s director.'],
       ['VAT reporting (form 300.00)', 'VAT accounting, reconciliation with IS ESF, and preparation and filing of the value added tax return.'],
       ['Foreign trade and the EAEU (form 328.00)', 'Accounting for export and import transactions, and applications for the import of goods and payment of indirect taxes on imports from EAEU countries.'],
       ['Statistical reporting', 'Filing statistical reporting forms within the required deadlines.'],

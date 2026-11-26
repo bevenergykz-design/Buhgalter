@@ -14,7 +14,7 @@ function m20261126() {
   const setText = (key, ru, kk, en) => run('UPDATE texts SET ru = ?, kk = ?, en = ? WHERE key = ?', ru, kk, en, key);
   setText('home.calc.note',
     'Расчёт предварительный. Точную стоимость вам сможет рассчитать менеджер по работе с клиентами.',
-    'Есеп алдын ала жасалған. Нақты құнын клиенттермен жұмыс жөніндегі менеджер есептеп береді.',
+    'Бұл — алдын ала есеп. Нақты құнын клиенттермен жұмыс жөніндегі менеджер есептеп береді.',
     'This is a preliminary estimate. Our client manager can calculate the exact cost for you.');
   const feat = get("SELECT ru, kk, en FROM texts WHERE key = 'home.features.items'");
   if (feat && !/ответственность/.test(feat.ru)) {
@@ -75,7 +75,40 @@ function m20261126() {
   for (const [col, from, to] of PAY) run(`UPDATE pages SET ${col} = replace(${col}, ?, ?) WHERE slug = 'pravila-oplaty'`, from, to);
 }
 
-const MIGRATIONS = [['migr_20261126', m20261126]];
+// Вычитка казахских и английских текстов (27.11). Заменяется только исходная формулировка:
+// если текст уже поправили в панели, замена не найдёт его и ничего не изменит.
+const PROOF_20261127 = [
+  ['texts', 'kk', "key = 'home.hero.advantages'", '70%-ға дейін үнем', '70%-ға дейін үнемдеу'],
+  ['texts', 'kk', "key = 'home.calc.text'", 'шамамен алынған құнын біліңіз', 'болжамды құнын біліңіз'],
+  ['texts', 'kk', "key = 'home.calc.note'", 'Есеп алдын ала жасалған.', 'Бұл — алдын ала есеп.'],
+  ['texts', 'kk', "key = 'home.process.title'", 'қадам-қадаммен', 'кезең-кезеңімен'],
+  ['texts', 'kk', "key = 'home.verify.badge'", 'мемлекеттік тізілімдерімен тексерілген', 'мемлекеттік тізілімдері арқылы тексерілген'],
+  ['texts', 'kk', "key = 'about.value4.items'", 'қолдау мен ынта сезінеді', 'қолдау мен ықылас сезінеді'],
+  ['texts', 'kk', "key = 'seo.home.description'", 'камералдық бақылауды сүйемелдеу.', 'камералдық бақылауды сүйемелдеу. Алматы мен Павлодардағы кеңселер.'],
+  ['texts', 'kk', "key = 'seo.services.description'", 'кадрлық есеп және жалақы есептеу.', 'кадрлық есеп және жалақы есептеу. Өтінім қалдырыңыз немесе тегін кеңес алыңыз.'],
+  ['texts', 'kk', "key = 'seo.about.description'", 'бизнестің есебін жүргізеді.', 'бизнестің бухгалтерлік, салықтық және кадрлық есебін жүргізеді.'],
+  ['texts', 'en', "key = 'home.process.step4.text'", 'with the company head', "with your company’s director"],
+  ['texts', 'en', "key = 'seo.home.title'", 'for IP and LLPs', 'for Sole Proprietors and LLPs'],
+  ['services', 'title_en', 'id = 6', 'Accounting recovery', 'Restoring accounting records'],
+  ['services', 'desc_en', 'id = 2', 'invoices, acts, waybills', 'invoices, completion certificates, waybills'],
+  ['services', 'desc_en', 'id = 3', 'accountable persons', 'employees holding cash advances'],
+  ['services', 'desc_kk', 'id = 5', 'демалыс ақысы, еңбекке жарамсыздық бойынша және басқа да төлемдерді', 'демалыс ақысын, еңбекке уақытша жарамсыздық бойынша жәрдемақыны және басқа да төлемдерді'],
+  ['services', 'title_kk', 'id = 19', 'Басшыға арналған анықтамалар мен есептер', 'Басшыға арналған анықтамалар мен есептерді дайындау'],
+  ['videos', 'title_kk', 'id = 12', 'Біздің бухгалтерлер өз мамандығы туралы', 'Бухгалтерлеріміз өз мамандығы туралы'],
+  ['videos', 'title_en', 'id = 12', 'Our accountants about their profession', 'Our accountants on their profession'],
+  ['videos', 'title_en', 'id = 9', 'Natalya Kuzmenko about the company', 'Natalya Kuzmenko on the company'],
+  ['posts', 'body_kk', 'id = 1', 'шамамен алынған құны', 'болжамды құны'],
+  ['pages', 'body_en', 'id = 2', 'an act of completed work', 'a certificate of completed work (act)'],
+];
+function m20261127() {
+  for (const [table, col, where, from, to] of PROOF_20261127) {
+    // повторно не применяем: если исправленный вариант уже есть (новая установка), строка не трогается
+    const r = run(`UPDATE ${table} SET ${col} = replace(${col}, ?, ?) WHERE ${where} AND instr(${col}, ?) > 0 AND instr(${col}, ?) = 0`, from, to, from, to);
+    if (!r.changes) console.log(`[migrate] вычитка: не найдено в ${table}.${col} (${where}) — вероятно, уже изменено в панели`);
+  }
+}
+
+const MIGRATIONS = [['migr_20261126', m20261126], ['migr_20261127_proof', m20261127]];
 
 function migrate() {
   for (const [flag, fn] of MIGRATIONS) {
