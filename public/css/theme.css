@@ -378,3 +378,27 @@ a:hover { color: var(--red-2); }
   .header .brand__logo--mob { display: block; height: 62px; }
   .nav__link { font-size: 14px; padding: 8px 7px; }
 }
+
+/* ===== правки после просмотра рабочего сайта (26.11) ===== */
+/* первый экран: круги и фигурки рядом, без наложения; фигурки выходят к правому краю */
+@media (min-width: 1025px) { .hw__grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); } }
+.hw__art { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 0; }
+.hw__art .pillars { padding-top: 0; }
+.hw__art .hw__figures { position: static; translate: none; width: calc(100% + 110px); max-width: 480px; margin-right: -110px; justify-self: start;
+  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%); mask-image: radial-gradient(closest-side, #000 62%, transparent 100%); }
+@media (max-width: 1240px) { .hw__art .hw__figures { width: 100%; margin-right: 0; } }
+@media (max-width: 720px) {
+  .hw__art { grid-template-columns: 1fr; gap: 6px; }
+  .hw__art .hw__figures { width: 100%; max-width: 330px; margin: 0 auto; justify-self: center; }
+}
+/* отзывы: карточки по центру, без пустой трети */
+.reviews { grid-template-columns: repeat(auto-fit, minmax(300px, 380px)); justify-content: center; }
+/* сертификаты: тёплая подложка вместо холодной серой */
+.cert__img { background: #F7EEE2; }
+/* статьи без своей картинки: объёмная картинка вместо серой заглушки */
+.post-card__img { background: #FBF1E4; }
+.post-card__fallback { width: 100%; height: 100%; object-fit: cover; object-position: center 55%; }
+/* шапки страниц: картинка не обрезается сверху */
+.page-head__art.page-head__art--3d { top: 36px; max-height: 290px; }
+/* подвал: колонка контактов шире, адрес не рвётся на «оф. 1» */
+@media (min-width: 1025px) { .footer__grid { grid-template-columns: 1.3fr .9fr 1fr 1.5fr; } }
