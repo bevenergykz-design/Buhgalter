@@ -76,7 +76,22 @@ router.get('/video', (req, res) => {
   const s = res.locals.s;
   res.render('site/video', { page: 'video', groups, meta: { title: `${s.video_title} — «Диалог Учёт»`, description: s.video_lead } });
 });
-router.get('/oplata', (req, res) => res.render('site/payment', { meta: seoMeta(res, 'pay'), page: 'pay' }));
+let qrCache = { url: '', svg: '' };
+async function kaspiQr() {
+  const url = settings().kaspi_qr || '';
+  if (!url) return { url: '', svg: '' };
+  if (qrCache.url !== url) {
+    const svg = await require('qrcode').toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M', color: { dark: '#111111', light: '#ffffff' } });
+    qrCache = { url, svg };
+  }
+  return qrCache;
+}
+router.get('/oplata', async (req, res, next) => {
+  try {
+    const qr = await kaspiQr();
+    res.render('site/payment', { meta: seoMeta(res, 'pay'), page: 'pay', kaspiQr: qr.url, kaspiQrSvg: qr.svg });
+  } catch (e) { next(e); }
+});
 
 // ---------- Приём заявок ----------
 const TYPES = ['consult', 'request', 'callback', 'calc', 'contact', 'pay', 'invoice'];
@@ -105,7 +120,7 @@ router.post('/api/lead', (req, res) => {
   if (type === 'pay') {
     const amount = int(String(b.amount || '').replace(/\D/g, ''), 0);
     if (!amount) return fail(400, s.err_amount);
-    details = `Оплата через Kaspi Pay: ${amount.toLocaleString('ru-RU')} ₸; номер Kaspi: ${phone}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
+    details = `Оплата через Kaspi: ${amount.toLocaleString('ru-RU')} ₸${settings().kaspi_qr ? ' (клиенту показан Kaspi QR с номером заявки)' : ''}; номер Kaspi: ${phone}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
   }
   if (type === 'invoice') {
     const bin = String(b.bin || '').replace(/\D/g, '');
@@ -128,7 +143,7 @@ router.post('/api/lead', (req, res) => {
   const lead = get('SELECT * FROM leads WHERE id = ?', r.lastInsertRowid);
   leadNotify(lead, req.baseUrl0);
 
-  if (wantsJson) return res.json({ ok: true, title: s.f_ok_title, text: s.f_ok_text });
+  if (wantsJson) return res.json({ ok: true, title: s.f_ok_title, text: s.f_ok_text, id: lead.id });
   res.redirect(res.locals.L('/spasibo'));
 });
 

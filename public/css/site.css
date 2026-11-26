@@ -686,6 +686,14 @@ h1, h2, h3, h4 { letter-spacing: -.015em; }
 .pay__icon .ic { width: 26px; height: 26px; }
 .pay__steps { margin: 0 0 22px; padding: 18px 20px 18px 40px; background: #f5f7fb; border-radius: 6px; display: grid; gap: 8px; font-size: 14.5px; color: var(--text-2); }
 .pay__steps li::marker { color: var(--indigo-700); font-weight: 700; }
+.pay-qr { text-align: center; display: grid; gap: 14px; justify-items: center; }
+.pay-qr h3 { margin: 0; }
+.pay-qr p { margin: 0; }
+.pay-qr__code { margin: 0; width: min(240px, 70vw); padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+.pay-qr__code svg { display: block; width: 100%; height: auto; }
+.pay-qr__note { font-size: 13.5px; color: var(--text-2); max-width: 420px; }
+.review__letter { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--indigo-700); }
+.review__letter:hover { text-decoration: underline; }
 .pay .form-grid { grid-template-columns: 1fr 1fr; }
 .pay__note { display: flex; gap: 10px; align-items: flex-start; margin: 28px 0 0; color: var(--text-2); font-size: 14.5px; }
 .pay__note .ic { color: var(--green); margin-top: 3px; }

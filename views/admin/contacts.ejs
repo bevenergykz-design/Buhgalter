@@ -20,6 +20,7 @@
       <div class="form-stack">
         <label class="field"><span class="field__label">Номер WhatsApp</span><input class="input" name="whatsapp" value="<%= st.whatsapp %>" placeholder="+7 7XX XXX XX XX"></label>
         <label class="field"><span class="field__label">E-mail компании (показывается на сайте)</span><input class="input" type="email" name="email" value="<%= st.email %>"></label>
+        <label class="field"><span class="field__label">Ссылка Kaspi QR для оплаты (https://qr.kaspi.kz/…). Пусто — QR на сайте не показывается</span><input class="input mono" name="kaspi_qr" value="<%= st.kaspi_qr || '' %>" placeholder="https://qr.kaspi.kz/..."></label>
       </div>
     </div>
   </section>
