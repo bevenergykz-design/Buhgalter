@@ -402,3 +402,7 @@ a:hover { color: var(--red-2); }
 .page-head__art.page-head__art--3d { top: 36px; max-height: 290px; }
 /* подвал: колонка контактов шире, адрес не рвётся на «оф. 1» */
 @media (min-width: 1025px) { .footer__grid { grid-template-columns: 1.3fr .9fr 1fr 1.5fr; } }
+/* средние экраны (721–1150): картинка документов не прячется, а встаёт под заголовком по центру */
+@media (max-width: 1150px) and (min-width: 721px) {
+  .page-head--center .page-head__art, .page-head--center .page-head__art.page-head__art--3d { display: block; position: relative; top: auto; right: auto; bottom: auto; width: 300px; max-width: 40vw; height: auto; margin: 18px auto 0; }
+}
