@@ -33,8 +33,7 @@ const S = {
     verify_director: 'Руководитель', verify_reg: 'Дата регистрации', verify_activity: 'Вид деятельности', verify_bin: 'БИН компании',
     services_request: 'Оставить заявку', services_consult: 'Получить консультацию', services_price: 'Стоимость',
     news_all: 'Все', news_empty: 'Публикаций пока нет.', news_cats: {
-      company: 'Новости компании', tax: 'Налоговое законодательство', labor: 'Трудовое законодательство',
-      tips: 'Советы предпринимателям', explain: 'Разъяснения по учёту', clients: 'Материалы для клиентов',
+      video: 'Видео-советы от наших бухгалтеров', consult: 'Консультации по темам', law: 'Изменения законодательства', company: 'Новости компании',
     },
     about_requisites: 'Реквизиты', contacts_legal: 'Юридический адрес', contacts_offices: 'Офисы', contacts_phones: 'Телефоны', contacts_email: 'Электронная почта',
     contacts_hours: 'График работы', contacts_socials: 'Мы в соцсетях', contacts_form_title: 'Напишите нам', contacts_map: 'Открыть на карте',
@@ -101,8 +100,7 @@ const S = {
     verify_director: 'Басшы', verify_reg: 'Тіркелген күні', verify_activity: 'Қызмет түрі', verify_bin: 'Компанияның БСН',
     services_request: 'Өтінім қалдыру', services_consult: 'Кеңес алу', services_price: 'Құны',
     news_all: 'Барлығы', news_empty: 'Әзірге жарияланымдар жоқ.', news_cats: {
-      company: 'Компания жаңалықтары', tax: 'Салық заңнамасы', labor: 'Еңбек заңнамасы',
-      tips: 'Кәсіпкерлерге кеңестер', explain: 'Есеп бойынша түсініктемелер', clients: 'Клиенттерге арналған материалдар',
+      video: 'Бухгалтерлеріміздің бейне-кеңестері', consult: 'Тақырыптық кеңестер', law: 'Заңнамадағы өзгерістер', company: 'Компания жаңалықтары',
     },
     about_requisites: 'Деректемелер', contacts_legal: 'Заңды мекенжайы', contacts_offices: 'Кеңселер', contacts_phones: 'Телефондар', contacts_email: 'Электрондық пошта',
     contacts_hours: 'Жұмыс кестесі', contacts_socials: 'Әлеуметтік желілерде', contacts_form_title: 'Бізге жазыңыз', contacts_map: 'Картадан ашу',
@@ -147,12 +145,12 @@ const S = {
 // ---------- Новые строки (оплата, факты первого экрана, калькулятор WhatsApp) и английская версия ----------
 Object.assign(S.ru, {
   kin_prefix: 'Мы берём на себя', kin_words: ['бухгалтерию', 'налоги', 'зарплату и кадры', 'отчётность', 'проверки КГД'],
-  nav_video: 'Видео', video_title: 'Видео-советы бухгалтеров', video_lead: 'Короткие ответы на частые вопросы предпринимателей: налоги, отчётность, штрафы, выбор формы бизнеса. Больше видео — в нашем Instagram.', video_all: 'Все видео', video_instagram: 'Больше видео в Instagram', video_topics: { tips: 'Советы бухгалтера', team: 'Наша команда', about: 'О компании', route: 'Как нас найти' }, video_lang_note: 'на казахском', certs_title: 'Сертификаты и квалификация', certs_lead: 'Качество нашей работы подтверждено аудитом «1С Казахстан», а специалисты регулярно повышают квалификацию.', certs_open: 'Открыть сертификат', team_title: 'Наша команда', team_lead: 'Бухгалтеры «Диалог Учёт» в нашем офисе.', about_video_title: 'Видео о компании и команде', route_title: 'Как нас найти в Павлодаре',
+  nav_video: 'Видео', video_title: 'Видео-советы бухгалтеров', video_lead: 'Короткие ответы на частые вопросы предпринимателей: налоги, отчётность, штрафы, выбор формы бизнеса.', video_more: 'Больше видео-советов — в нашем Instagram', video_all: 'Все видео', video_instagram: 'Больше видео в Instagram', video_topics: { tips: 'Советы бухгалтера', team: 'Наша команда', about: 'О компании', route: 'Как нас найти' }, video_lang_note: 'на казахском', certs_title: 'Сертификаты и квалификация', certs_lead: 'Мы регулярно проводим сертификацию и повышение квалификации наших специалистов. Следим за изменениями в законодательстве, совершенствуем профессиональные знания и внедряем современные подходы к работе.', certs_open: 'Открыть сертификат', team_title: 'Наша команда', team_lead: 'Бухгалтеры «Диалог Учёт» в нашем офисе.', about_video_title: 'Видео о компании и команде', route_title: 'Как нас найти в Павлодаре',
   nav_pay: 'Оплата услуг', lang_name: 'Русский', btn_calc: 'Рассчитать стоимость',
   fact_since: 'С 2018 года', fact_since_sub: 'ведём учёт бизнеса',
   fact_partner: 'Партнёр 1С:БухОбслуживание', fact_partner_sub: 'единые стандарты качества',
-  fact_offices: 'Алматы и Павлодар', fact_offices_sub: 'работаем по всему Казахстану',
-  fact_resp: '100% ответственность', fact_resp_sub: 'за штрафы по нашей вине — по договору',
+  fact_offices: 'Офисы в Алматы и Павлодаре', fact_offices_sub: 'работаем по всему Казахстану',
+  fact_resp: 'Несём финансовую ответственность', fact_resp_sub: 'в пределах гарантийного взноса',
   hero_photo_alt: 'Команда «Диалог Учёт»', regime_our_short: 'ОУР',
   wa_calc: 'Здравствуйте! Расчёт по калькулятору: ', wa_ip: 'ИП', wa_too: 'ТОО', wa_emp: ' сотр., ', wa_docs: ' док. — ',
   f_amount: 'Сумма к оплате, ₸', f_contract: 'Услуга или номер договора', f_bin: 'БИН / ИИН', f_contact: 'Контактное лицо', f_company_name: 'Наименование ИП или ТОО',
@@ -172,12 +170,12 @@ Object.assign(S.ru, {
 });
 Object.assign(S.kk, {
   kin_prefix: 'Біз өзімізге аламыз:', kin_words: ['бухгалтерияны', 'салықтарды', 'жалақы мен кадрларды', 'есептілікті', 'МКК тексерулерін'],
-  nav_video: 'Бейне', video_title: 'Бухгалтерлердің бейне-кеңестері', video_lead: 'Кәсіпкерлердің жиі қоятын сұрақтарына қысқа жауаптар: салықтар, есептілік, айыппұлдар, бизнес нысанын таңдау. Көбірек бейне — біздің Instagram-да.', video_all: 'Барлық бейне', video_instagram: 'Instagram-дағы басқа бейнелер', video_topics: { tips: 'Бухгалтер кеңестері', team: 'Біздің команда', about: 'Компания туралы', route: 'Бізді қалай табуға болады' }, video_lang_note: 'орыс тілінде', certs_title: 'Сертификаттар және біліктілік', certs_lead: 'Жұмысымыздың сапасын «1С Қазақстан» аудиті растаған, ал мамандарымыз біліктілігін үнемі арттырады.', certs_open: 'Сертификатты ашу', team_title: 'Біздің команда', team_lead: '«Диалог Учёт» бухгалтерлері біздің кеңседе.', about_video_title: 'Компания мен команда туралы бейне', route_title: 'Павлодарда бізді қалай табуға болады',
+  nav_video: 'Бейне', video_title: 'Бухгалтерлердің бейне-кеңестері', video_lead: 'Кәсіпкерлердің жиі қоятын сұрақтарына қысқа жауаптар: салықтар, есептілік, айыппұлдар, бизнес нысанын таңдау.', video_more: 'Көбірек бейне-кеңестер — біздің Instagram-да', video_all: 'Барлық бейне', video_instagram: 'Instagram-дағы басқа бейнелер', video_topics: { tips: 'Бухгалтер кеңестері', team: 'Біздің команда', about: 'Компания туралы', route: 'Бізді қалай табуға болады' }, video_lang_note: 'орыс тілінде', certs_title: 'Сертификаттар және біліктілік', certs_lead: 'Біз мамандарымызды үнемі сертификаттаудан өткізіп, біліктілігін арттырамыз. Заңнамадағы өзгерістерді қадағалап, кәсіби білімімізді жетілдіреміз және жұмысқа заманауи тәсілдерді енгіземіз.', certs_open: 'Сертификатты ашу', team_title: 'Біздің команда', team_lead: '«Диалог Учёт» бухгалтерлері біздің кеңседе.', about_video_title: 'Компания мен команда туралы бейне', route_title: 'Павлодарда бізді қалай табуға болады',
   nav_pay: 'Қызметтерге төлем', lang_name: 'Қазақша', btn_calc: 'Құнын есептеу',
   fact_since: '2018 жылдан', fact_since_sub: 'бизнес есебін жүргіземіз',
   fact_partner: '1С:БухОбслуживание серіктесі', fact_partner_sub: 'бірыңғай сапа стандарттары',
-  fact_offices: 'Алматы және Павлодар', fact_offices_sub: 'бүкіл Қазақстан бойынша жұмыс істейміз',
-  fact_resp: '100% жауапкершілік', fact_resp_sub: 'біздің кінәміз бойынша айыппұлдар үшін — шарт бойынша',
+  fact_offices: 'Алматы мен Павлодардағы кеңселер', fact_offices_sub: 'бүкіл Қазақстан бойынша жұмыс істейміз',
+  fact_resp: 'Қаржылық жауапкершілік аламыз', fact_resp_sub: 'кепілдік жарнасы шегінде',
   hero_photo_alt: '«Диалог Учёт» командасы', regime_our_short: 'ЖБР',
   wa_calc: 'Сәлеметсіз бе! Калькулятор бойынша есеп: ', wa_ip: 'ЖК', wa_too: 'ЖШС', wa_emp: ' қызметкер, ', wa_docs: ' құжат — ',
   f_amount: 'Төлем сомасы, ₸', f_contract: 'Қызмет немесе шарт нөмірі', f_bin: 'БСН / ЖСН', f_contact: 'Байланысатын тұлға', f_company_name: 'ЖК немесе ЖШС атауы',
@@ -198,7 +196,7 @@ Object.assign(S.kk, {
 
 S.en = {
   kin_prefix: 'We take care of', kin_words: ['bookkeeping', 'taxes', 'payroll and HR', 'reporting', 'tax audits'],
-  nav_video: 'Video', video_title: 'Accountants\' video tips', video_lead: 'Short answers to entrepreneurs\' common questions: taxes, reporting, penalties and choosing a legal form. The videos are in Russian and Kazakh; more on our Instagram.', video_all: 'All videos', video_instagram: 'More videos on Instagram', video_topics: { tips: 'Accounting tips', team: 'Our team', about: 'About the company', route: 'How to find us' }, video_lang_note: 'in Kazakh', certs_title: 'Certificates and qualifications', certs_lead: 'The quality of our work is confirmed by the 1C Kazakhstan audit, and our specialists regularly upgrade their qualifications.', certs_open: 'Open certificate', team_title: 'Our team', team_lead: 'Dialog Uchet accountants at our office.', about_video_title: 'Videos about the company and team', route_title: 'How to find us in Pavlodar',
+  nav_video: 'Video', video_title: 'Accountants\' video tips', video_lead: 'Short answers to entrepreneurs\' common questions: taxes, reporting, penalties and choosing a legal form. The videos are in Russian and Kazakh.', video_more: 'More video tips on our Instagram', video_all: 'All videos', video_instagram: 'More videos on Instagram', video_topics: { tips: 'Accounting tips', team: 'Our team', about: 'About the company', route: 'How to find us' }, video_lang_note: 'in Kazakh', certs_title: 'Certificates and qualifications', certs_lead: 'We regularly certify our specialists and upgrade their qualifications. We follow changes in legislation, deepen our professional knowledge and introduce modern working methods.', certs_open: 'Open certificate', team_title: 'Our team', team_lead: 'Dialog Uchet accountants at our office.', about_video_title: 'Videos about the company and team', route_title: 'How to find us in Pavlodar',
   nav_home: 'Home', nav_services: 'Services', nav_news: 'News & Insights', nav_news_short: 'News', nav_about: 'About us', nav_contacts: 'Contacts', nav_pay: 'Payment', btn_calc: 'Calculate the cost',
   cabinet: 'Client portal', cabinet_login: 'Client portal login', staff_login: 'Staff login', lang_name: 'English',
   menu: 'Menu', close: 'Close', write_whatsapp: 'Message us on WhatsApp', call_us: 'Call us',
@@ -224,8 +222,7 @@ S.en = {
   verify_director: 'Director', verify_reg: 'Registration date', verify_activity: 'Business activity', verify_bin: 'Business ID (BIN)',
   services_request: 'Submit a request', services_consult: 'Get advice', services_price: 'Price',
   news_all: 'All', news_empty: 'No articles yet.', news_cats: {
-    company: 'Company news', tax: 'Tax legislation', labor: 'Labour legislation',
-    tips: 'Tips for entrepreneurs', explain: 'Accounting explained', clients: 'Materials for clients',
+    video: 'Video tips from our accountants', consult: 'Consultations by topic', law: 'Changes in legislation', company: 'Company news',
   },
   about_requisites: 'Company details', contacts_legal: 'Registered address', contacts_offices: 'Offices', contacts_phones: 'Phones', contacts_email: 'Email',
   contacts_hours: 'Working hours', contacts_socials: 'Follow us', contacts_form_title: 'Write to us', contacts_map: 'Open map',
@@ -234,8 +231,8 @@ S.en = {
   breadcrumbs_home: 'Home', csrf_error: 'Your session has expired. Please refresh the page and try again.',
   fact_since: 'Since 2018', fact_since_sub: 'keeping books for businesses',
   fact_partner: '1C:BukhObsluzhivanie partner', fact_partner_sub: 'unified quality standards',
-  fact_offices: 'Almaty and Pavlodar', fact_offices_sub: 'serving clients across Kazakhstan',
-  fact_resp: '100% liability', fact_resp_sub: 'for penalties caused by our error, under contract',
+  fact_offices: 'Offices in Almaty and Pavlodar', fact_offices_sub: 'serving clients across Kazakhstan',
+  fact_resp: 'We bear financial liability', fact_resp_sub: 'within the guarantee deposit',
   hero_photo_alt: 'The Dialog Uchet team', regime_our_short: 'General',
   wa_calc: 'Hello! My calculator estimate: ', wa_ip: 'IP', wa_too: 'LLP', wa_emp: ' employees, ', wa_docs: ' documents — ',
   f_amount: 'Amount to pay, ₸', f_contract: 'Service or contract number', f_bin: 'BIN / IIN', f_contact: 'Contact person', f_company_name: 'Company name',

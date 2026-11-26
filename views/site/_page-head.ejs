@@ -1,4 +1,8 @@
-<section class="page-head">
+<%
+  const ARTS = { services: 'uslugi', news: 'novosti', about: 'o-kompanii', contacts: 'kontakty', pay: 'oplata', video: 'video' };
+  const art = locals.art === false ? '' : (locals.art || ARTS[locals.page] || 'dokument');
+%>
+<section class="page-head<%= art ? ' page-head--has-art' : '' %><%= locals.center ? ' page-head--center' : '' %>">
   <div class="container">
     <nav class="crumbs" aria-label="breadcrumbs">
       <a href="<%= L('/') %>"><%= s.breadcrumbs_home %></a>
@@ -6,6 +10,7 @@
       <span>/</span><span aria-current="page"><%= title %></span>
     </nav>
     <h1 class="page-head__title"><%= title %></h1>
-    <% if (locals.lead) { %><p class="page-head__lead"><%= lead %></p><% } %>
+    <% if (locals.leadHtml) { %><p class="page-head__lead"><%- leadHtml %></p><% } else if (locals.lead) { %><p class="page-head__lead"><%= lead %></p><% } %>
   </div>
+  <% if (art) { %><img class="page-head__art" src="/img/heads/<%= art %>.svg" alt="" width="520" height="300"><% } %>
 </section>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- О компании: современное офисное здание и деревья -->
+  <ellipse cx="270" cy="284" rx="240" ry="10" fill="#EFD9BF" opacity=".7"/>
+  <!-- облако -->
+  <path d="M330 52a22 22 0 0 1 42-6 18 18 0 0 1 28 18h-80a10 10 0 0 1 10-12z" fill="#FFF8EC" opacity=".9"/>
+  <!-- здание: низкий корпус -->
+  <path d="M96 140h120v140H96z" fill="#F7EBDA" stroke="#C9A98A" stroke-width="2"/>
+  <g fill="#E9D3B6"><rect x="110" y="156" width="24" height="30"/><rect x="142" y="156" width="24" height="30"/><rect x="174" y="156" width="24" height="30"/>
+    <rect x="110" y="196" width="24" height="30"/><rect x="142" y="196" width="24" height="30"/><rect x="174" y="196" width="24" height="30"/></g>
+  <!-- высокий корпус со стеклом -->
+  <path d="M206 72h176v208H206z" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+  <path d="M206 72h176v14H206z" fill="#B3261E"/>
+  <g fill="#F2DFC4">
+    <rect x="222" y="100" width="44" height="40"/><rect x="274" y="100" width="44" height="40"/><rect x="326" y="100" width="44" height="40"/>
+    <rect x="222" y="148" width="44" height="40"/><rect x="274" y="148" width="44" height="40"/><rect x="326" y="148" width="44" height="40"/>
+    <rect x="222" y="196" width="44" height="40"/><rect x="326" y="196" width="44" height="40"/>
+  </g>
+  <g stroke="#FFFDF8" stroke-width="2" opacity=".8"><path d="M230 104l14 32"/><path d="M282 104l14 32"/><path d="M334 152l14 32"/><path d="M230 200l14 32"/></g>
+  <path d="M274 196h44v84h-44z" fill="#E2B43B" opacity=".85"/><path d="M296 196v84" stroke="#B8902A" stroke-width="2"/>
+  <path d="M256 280v-6h80v6" stroke="#C9A98A" stroke-width="2"/>
+  <!-- деревья -->
+  <g><path d="M60 280v-46" stroke="#8C6A4E" stroke-width="5"/><ellipse cx="60" cy="214" rx="30" ry="40" fill="#A9B98A"/><ellipse cx="50" cy="206" rx="12" ry="18" fill="#BFCB9E"/></g>
+  <g><path d="M430 280v-52" stroke="#8C6A4E" stroke-width="5"/><ellipse cx="430" cy="204" rx="34" ry="46" fill="#A9B98A"/><ellipse cx="420" cy="194" rx="13" ry="20" fill="#BFCB9E"/></g>
+  <g><path d="M478 280v-30" stroke="#8C6A4E" stroke-width="4"/><ellipse cx="478" cy="236" rx="20" ry="26" fill="#BFCB9E"/></g>
+  <!-- дорожка -->
+  <path d="M296 284c-10 6-40 10-70 12" stroke="#E3CFB8" stroke-width="6"/>
+</svg>

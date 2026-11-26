@@ -44,10 +44,6 @@
           <p><%= sv('legal_address') %></p>
         </div>
       </div>
-      <% if (routeVideo) { %>
-      <h2 class="c-sub"><%= s.route_title %></h2>
-      <div class="route-video"><%- include('_video-card', { v: routeVideo }) %></div>
-      <% } %>
       <% const soc = Object.entries(st.socials || {}).filter(function(e){ return e[1]; }); if (soc.length) { %>
       <h2 class="c-sub"><%= s.contacts_socials %></h2>
       <div class="socials socials--dark"><% soc.forEach(function(e){ %><a href="<%= e[1] %>" target="_blank" rel="noopener" aria-label="<%= e[0] %>"><%- icon(e[0]) %></a><% }) %></div>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Контакты: карта с маршрутом, метка, конверт и трубка -->
+  <ellipse cx="270" cy="284" rx="230" ry="10" fill="#EFD9BF" opacity=".7"/>
+  <!-- карта -->
+  <path d="M120 96l90-26 90 26 90-26v180l-90 26-90-26-90 26z" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+  <path d="M210 70v180M300 96v180" stroke="#E9D9C4" stroke-width="2"/>
+  <path d="M120 96l90-26v180l-90 26z" fill="#F7EBDA"/><path d="M300 96l90-26v180l-90 26z" fill="#F7EBDA"/>
+  <path d="M138 226c40-10 40-60 86-62s52 40 98 20 30-60 52-70" stroke="#E2B43B" stroke-width="4" stroke-dasharray="2 10"/>
+  <g fill="#A9B98A" opacity=".7"><circle cx="160" cy="130" r="10"/><circle cx="176" cy="142" r="7"/><circle cx="346" cy="214" r="9"/></g>
+  <!-- метка -->
+  <path d="M374 22c-26 0-44 20-44 44 0 32 44 76 44 76s44-44 44-76c0-24-18-44-44-44z" fill="#C8352B" stroke="#8E1F18" stroke-width="2"/>
+  <circle cx="374" cy="64" r="15" fill="#FFF8EC"/>
+  <ellipse cx="374" cy="146" rx="18" ry="5" fill="#C9A98A" opacity=".5"/>
+  <!-- конверт -->
+  <g transform="rotate(-8 90 230)">
+    <rect x="34" y="190" width="112" height="76" rx="6" fill="#F3CF57" stroke="#B8902A" stroke-width="2"/>
+    <path d="M36 194l54 40 54-40" stroke="#B8902A" stroke-width="2.5"/>
+  </g>
+  <!-- трубка -->
+  <path d="M440 196c-8 8-8 22 6 38s32 24 42 16l10-10c4-4 4-10 0-14l-12-12c-4-4-10-4-14 0l-6 6c-8-4-14-10-18-18l6-6c4-4 4-10 0-14l-12-12c-4-4-10-4-14 0z" fill="#B3261E"/>
+</svg>

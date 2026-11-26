@@ -166,3 +166,4 @@ module.exports = { db, all, get, run, tx, now, settings, setSetting, texts, rese
 
 // Первичное наполнение
 require('./seed').seed(module.exports);
+require('./migrate').migrate();

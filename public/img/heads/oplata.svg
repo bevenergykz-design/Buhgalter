@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Оплата: телефон с QR-кодом, банковская карта, чек -->
+  <ellipse cx="270" cy="284" rx="230" ry="10" fill="#EFD9BF" opacity=".7"/>
+  <!-- чек -->
+  <path d="M74 96h104v176l-13-9-13 9-13-9-13 9-13-9-13 9-13-9-13 9z" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+  <g fill="#E3CFB8"><rect x="90" y="118" width="72" height="6" rx="3"/><rect x="90" y="134" width="56" height="6" rx="3"/><rect x="90" y="150" width="64" height="6" rx="3"/><rect x="90" y="166" width="50" height="6" rx="3"/></g>
+  <rect x="90" y="190" width="72" height="10" rx="3" fill="#B3261E" opacity=".85"/>
+  <circle cx="126" cy="230" r="17" fill="#F7EBDA" stroke="#E2B43B" stroke-width="2"/><path d="M118 230l6 6 11-12" stroke="#B3261E" stroke-width="3"/>
+  <!-- карта -->
+  <g transform="rotate(-10 300 210)">
+    <rect x="210" y="160" width="170" height="104" rx="12" fill="#F3CF57" stroke="#B8902A" stroke-width="2"/>
+    <rect x="210" y="182" width="170" height="18" fill="#B8902A" opacity=".55"/>
+    <rect x="228" y="216" width="30" height="22" rx="4" fill="#FFF8EC" stroke="#B8902A" stroke-width="1.5"/>
+    <g fill="#B8902A" opacity=".8"><rect x="276" y="222" width="20" height="6" rx="3"/><rect x="302" y="222" width="20" height="6" rx="3"/><rect x="328" y="222" width="20" height="6" rx="3"/></g>
+  </g>
+  <!-- телефон с QR -->
+  <rect x="352" y="28" width="122" height="236" rx="18" fill="#FFFDF8" stroke="#8E1F18" stroke-width="3"/>
+  <rect x="364" y="52" width="98" height="176" rx="6" fill="#FBF1DE"/>
+  <rect x="398" y="38" width="30" height="5" rx="2.5" fill="#C9A98A"/>
+  <g fill="#3A2A24">
+    <rect x="376" y="84" width="22" height="22"/><rect x="428" y="84" width="22" height="22"/><rect x="376" y="136" width="22" height="22"/>
+    <rect x="406" y="86" width="8" height="8"/><rect x="408" y="104" width="12" height="8"/><rect x="404" y="120" width="8" height="12"/><rect x="420" y="116" width="10" height="8"/>
+    <rect x="436" y="118" width="12" height="8"/><rect x="408" y="140" width="8" height="8"/><rect x="424" y="136" width="8" height="14"/><rect x="438" y="140" width="10" height="10"/><rect x="380" y="116" width="10" height="8"/>
+  </g>
+  <g fill="#FBF1DE"><rect x="381" y="89" width="12" height="12"/><rect x="433" y="89" width="12" height="12"/><rect x="381" y="141" width="12" height="12"/></g>
+  <rect x="380" y="176" width="66" height="22" rx="11" fill="#C8352B"/>
+  <path d="M403 187l5 5 10-11" stroke="#FFF8EC" stroke-width="3"/>
+</svg>

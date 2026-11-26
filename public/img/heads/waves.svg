@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 70" preserveAspectRatio="none">
+  <!-- Ленты в цветах логотипа внизу шапки внутренних страниц -->
+  <path d="M0 52C260 20 520 18 760 34s460 30 680-6v42H0z" fill="#FBF6EE"/>
+  <path d="M0 50C260 18 520 16 760 32s460 30 680-6" fill="none" stroke="#FADC48" stroke-width="5"/>
+  <path d="M0 58C300 34 560 34 800 46s420 18 640-10" fill="none" stroke="#C8352B" stroke-width="2.5" opacity=".75"/>
+</svg>

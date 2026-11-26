@@ -103,13 +103,17 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     const en = await pub.get('/en');
     ok(en.text.includes('lang="en"') && en.text.includes('Professional accounting services') && en.text.includes('og:locale" content="en_US'), 'английская главная');
     ok((await pub.get('/en/uslugi')).text.includes('Tax reporting') && (await pub.get('/en/kontakty')).text.includes('Almaty'), 'английские услуги и контакты');
-    ok(home.text.includes('hreflang="en"') && home.text.includes('logo-lockup.png'), 'hreflang en и полный логотип в шапке');
+    ok(home.text.includes('hreflang="en"') && home.text.includes('logo-1c-bo.png'), 'hreflang en и логотип заказчика в шапке');
     ok(!home.text.includes('hero__card') && !home.text.includes('preview-bar'), 'на фото первого экрана нет плашек, нет жёлтой полосы');
     ok(home.text.includes('/img/team/') && !home.text.includes('/img/team.webp'), 'на первом экране новое фото команды, старое убрано');
     const vp = await pub.get('/video');
     ok(vp.status === 200 && (vp.text.match(/<video /g) || []).length >= 10 && (await pub.get('/kk/video')).status === 200, 'страница «Видео» со всеми роликами (RU и KZ)');
     ok(home.text.includes('/media/video/') && home.text.includes('/img/certs/audit-1c-2024'), 'на главной видео-советы и сертификаты');
-    ok((await pub.get('/o-kompanii')).text.includes('id="certs"') && (await pub.get('/kontakty')).text.includes('kak-nas-nayti.mp4'), 'сертификаты на «О компании», видео «Как нас найти» в контактах');
+    const ab = (await pub.get('/o-kompanii')).text, ct = (await pub.get('/kontakty')).text;
+    ok(!ab.includes('id="certs"') && !ab.includes('gallery__item') && !ct.includes('kak-nas-nayti.mp4') && ab.includes('/img/heads/o-kompanii.svg'), '«О компании» и «Контакты»: без фото, сертификатов и видео, с тематической картинкой');
+    const nw = (await pub.get('/novosti')).text, nv = (await pub.get('/novosti?cat=video')).text;
+    ok(nw.includes('cat=consult') && nw.includes('cat=law') && nw.includes('cat=video') && !nw.includes('team-photo') && nv.includes('vcard'), '«Новости»: три рубрики, видео-советы, без фото команды');
+    ok(!home.text.includes('Официальный партнёр') && !home.text.includes('„Диалог Учёт“') && home.text.includes('team-4') && home.text.includes('гарантийного взноса'), 'главная: правки заказчика от 26.11');
 
     console.log('Регистрация и кабинет клиента (этап 2: включается настройкой)');
     require('../src/db').setSetting('features', { cabinet: true });

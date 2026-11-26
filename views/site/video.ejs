@@ -1,6 +1,6 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
-<%- include('_page-head', { title: s.video_title, lead: s.video_lead }) %>
+<% const vlead = include('_video-lead') %><%- include('_page-head', { title: s.video_title, leadHtml: vlead }) %>
 <section class="section section--first">
   <div class="container">
     <div class="chips">

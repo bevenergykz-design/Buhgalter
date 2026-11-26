@@ -8,17 +8,16 @@
     openingHours: 'Mo-Fr 09:00-17:00',
     founder: { '@type': 'Person', name: sv('director') },
   };
-  const featIcons = ['people', 'layers', 'briefcase', 'clock', 'lock', 'handshake', 'grad'];
+  const featIcons = ['people', 'layers', 'briefcase', 'clock', 'lock', 'handshake', 'grad', 'shield'];
 %>
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
 <!-- 1. Первый экран: мозаика из настоящих материалов компании (вариант 2) -->
-<% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; const hv = homeVideos[0]; const hc = homeCerts[0]; %>
+<% const heroImg = (st.images && st.images.hero) || '/img/team/hero.webp'; const hv = homeVideos[0]; const hc = homeCerts.find(function(c){ return /prof-buh/.test(c.image); }) || homeCerts[0]; %>
 <section class="hero2">
   <div class="container hero2__grid">
     <div class="hero2__text">
-      <p class="hero2__kicker"><%= t('home.hero.badge') %></p>
       <h1 class="hero2__title"><%= t('home.hero.title') %></h1>
       <p class="hero2__sub"><%= t('home.hero.subtitle') %></p>
       <ul class="hero2__adv"><% lines(t('home.hero.advantages')).forEach(function(a){ %><li><%= a %></li><% }) %></ul>
@@ -29,7 +28,7 @@
     </div>
     <div class="mosaic">
       <figure class="mosaic__photo">
-        <picture><% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="1100" height="1415" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %></picture>
+        <picture><% if (heroImg.startsWith('/img/') && heroImg.endsWith('.webp')) { %><source srcset="<%= heroImg %>" type="image/webp"><img src="<%= heroImg.replace(/\.webp$/, '.jpg') %>" alt="<%= s.hero_photo_alt %>" width="980" height="1600" fetchpriority="high"><% } else { %><img src="<%= heroImg %>" alt="<%= s.hero_photo_alt %>" fetchpriority="high"><% } %></picture>
       </figure>
       <% if (hv) { %>
       <figure class="mosaic__video">
@@ -241,7 +240,7 @@
 <section class="section">
   <div class="container">
     <div class="section__head">
-      <div><h2 class="section__title"><%= s.video_title %></h2><p class="section__lead"><%= s.video_lead %></p></div>
+      <div><h2 class="section__title"><%= s.video_title %></h2><p class="section__lead"><%- include('_video-lead') %></p></div>
       <a class="btn btn--ghost" href="<%= L('/video') %>"><%= s.video_all %><%- icon('arrow') %></a>
     </div>
     <div class="vgrid vgrid--4">
@@ -284,20 +283,6 @@
         <div class="faq__a"><%- nl2br(f(q, 'a')) %></div>
       </details>
       <% }) %>
-    </div>
-  </div>
-</section>
-<% } %>
-
-<% if (posts.length) { %>
-<section class="section">
-  <div class="container">
-    <div class="section__head">
-      <h2 class="section__title"><%= s.nav_news %></h2>
-      <a class="btn btn--ghost" href="<%= L('/novosti') %>"><%= s.btn_back_news %><%- icon('arrow') %></a>
-    </div>
-    <div class="posts">
-      <% posts.forEach(function(p){ %><%- include('_post-card', { p: p }) %><% }) %>
     </div>
   </div>
 </section>

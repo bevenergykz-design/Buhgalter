@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Услуги: папки-регистраторы, стакан с ручками, лист с отметками -->
+  <ellipse cx="270" cy="282" rx="230" ry="12" fill="#EFD9BF" opacity=".7"/>
+  <!-- лист с отметками -->
+  <g transform="rotate(-6 120 190)">
+    <rect x="58" y="110" width="128" height="166" rx="6" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+    <rect x="78" y="132" width="70" height="8" rx="4" fill="#B3261E" opacity=".85"/>
+    <g stroke="#B3261E" stroke-width="3"><path d="M80 166l7 7 12-14"/><path d="M80 196l7 7 12-14"/><path d="M80 226l7 7 12-14"/></g>
+    <g fill="#E3CFB8"><rect x="108" y="162" width="58" height="7" rx="3.5"/><rect x="108" y="192" width="50" height="7" rx="3.5"/><rect x="108" y="222" width="56" height="7" rx="3.5"/></g>
+  </g>
+  <!-- папки -->
+  <g stroke="#8E1F18" stroke-width="2">
+    <rect x="206" y="58" width="58" height="220" rx="5" fill="#C8352B"/>
+    <rect x="270" y="58" width="58" height="220" rx="5" fill="#D9473A"/>
+    <rect x="334" y="70" width="58" height="208" rx="5" fill="#F3CF57" stroke="#B8902A"/>
+  </g>
+  <g fill="#FFF8EC" opacity=".95">
+    <rect x="218" y="78" width="34" height="46" rx="3"/><rect x="282" y="78" width="34" height="46" rx="3"/><rect x="346" y="90" width="34" height="46" rx="3"/>
+  </g>
+  <g fill="none" stroke="#FFF8EC" stroke-width="4"><circle cx="235" cy="232" r="10"/><circle cx="299" cy="232" r="10"/></g>
+  <circle cx="363" cy="234" r="10" stroke="#B8902A" stroke-width="4"/>
+  <!-- стакан с ручками -->
+  <g>
+    <path d="M412 168l8 108h56l8-108z" fill="#FFF8EC" stroke="#C9A98A" stroke-width="2"/>
+    <g stroke-width="5"><path d="M430 168l-10-92" stroke="#B3261E"/><path d="M446 168l4-104" stroke="#E2B43B"/><path d="M462 168l16-86" stroke="#C8352B"/></g>
+    <g fill="#8E1F18"><circle cx="420" cy="74" r="4"/><circle cx="478" cy="80" r="4"/></g><circle cx="450" cy="62" r="4" fill="#B8902A"/>
+    <rect x="428" y="206" width="40" height="8" rx="4" fill="#E2B43B" opacity=".8"/>
+  </g>
+  <!-- листья -->
+  <g fill="#A9B98A" opacity=".9"><path d="M30 270c0-40 20-66 46-74-6 28-20 56-46 74z"/><path d="M40 274c10-30 36-44 62-40-18 20-38 34-62 40z"/></g>
+</svg>

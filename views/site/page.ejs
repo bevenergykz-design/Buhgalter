@@ -1,6 +1,6 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
-<%- include('_page-head', { title: f(p, 'title') }) %>
+<%- include('_page-head', { title: f(p, 'title'), center: ['politika-konfidencialnosti', 'pravila-oplaty'].includes(p.slug) }) %>
 <section class="section section--first">
   <div class="container container--narrow">
     <div class="prose"><%- f(p, 'body') %></div>

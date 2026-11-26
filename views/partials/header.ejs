@@ -4,7 +4,7 @@
 <a class="skip-link" href="#main"><%= { ru: 'Перейти к содержанию', kk: 'Мазмұнға өту', en: 'Skip to content' }[lang] %></a>
 <%
   const nav = [
-    ['/', s.nav_home, 'home'], ['/uslugi', s.nav_services, 'services'], ['/novosti', s.nav_news_short, 'news'],
+    ['/', s.nav_home, 'home'], ['/uslugi', s.nav_services, 'services'], ['/novosti', s.nav_news, 'news'],
     ['/o-kompanii', s.nav_about, 'about'], ['/kontakty', s.nav_contacts, 'contacts'],
   ];
   const curPage = locals.page || '';
@@ -13,7 +13,6 @@
 <div class="topbar">
   <div class="container topbar__in">
     <div class="topbar__left">
-      <span class="topbar__item"><%- icon('map') %><%= (st.offices || []).map(function(o){ return o['city_' + lang] || o.city_ru; }).join(' · ') %></span>
       <span class="topbar__item hide-sm"><%- icon('clock') %><%= sv('hours') %></span>
     </div>
     <div class="topbar__right">
@@ -29,7 +28,7 @@
 <header class="header" id="top">
   <div class="container header__in">
     <a class="brand" href="<%= L('/') %>" aria-label="<%= sv('brand') %> — <%= s.nav_home %>">
-      <img class="brand__logo" src="/img/logo-lockup.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="1000" height="146">
+      <img class="brand__logo" src="/img/logo-1c-bo.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="422" height="291">
     </a>
     <nav class="nav" aria-label="<%= s.menu %>">
       <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="nav__link <%= curPage === n[2] ? 'is-active' : '' %>"><%= n[1] %></a><% }) %>
@@ -59,7 +58,7 @@
       <button class="icon-btn" type="button" data-close aria-label="<%= s.close %>"><%- icon('close') %></button>
     </div>
     <nav class="drawer__nav">
-      <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="<%= curPage === n[2] ? 'is-active' : '' %>"><%= n[0] === '/novosti' ? s.nav_news : n[1] %></a><% }) %>
+      <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="<%= curPage === n[2] ? 'is-active' : '' %>"><%= n[1] %></a><% }) %>
       <% menuPages.forEach(function(p){ %><a href="<%= L('/' + p.slug) %>"><%= f(p, 'title') %></a><% }) %>
       <a href="<%= L('/oplata') %>" class="<%= curPage === 'pay' ? 'is-active' : '' %>"><%= s.nav_pay %></a>
     </nav>

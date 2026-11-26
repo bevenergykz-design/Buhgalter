@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Новости: газета с графиком, чашка, очки, растение -->
+  <ellipse cx="270" cy="282" rx="230" ry="12" fill="#EFD9BF" opacity=".7"/>
+  <!-- растение -->
+  <path d="M440 276h56l-6-70h-44z" fill="#FFF8EC" stroke="#C9A98A" stroke-width="2"/>
+  <g fill="#A9B98A"><path d="M468 206c-4-50 10-86 40-104-2 44-16 80-40 104z"/><path d="M466 206c-26-36-58-48-86-40 22 26 52 40 86 40z"/><path d="M470 206c10-40 4-82-20-110-12 40-6 80 20 110z" opacity=".85"/></g>
+  <!-- газета -->
+  <g transform="rotate(4 250 160)">
+    <path d="M150 52h210v206H162a12 12 0 0 1-12-12z" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+    <path d="M360 72h20v176a10 10 0 0 1-20 0z" fill="#F4E7D6" stroke="#C9A98A" stroke-width="2"/>
+    <rect x="170" y="70" width="120" height="16" rx="3" fill="#B3261E"/>
+    <g fill="#E3CFB8"><rect x="170" y="100" width="170" height="6" rx="3"/><rect x="170" y="114" width="150" height="6" rx="3"/>
+      <rect x="170" y="140" width="76" height="5" rx="2.5"/><rect x="170" y="152" width="70" height="5" rx="2.5"/><rect x="170" y="164" width="76" height="5" rx="2.5"/><rect x="170" y="176" width="64" height="5" rx="2.5"/>
+      <rect x="170" y="200" width="170" height="5" rx="2.5"/><rect x="170" y="212" width="150" height="5" rx="2.5"/><rect x="170" y="224" width="160" height="5" rx="2.5"/></g>
+    <rect x="256" y="136" width="86" height="54" rx="3" fill="#FBF1DE" stroke="#E2B43B" stroke-width="1.5"/>
+    <g fill="#E2B43B"><rect x="266" y="168" width="10" height="16"/><rect x="282" y="160" width="10" height="24"/><rect x="298" y="152" width="10" height="32"/><rect x="314" y="146" width="10" height="38"/></g>
+    <path d="M264 160l20-10 16 4 30-16" stroke="#B3261E" stroke-width="3"/><path d="M322 136l9 2-3 9" stroke="#B3261E" stroke-width="3"/>
+  </g>
+  <!-- чашка -->
+  <ellipse cx="96" cy="262" rx="62" ry="12" fill="#FFF8EC" stroke="#C9A98A" stroke-width="2"/>
+  <path d="M52 196h88v34a34 34 0 0 1-34 34h-20a34 34 0 0 1-34-34z" fill="#FFFDF8" stroke="#C9A98A" stroke-width="2"/>
+  <path d="M140 208c22 0 24 34-2 34" stroke="#C9A98A" stroke-width="5"/>
+  <ellipse cx="96" cy="196" rx="44" ry="8" fill="#6B4632"/>
+  <rect x="76" y="222" width="40" height="8" rx="4" fill="#B3261E" opacity=".85"/>
+  <g stroke="#E3CFB8" stroke-width="3" opacity=".9"><path d="M84 182c-6-10 6-16 0-26"/><path d="M104 182c-6-10 6-16 0-26"/></g>
+  <!-- очки -->
+  <g stroke="#4A3328" stroke-width="3"><circle cx="216" cy="270" r="15"/><circle cx="262" cy="270" r="15"/><path d="M231 268q8-6 16 0"/><path d="M201 266l-22-10"/><path d="M277 266l20-12"/></g>
+</svg>

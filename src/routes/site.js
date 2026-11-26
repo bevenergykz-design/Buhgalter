@@ -9,7 +9,9 @@ const { leadNotify } = require('../notify');
 
 const router = express.Router();
 
-const NEWS_CATS = ['company', 'tax', 'labor', 'tips', 'explain', 'clients'];
+// рубрики «Новостей и полезной информации» (по ТЗ заказчика от 26.11.2026); «video» — видео-советы из раздела «Видео»
+const NEWS_TABS = ['video', 'consult', 'law'];
+const NEWS_DEFAULT = 'consult';
 
 // видео: сначала на языке страницы, затем остальные
 function videos(lang, where = '1', ...p) {
@@ -46,15 +48,17 @@ router.get('/uslugi/:slug', (req, res) => res.redirect(301, res.locals.L(`/uslug
 
 // ---------- Новости ----------
 router.get('/novosti', (req, res) => {
-  const cat = NEWS_CATS.includes(req.query.cat) ? req.query.cat : '';
+  const cat = NEWS_TABS.includes(req.query.cat) ? req.query.cat : NEWS_DEFAULT;
+  const vids = videos(req.lang);
   const perPage = 9;
   const pageNo = Math.max(1, int(req.query.page, 1));
-  const where = `published = 1 AND published_at <= ? ${cat ? 'AND category = ?' : ''}`;
-  const params = cat ? [now(), cat] : [now()];
+  const where = 'published = 1 AND published_at <= ? AND category = ?';
+  const params = [now(), cat];
   const total = get(`SELECT COUNT(*) AS n FROM posts WHERE ${where}`, ...params).n;
   const posts = all(`SELECT * FROM posts WHERE ${where} ORDER BY published_at DESC LIMIT ? OFFSET ?`, ...params, perPage, (pageNo - 1) * perPage);
   const counts = Object.fromEntries(all('SELECT category, COUNT(*) AS n FROM posts WHERE published = 1 AND published_at <= ? GROUP BY category', now()).map((r) => [r.category, r.n]));
-  res.render('site/news', { meta: seoMeta(res, 'news'), page: 'news', posts, cat, cats: NEWS_CATS, counts, pageNo, pages: Math.max(1, Math.ceil(total / perPage)) });
+  counts.video = vids.length;
+  res.render('site/news', { meta: seoMeta(res, 'news'), page: 'news', posts, cat, cats: NEWS_TABS, counts, vids: cat === 'video' ? vids : [], pageNo, pages: Math.max(1, Math.ceil(total / perPage)) });
 });
 router.get('/novosti/:slug', (req, res, next) => {
   const post = get('SELECT * FROM posts WHERE slug = ? AND published = 1', req.params.slug);

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Видео: ноутбук с кнопкой воспроизведения, облачко с вопросом -->
+  <ellipse cx="270" cy="284" rx="230" ry="10" fill="#EFD9BF" opacity=".7"/>
+  <rect x="146" y="64" width="250" height="160" rx="10" fill="#FFFDF8" stroke="#8E1F18" stroke-width="3"/>
+  <rect x="160" y="78" width="222" height="132" rx="4" fill="#F7EBDA"/>
+  <path d="M120 236h302l-18 30H138z" fill="#F3CF57" stroke="#B8902A" stroke-width="2"/>
+  <rect x="246" y="242" width="50" height="6" rx="3" fill="#B8902A" opacity=".6"/>
+  <circle cx="271" cy="144" r="36" fill="#C8352B"/>
+  <path d="M262 126l28 18-28 18z" fill="#FFF8EC"/>
+  <rect x="176" y="194" width="190" height="5" rx="2.5" fill="#E3CFB8"/><rect x="176" y="194" width="74" height="5" rx="2.5" fill="#B3261E"/>
+  <!-- облачко -->
+  <path d="M410 40h76a14 14 0 0 1 14 14v40a14 14 0 0 1-14 14h-42l-20 18v-18h-14a14 14 0 0 1-14-14V54a14 14 0 0 1 14-14z" fill="#FFF8EC" stroke="#C9A98A" stroke-width="2"/>
+  <path d="M438 64a12 12 0 1 1 18 10c-4 3-6 5-6 10" stroke="#B3261E" stroke-width="4"/><circle cx="450" cy="94" r="3" fill="#B3261E"/>
+  <!-- листья -->
+  <g fill="#A9B98A" opacity=".9"><path d="M40 276c0-44 22-72 52-80-6 30-22 60-52 80z"/><path d="M52 280c12-32 40-46 68-42-20 22-42 36-68 42z"/></g>
+</svg>

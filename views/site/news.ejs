@@ -3,18 +3,15 @@
 <%- include('_page-head', { title: t('news.title'), lead: t('news.text') }) %>
 <section class="section section--first">
   <div class="container">
-    <% if (st.images && st.images.team) { %>
-    <figure class="team-photo team-photo--plain">
-      <img src="<%= st.images.team %>" alt="<%= t('news.team_caption') %>" loading="lazy">
-      <figcaption><%= t('news.team_caption') %></figcaption>
-    </figure>
-    <% } %>
     <div class="chips">
-      <a class="chip <%= !cat ? 'is-active' : '' %>" href="<%= L('/novosti') %>"><%= s.news_all %></a>
-      <a class="chip chip--video" href="<%= L('/video') %>"><%- icon('image') %> <%= s.nav_video %></a>
-      <% cats.forEach(function(c){ %><a class="chip <%= cat === c ? 'is-active' : '' %>" href="<%= L('/novosti?cat=' + c) %>"><%= s.news_cats[c] %><% if (counts[c]) { %> <small><%= counts[c] %></small><% } %></a><% }) %>
+      <% cats.forEach(function(c){ %><a class="chip <%= cat === c ? 'is-active' : '' %>" href="<%= L('/novosti?cat=' + c) %>"><% if (c === 'video') { %><%- icon('image') %> <% } %><%= s.news_cats[c] %><% if (counts[c]) { %> <small><%= counts[c] %></small><% } %></a><% }) %>
     </div>
-    <% if (!posts.length) { %>
+    <% if (cat === 'video') { %>
+      <% if (!vids.length) { %><p class="empty"><%- icon('doc') %><%= s.news_empty %></p><% } else { %>
+      <p class="section__lead news-video-lead"><%- include('_video-lead') %></p>
+      <div class="vgrid vgrid--4"><% vids.forEach(function(v){ %><%- include('_video-card', { v: v }) %><% }) %></div>
+      <% } %>
+    <% } else if (!posts.length) { %>
       <p class="empty"><%- icon('doc') %><%= s.news_empty %></p>
     <% } else { %>
       <div class="posts">
@@ -22,7 +19,7 @@
       </div>
       <% if (pages > 1) { %>
       <nav class="pager">
-        <% for (let i = 1; i <= pages; i++) { %><a class="<%= i === pageNo ? 'is-active' : '' %>" href="<%= L('/novosti?' + (cat ? 'cat=' + cat + '&' : '') + 'page=' + i) %>"><%= i %></a><% } %>
+        <% for (let i = 1; i <= pages; i++) { %><a class="<%= i === pageNo ? 'is-active' : '' %>" href="<%= L('/novosti?cat=' + cat + '&page=' + i) %>"><%= i %></a><% } %>
       </nav>
       <% } %>
     <% } %>

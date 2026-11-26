@@ -4,7 +4,6 @@
 <section class="section section--first">
   <div class="container about">
     <div class="about__text prose">
-      <% const aboutImg = (st.images && (st.images.about || st.images.team)) || ''; if (aboutImg) { %><figure class="team-photo team-photo--plain team-photo--about"><img src="<%= aboutImg %>" alt="<%= s.hero_photo_alt %>" loading="lazy"><figcaption><%= s.hero_photo_alt %></figcaption></figure><% } %>
       <% paragraphs(t('about.lead')).forEach(function(p, i){ %><p class="<%= i === 0 ? 'lead' : '' %>"><%= p %></p><% }) %>
     </div>
     <aside class="about__aside">
@@ -35,33 +34,6 @@
     </div>
   </div>
 </section>
-<section class="section section--alt">
-  <div class="container">
-    <div class="section__head"><div><h2 class="section__title"><%= s.team_title %></h2><p class="section__lead"><%= s.team_lead %></p></div></div>
-    <div class="gallery">
-      <% ['team-2', 'team-3', 'team-4', 'team-5'].forEach(function(n){ %><figure class="gallery__item"><picture><source srcset="/img/team/<%= n %>.webp" type="image/webp"><img src="/img/team/<%= n %>.jpg" alt="<%= s.hero_photo_alt %>" loading="lazy"></picture></figure><% }) %>
-    </div>
-  </div>
-</section>
-<% if (certs.length) { %>
-<section class="section" id="certs">
-  <div class="container">
-    <div class="section__head"><div><h2 class="section__title"><%= s.certs_title %></h2><p class="section__lead"><%= s.certs_lead %></p></div></div>
-    <%- include('_certs', { certs: certs }) %>
-  </div>
-</section>
-<% } %>
-<% if (aboutVideos.length) { %>
-<section class="section section--alt">
-  <div class="container">
-    <div class="section__head">
-      <h2 class="section__title"><%= s.about_video_title %></h2>
-      <a class="btn btn--ghost" href="<%= L('/video') %>"><%= s.video_all %><%- icon('arrow') %></a>
-    </div>
-    <div class="vgrid vgrid--4"><% aboutVideos.forEach(function(v){ %><%- include('_video-card', { v: v }) %><% }) %></div>
-  </div>
-</section>
-<% } %>
 <section class="section">
   <div class="container">
     <div class="section__head section__head--center">
