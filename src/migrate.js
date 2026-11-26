@@ -46,8 +46,8 @@ function m20261126() {
     desc_ru = 'По итогам централизованного аудита за 2024 год. Выдан 3 июля 2025 г.',
     desc_kk = '2024 жылғы орталықтандырылған аудит қорытындысы бойынша. 2025 жылғы 3 шілдеде берілген.',
     desc_en = 'Based on the centralised audit for 2024. Issued on 3 July 2025.' WHERE image LIKE '%audit-1c%'`);
-  run(`UPDATE certificates SET desc_ru = replace(desc_ru, ', 3 академических часа', ''), desc_kk = replace(desc_kk, ', 3 академиялық сағат', ''),
-    desc_en = replace(desc_en, ', 3 academic hours', '') WHERE desc_ru LIKE '%академических%'`);
+  run(`UPDATE certificates SET desc_ru = replace(desc_ru, ', 3 академических часа.', '.'), desc_kk = replace(desc_kk, ', 3 академиялық сағат.', '.'),
+    desc_en = replace(desc_en, ', 3 academic hours.', '.') WHERE desc_ru LIKE '%академических%'`);
 
   // 5. Рубрики «Новостей»: консультации и изменения законодательства
   run("UPDATE posts SET category = 'consult' WHERE category IN ('explain', 'tips', 'clients')");
