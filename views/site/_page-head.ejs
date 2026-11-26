@@ -1,6 +1,6 @@
 <%
-  const ARTS = { services: 'uslugi.webp', news: 'novosti.webp', about: 'o-kompanii.webp', contacts: 'kontakty.svg', pay: 'oplata.svg', video: 'video.svg' };
-  const art = locals.art === false ? '' : (locals.art || ARTS[locals.page] || 'dokument.svg');
+  const ARTS = { services: 'uslugi.webp', news: 'novosti.webp', about: 'o-kompanii.webp', contacts: 'kontakty.webp', pay: 'oplata.webp', video: 'video.webp' };
+  const art = locals.art === false ? '' : (locals.art || ARTS[locals.page] || 'dokument.webp');
   const art3d = /\.webp$/.test(art);
 %>
 <section class="page-head<%= art ? ' page-head--has-art' : '' %><%= locals.center ? ' page-head--center' : '' %>">

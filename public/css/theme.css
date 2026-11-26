@@ -354,3 +354,8 @@ a:hover { color: var(--red-2); }
   .hw__art .hw__figures { width: 58%; right: -14px; }
   .page-head__art.page-head__art--3d { position: relative; top: auto; height: auto; width: 100%; max-width: 400px; max-height: none; margin: 6px auto 0; }
 }
+/* по центру (политика, правила оплаты): картинка поуже, чтобы не задевать заголовок */
+.page-head--center .page-head__art.page-head__art--3d { height: auto; width: min(300px, 21vw); max-width: none; top: 28px; }
+@media (max-width: 720px) {
+  .page-head__art.page-head__art--3d, .page-head--center .page-head__art.page-head__art--3d { width: 100%; max-width: 300px; top: auto; }
+}
