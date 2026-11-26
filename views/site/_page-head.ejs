@@ -1,6 +1,7 @@
 <%
-  const ARTS = { services: 'uslugi', news: 'novosti', about: 'o-kompanii', contacts: 'kontakty', pay: 'oplata', video: 'video' };
-  const art = locals.art === false ? '' : (locals.art || ARTS[locals.page] || 'dokument');
+  const ARTS = { services: 'uslugi.webp', news: 'novosti.webp', about: 'o-kompanii.webp', contacts: 'kontakty.svg', pay: 'oplata.svg', video: 'video.svg' };
+  const art = locals.art === false ? '' : (locals.art || ARTS[locals.page] || 'dokument.svg');
+  const art3d = /\.webp$/.test(art);
 %>
 <section class="page-head<%= art ? ' page-head--has-art' : '' %><%= locals.center ? ' page-head--center' : '' %>">
   <div class="container">
@@ -12,5 +13,5 @@
     <h1 class="page-head__title"><%= title %></h1>
     <% if (locals.leadHtml) { %><p class="page-head__lead"><%- leadHtml %></p><% } else if (locals.lead) { %><p class="page-head__lead"><%= lead %></p><% } %>
   </div>
-  <% if (art) { %><img class="page-head__art" src="/img/heads/<%= art %>.svg" alt="" width="520" height="300"><% } %>
+  <% if (art) { %><img class="page-head__art<%= art3d ? ' page-head__art--3d' : '' %>" src="/img/heads/<%= art %>" alt="" width="<%= art3d ? 1100 : 520 %>" height="<%= art3d ? 700 : 300 %>"><% } %>
 </section>

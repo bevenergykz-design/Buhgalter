@@ -110,7 +110,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok(vp.status === 200 && (vp.text.match(/<video /g) || []).length >= 10 && (await pub.get('/kk/video')).status === 200, 'страница «Видео» со всеми роликами (RU и KZ)');
     ok(home.text.includes('/media/video/') && home.text.includes('/img/certs/audit-1c-2024'), 'на главной видео-советы и сертификаты');
     const ab = (await pub.get('/o-kompanii')).text, ct = (await pub.get('/kontakty')).text;
-    ok(!ab.includes('id="certs"') && !ab.includes('gallery__item') && !ct.includes('kak-nas-nayti.mp4') && ab.includes('/img/heads/o-kompanii.svg'), '«О компании» и «Контакты»: без фото, сертификатов и видео, с тематической картинкой');
+    ok(!ab.includes('id="certs"') && !ab.includes('gallery__item') && !ct.includes('kak-nas-nayti.mp4') && ab.includes('/img/heads/o-kompanii.webp') && ab.includes('Наша история, стратегическое видение'), '«О компании» и «Контакты»: без фото, сертификатов и видео, с тематической картинкой');
     const nw = (await pub.get('/novosti')).text, nv = (await pub.get('/novosti?cat=video')).text;
     ok(nw.includes('cat=consult') && nw.includes('cat=law') && nw.includes('cat=video') && !nw.includes('team-photo') && nv.includes('vcard'), '«Новости»: три рубрики, видео-советы, без фото команды');
     ok(!home.text.includes('Официальный партнёр') && !home.text.includes('„Диалог Учёт“') && home.text.includes('team-4') && home.text.includes('гарантийного взноса'), 'главная: правки заказчика от 26.11');

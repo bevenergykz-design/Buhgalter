@@ -329,3 +329,28 @@ a:hover { color: var(--red-2); }
   .pillars__ic { width: 72px; height: 72px; }
   .pillars__ic .ic { width: 30px; height: 30px; }
 }
+
+/* объёмные картинки (образцы заказчика): мягко растворяются в кремовом фоне по краям */
+.page-head__art--3d { border-radius: 0; -webkit-mask-image: radial-gradient(ellipse 72% 70% at 58% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 72% 70% at 58% 50%, #000 62%, transparent 100%); }
+.page-head__art.page-head__art--3d { width: min(540px, 42vw); bottom: 50px; }
+.hw__figures { -webkit-mask-image: radial-gradient(ellipse 70% 68% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 70% 68% at 50% 50%, #000 60%, transparent 100%); max-width: 440px; }
+@media (max-width: 720px) { .page-head__art.page-head__art--3d { width: 100%; max-width: 380px; bottom: auto; } }
+/* первый экран: круги слева, крупные фигурки со щитом справа (как на образце) */
+.hw__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.hw__art { display: block; min-height: 430px; }
+.hw__art .pillars { position: relative; z-index: 2; padding-top: 40px; }
+.hw__art .hw__figures { position: absolute; right: -20px; top: 50%; translate: 0 -50%; width: 66%; max-width: 440px; z-index: 1;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%); }
+/* шапки страниц: картинка по высоте шапки, края растворяются */
+.page-head__art.page-head__art--3d { width: auto; height: calc(100% - 70px); max-height: 330px; max-width: 44vw; top: 22px; bottom: auto;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); }
+@media (max-width: 1024px) {
+  .hw__grid { grid-template-columns: 1fr; }
+  .hw__art { min-height: 380px; max-width: 620px; }
+}
+@media (max-width: 720px) {
+  .hw__art { min-height: 300px; }
+  .hw__art .pillars { padding-top: 10px; }
+  .hw__art .hw__figures { width: 58%; right: -14px; }
+  .page-head__art.page-head__art--3d { position: relative; top: auto; height: auto; width: 100%; max-width: 400px; max-height: none; margin: 6px auto 0; }
+}
