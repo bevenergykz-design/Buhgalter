@@ -355,6 +355,7 @@ const DEFAULT_SETTINGS = {
   whatsapp: '+7 771 037 7827',
   email: '',
   hours_ru: 'Пн–Пт: с 9:00 до 17:00', hours_kk: 'Дс–Жм: 9:00-ден 17:00-ге дейін',
+  kaspi_qr: 'https://qr.kaspi.kz/1527505987369641930916928843063390697823',
   socials: { instagram: 'https://www.instagram.com/dialog_uchet/', facebook: '', telegram: '', youtube: '', linkedin: '' },
   images: { hero: '/img/team/hero.webp', team: '/img/team/team-2-wide.webp', about: '/img/team/team-1.webp' },
   site_url: '',
