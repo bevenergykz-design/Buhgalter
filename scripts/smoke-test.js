@@ -103,7 +103,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     const en = await pub.get('/en');
     ok(en.text.includes('lang="en"') && en.text.includes('Professional accounting services') && en.text.includes('og:locale" content="en_US'), 'английская главная');
     ok((await pub.get('/en/uslugi')).text.includes('Tax reporting') && (await pub.get('/en/kontakty')).text.includes('Almaty'), 'английские услуги и контакты');
-    ok(home.text.includes('hreflang="en"') && home.text.includes('logo-1c-bo.png'), 'hreflang en и логотип заказчика в шапке');
+    ok(home.text.includes('hreflang="en"') && home.text.includes('logo-bo-mark.png') && home.text.includes('logo-1c-bo.png'), 'hreflang en и логотип заказчика в шапке и подвале');
     ok(!home.text.includes('hero__card') && !home.text.includes('preview-bar'), 'на фото первого экрана нет плашек, нет жёлтой полосы');
     ok(home.text.includes('/img/team/') && !home.text.includes('/img/team.webp'), 'на первом экране новое фото команды, старое убрано');
     const vp = await pub.get('/video');

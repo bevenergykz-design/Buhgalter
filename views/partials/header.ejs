@@ -28,7 +28,9 @@
 <header class="header" id="top">
   <div class="container header__in">
     <a class="brand" href="<%= L('/') %>" aria-label="<%= sv('brand') %> — <%= s.nav_home %>">
-      <img class="brand__logo" src="/img/logo-1c-bo.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="422" height="291">
+      <img class="brand__logo brand__logo--desk" src="/img/logo-bo-mark.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="380" height="240">
+      <img class="brand__logo brand__logo--mob" src="/img/logo-1c-bo.png" alt="1С:БухОбслуживание — <%= sv('company_name') %>" width="870" height="600">
+      <span class="brand__name" aria-hidden="true"><span>Образцовая бухгалтерия</span><span>«Диалог Учёт»</span></span>
     </a>
     <nav class="nav" aria-label="<%= s.menu %>">
       <% nav.forEach(function(n){ %><a href="<%= L(n[0]) %>" class="nav__link <%= curPage === n[2] ? 'is-active' : '' %>"><%= n[1] %></a><% }) %>
