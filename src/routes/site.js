@@ -123,8 +123,7 @@ router.post('/api/lead', (req, res) => {
   if (b.service) details = `Услуга: ${str(b.service, 200)}`;
   if (type === 'pay') {
     const amount = int(String(b.amount || '').replace(/\D/g, ''), 0);
-    if (!amount) return fail(400, s.err_amount);
-    details = `Оплата через Kaspi: ${amount.toLocaleString('ru-RU')} ₸${settings().kaspi_qr ? ' (клиенту показан Kaspi QR с номером заявки)' : ''}; номер Kaspi: ${phone}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
+    details = `Оплата через Kaspi${amount ? `: ${amount.toLocaleString('ru-RU')} ₸` : ''}${settings().kaspi_qr ? ' (клиенту показан Kaspi QR с номером заявки)' : ''}; номер Kaspi: ${phone}${b.contract ? `; услуга / договор: ${str(b.contract, 200)}` : ''}`;
   }
   if (type === 'invoice') {
     const bin = String(b.bin || '').replace(/\D/g, '');

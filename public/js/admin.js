@@ -41,6 +41,31 @@
         sync();
       });
     });
+    // вставка картинки: загружаем файл на сервер и ставим его в текст на место курсора
+    var imgBtn = ed.querySelector('[data-img]');
+    if (imgBtn) {
+      var picker = document.createElement('input'); picker.type = 'file'; picker.accept = '.jpg,.jpeg,.png,.webp'; picker.hidden = true; ed.appendChild(picker);
+      var range = null;
+      imgBtn.addEventListener('mousedown', function (e) { e.preventDefault(); var sel = window.getSelection(); range = sel.rangeCount && area.contains(sel.anchorNode) ? sel.getRangeAt(0).cloneRange() : null; });
+      imgBtn.addEventListener('click', function () { if (!htmlMode) picker.click(); });
+      picker.addEventListener('change', function () {
+        var file = picker.files[0]; if (!file) return;
+        var form = ed.closest('form'), fd = new FormData();
+        fd.append('_csrf', form.querySelector('[name=_csrf]').value); fd.append('file', file);
+        imgBtn.disabled = true; imgBtn.textContent = '…';
+        fetch(form.getAttribute('data-img-upload') || (location.pathname.split('/content/')[0] + '/upload-image'), { method: 'POST', body: fd, credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (!j.ok) throw new Error(j.error || 'Не удалось загрузить картинку');
+            area.focus();
+            if (range) { var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range); }
+            document.execCommand('insertHTML', false, '<p><img src="' + j.url + '" alt=""></p>');
+            sync();
+          })
+          .catch(function (e) { window.alert(e.message); })
+          .then(function () { imgBtn.disabled = false; imgBtn.textContent = '🖼'; picker.value = ''; });
+      });
+    }
     htmlBtn.addEventListener('click', function () {
       htmlMode = !htmlMode;
       if (htmlMode) { sync(); src.hidden = false; area.hidden = true; }

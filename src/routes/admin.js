@@ -371,14 +371,24 @@ router.post('/texts', csrf, (req, res) => {
   back(res, `${AP}/texts?grp=${encodeURIComponent(req.body.grp || '')}`);
 });
 
+// ---- картинка внутри текста статьи или страницы (кнопка 🖼 в редакторе) ----
+router.post('/upload-image', needAdmin, F.imageUpload.single('file'), csrf, (req, res) => {
+  const f = req.file;
+  if (!f || !/\.(jpe?g|png|webp)$/i.test(f.filename)) {
+    if (f) require('fs').unlink(f.path, () => {});
+    return res.status(400).json({ ok: false, error: 'Загрузите картинку в формате JPG, PNG или WEBP.' });
+  }
+  res.json({ ok: true, url: `/uploads/${f.filename}` });
+});
+
 // ---- изображения сайта ----
 router.get('/images', (req, res) => render(res, 'images', { title: 'Изображения сайта', images: settings().images || {} }));
 router.post('/images', F.imageUpload.any(), csrf, (req, res) => {
   const images = { ...(settings().images || {}) };
-  for (const k of ['hero', 'team', 'about']) {
+  for (const k of ['hero', 'og', 'team', 'about']) {
     const file = (req.files || []).find((f) => f.fieldname === k);
     if (file) images[k] = `/uploads/${file.filename}`;
-    else if (req.body[`remove_${k}`]) images[k] = k === 'hero' ? '/img/team/hero.webp' : '';
+    else if (req.body[`remove_${k}`]) images[k] = '';
   }
   setSetting('images', images);
   back(res, AP + '/images');

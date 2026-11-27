@@ -19,7 +19,6 @@
             <label class="field"><span class="field__label"><%= s.f_name %> *</span><input class="input" type="text" name="name" required maxlength="120" autocomplete="name"></label>
             <label class="field"><span class="field__label"><%= s.f_phone %> (Kaspi) *</span><input class="input" type="tel" name="phone" required maxlength="40" autocomplete="tel" placeholder="+7 ___ ___ __ __" data-phone></label>
             <label class="field"><span class="field__label"><%= s.f_contract %></span><input class="input" type="text" name="contract" maxlength="200"></label>
-            <label class="field"><span class="field__label"><%= s.f_amount %> *</span><input class="input" type="text" name="amount" inputmode="numeric" maxlength="12" required data-amount></label>
           </div>
           <label class="check"><input type="checkbox" name="consent" value="1" required><span class="check__box"></span><span class="check__text"><%- s.f_consent_html.replace('{privacy}', L('/politika-konfidencialnosti')) %></span></label>
           <p class="form-error" role="alert" hidden></p>

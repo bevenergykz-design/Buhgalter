@@ -90,7 +90,7 @@ const csrfOf = (html) => (html.match(/name="_csrf" value="([a-f0-9]+)"/) || [])[
     ok((await pub.get('/oplata')).status === 200 && (await pub.get('/kk/oplata')).status === 200 && (await pub.get('/en/oplata')).status === 200, 'страница «Оплата услуг» на трёх языках');
     ok((await pub.get('/pravila-oplaty')).text.includes('Возврат денежных средств') && (await pub.get('/en/pravila-oplaty')).text.includes('Refunds'), 'правила оплаты и возврата (RU и EN)');
     r = await pub.post('/api/lead', { form: { type: 'pay', name: 'Плательщик', phone: '+7 701 222 3344', amount: '', consent: '1', ts }, headers: PH });
-    ok(r.status === 400, 'оплата без суммы отклоняется');
+    ok(r.status === 200 && JSON.parse(r.text).ok && !(await pub.get('/oplata')).text.includes('name="amount"'), 'оплата Kaspi принимается без суммы, поля суммы в форме нет');
     r = await pub.post('/api/lead', { form: { type: 'pay', name: 'Плательщик', phone: '+7 701 222 3344', amount: '45 000', contract: 'Договор 12/26', consent: '1', ts }, headers: PH });
     ok(r.status === 200 && JSON.parse(r.text).ok, 'запрос оплаты через Kaspi принят');
     ok(Number(JSON.parse(r.text).id) > 0, 'ответ на оплату содержит номер заявки');

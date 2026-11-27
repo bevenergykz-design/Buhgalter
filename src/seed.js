@@ -262,7 +262,7 @@ const PAY_RULES = {
 <p>Стоимость обслуживания определяется договором с клиентом. Расчёт в онлайн-калькуляторе на сайте носит ознакомительный характер и не является публичной офертой.</p>
 <h2>Способы оплаты</h2>
 <h3>Физические лица — Kaspi Pay</h3>
-<ol><li>Заполните форму на странице «Оплата услуг»: имя, номер телефона, привязанный к Kaspi, услуга или номер договора и сумма.</li><li>Сотрудник компании выставит удалённую оплату через Kaspi Pay на указанный номер.</li><li>Подтвердите оплату в приложении Kaspi.kz. Электронный чек формирует Kaspi.</li></ol>
+<ol><li>Заполните форму на странице «Оплата услуг»: имя, номер телефона, привязанный к Kaspi, услуга или номер договора.</li><li>Сотрудник компании выставит удалённую оплату через Kaspi Pay на указанный номер.</li><li>Подтвердите оплату в приложении Kaspi.kz. Электронный чек формирует Kaspi.</li></ol>
 <p>Данные банковских карт вводятся только в приложении Kaspi.kz; сайт компании их не получает и не хранит.</p>
 <h3>ИП и юридические лица — по счёту</h3>
 <p>Оплата производится безналичным переводом по счёту на оплату. Запросить счёт можно через форму на странице «Оплата услуг», по телефону или в WhatsApp. После оказания услуг клиент получает акт выполненных работ и, при необходимости, электронный счёт-фактуру.</p>
@@ -275,7 +275,7 @@ const PAY_RULES = {
 <p>Қызмет көрсету құны клиентпен жасалған шартта айқындалады. Сайттағы онлайн-калькулятордағы есеп танысу үшін берілген және жария оферта болып табылмайды.</p>
 <h2>Төлем тәсілдері</h2>
 <h3>Жеке тұлғалар — Kaspi Pay</h3>
-<ol><li>«Қызметтерге төлем» бетіндегі нысанды толтырыңыз: аты-жөні, Kaspi-ге байланған телефон нөмірі, қызмет немесе шарт нөмірі және сома.</li><li>Компания қызметкері көрсетілген нөмірге Kaspi Pay арқылы қашықтан төлем жазады.</li><li>Kaspi.kz қосымшасында төлемді растаңыз. Электрондық чекті Kaspi қалыптастырады.</li></ol>
+<ol><li>«Қызметтерге төлем» бетіндегі нысанды толтырыңыз: аты-жөні, Kaspi-ге байланған телефон нөмірі, қызмет немесе шарт нөмірі.</li><li>Компания қызметкері көрсетілген нөмірге Kaspi Pay арқылы қашықтан төлем жазады.</li><li>Kaspi.kz қосымшасында төлемді растаңыз. Электрондық чекті Kaspi қалыптастырады.</li></ol>
 <p>Банк картасының деректері тек Kaspi.kz қосымшасында енгізіледі; компания сайты оларды алмайды және сақтамайды.</p>
 <h3>ЖК және заңды тұлғалар — шот бойынша</h3>
 <p>Төлем төлем шоты бойынша қолма-қол ақшасыз аударыммен жүргізіледі. Шотты «Қызметтерге төлем» бетіндегі нысан арқылы, телефон немесе WhatsApp арқылы сұратуға болады. Қызмет көрсетілгеннен кейін клиент орындалған жұмыстар актісін және қажет болса электрондық шот-фактураны алады.</p>
@@ -288,7 +288,7 @@ const PAY_RULES = {
 <p>The service fee is set out in the contract with the client. The online calculator estimate on this website is for information only and is not a public offer.</p>
 <h2>Payment methods</h2>
 <h3>Individuals — Kaspi Pay</h3>
-<ol><li>Fill in the form on the Payment page: your name, the phone number linked to Kaspi, the service or contract number and the amount.</li><li>Our staff will send a remote payment request via Kaspi Pay to that number.</li><li>Confirm the payment in the Kaspi.kz app. The electronic receipt is issued by Kaspi.</li></ol>
+<ol><li>Fill in the form on the Payment page: your name, the phone number linked to Kaspi and the service or contract number.</li><li>Our staff will send a remote payment request via Kaspi Pay to that number.</li><li>Confirm the payment in the Kaspi.kz app. The electronic receipt is issued by Kaspi.</li></ol>
 <p>Card details are entered only in the Kaspi.kz app; our website neither receives nor stores them.</p>
 <h3>Sole proprietors and companies — by invoice</h3>
 <p>Payment is made by bank transfer against an invoice. You can request an invoice using the form on the Payment page, by phone or via WhatsApp. Once the services are rendered, the client receives a certificate of completed work (act) and, where required, an electronic VAT invoice.</p>

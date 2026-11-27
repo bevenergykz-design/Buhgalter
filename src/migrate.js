@@ -108,7 +108,23 @@ function m20261127() {
   }
 }
 
-const MIGRATIONS = [['migr_20261126', m20261126], ['migr_20261127_proof', m20261127]];
+// Форма Kaspi без поля суммы (27.11): Kaspi всё равно просит ввести сумму в приложении
+const PAY_20261127 = [
+  ['pages', 'body_ru', 'id = 2', 'услуга или номер договора и сумма.', 'услуга или номер договора.'],
+  ['pages', 'body_ru', 'id = 2', 'оплатите указанную сумму.', 'оплатите сумму по договору или счёту.'],
+  ['pages', 'body_kk', 'id = 2', 'қызмет немесе шарт нөмірі және сома.', 'қызмет немесе шарт нөмірі.'],
+  ['pages', 'body_kk', 'id = 2', 'көрсетілген соманы төлеңіз.', 'шарт немесе шот бойынша соманы төлеңіз.'],
+  ['pages', 'body_en', 'id = 2', ', the service or contract number and the amount.', ' and the service or contract number.'],
+  ['pages', 'body_en', 'id = 2', 'app and pay the amount.', 'app and pay the amount stated in your contract or invoice.'],
+];
+function applyList(list) {
+  for (const [table, col, where, from, to] of list) {
+    const r = run(`UPDATE ${table} SET ${col} = replace(${col}, ?, ?) WHERE ${where} AND instr(${col}, ?) > 0 AND instr(${col}, ?) = 0`, from, to, from, to);
+    if (!r.changes) console.log(`[migrate] не найдено в ${table}.${col} (${where}): «${from.slice(0, 40)}» — вероятно, уже изменено в панели`);
+  }
+}
+
+const MIGRATIONS = [['migr_20261126', m20261126], ['migr_20261127_proof', m20261127], ['migr_20261127_pay', () => applyList(PAY_20261127)]];
 
 function migrate() {
   for (const [flag, fn] of MIGRATIONS) {
