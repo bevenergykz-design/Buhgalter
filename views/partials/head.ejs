@@ -14,7 +14,7 @@
 <meta property="og:title" content="<%= meta.title || t('seo.home.title') %>">
 <% if (meta.description) { %><meta property="og:description" content="<%= meta.description %>"><% } %>
 <meta property="og:url" content="<%= absUrl(lang) %>">
-<meta property="og:image" content="<%= baseUrl + (meta.image || (st.images && st.images.og) || '/img/og.jpg') %>">
+<meta property="og:image" content="<%= baseUrl + (meta.image || (st.images && st.images.og) || '/img/og.jpg?v=3') %>">
 <meta property="og:locale" content="<%= { ru: 'ru_RU', kk: 'kk_KZ', en: 'en_US' }[lang] || 'ru_RU' %>">
 <meta name="theme-color" content="#16233A">
 <% if (st.analytics && st.analytics.gsc) { %><meta name="google-site-verification" content="<%= st.analytics.gsc %>"><% } %>
